@@ -11,10 +11,22 @@
             </div>
             <div class="col-lg-7 col-md-8 mt-2 col-sm-7 pt-3 fs-4">
                 <h1 class="text-align-center">Download CSC course materials for <span class="fw-3">FREE!</span> </h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quibusdam cumque id ipsam tempora quae dolorum officiis accusamus pariatur ullam minima et</p>
+                <p class="lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quibusdam cumque id ipsam tempora quae dolorum officiis accusamus pariatur ullam minima et</p>
                 <button class="btn btn-lg btn-success px-3">Get started</button>
             </div>
         </div>
+    </div>
+    <div>
+        <table class="table table-responsive table-light table-hover table-striped">
+            <thead></thead>
+            <tbody>
+                {% for level in levels %}
+                <tr>
+                    <td>{{level.name}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

@@ -9,8 +9,26 @@ h1 {
     font-weight: 700;
 }
 
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
+table {
+    width: 20%;
+}
+
 .top-img {
     padding: 20px auto auto;
+}
+
+.brand-text {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+}
+
+.nav-text {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
 }
 
 @media (max-width: 575px) {
@@ -23,14 +41,4 @@ h1 {
     div.bg-light.rounded-3 {
         margin: 5%;
     }
-}
-
-.brand-text {
-    font-family: 'Work Sans', sans-serif;
-    font-weight: 700;
-}
-
-.nav-text {
-    font-family: 'Work Sans', sans-serif;
-    font-weight: 500;
 }
