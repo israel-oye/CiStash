@@ -1,0 +1,34 @@
+body {
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Work Sans', sans-serif;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.top-img {
+    padding: 20px auto auto;
+}
+
+
+/* @media (max-width: 575px) {
+    img.img-fluid {
+        display: inline;
+        max-width: 30%;
+        padding-top: 3%;
+        position: relative;
+    }
+} */
+
+.brand-text {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+}
+
+.nav-text {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+}

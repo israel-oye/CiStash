@@ -1,0 +1,15 @@
+{% extends 'include/_layout.html' %} {% block title %}Home{% endblock %} {% block body %}
+<div class="container pt-lg-4 pt-md-3 pt-sm-4">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-5">
+            <img class="img-fluid mt-sm-4" src="{{url_for('static', filename='/images/folder.png')}}" alt="">
+        </div>
+        <div class="col-lg-7 col-md-8 mt-2 col-sm-7">
+            <h1 class="text-align-center">Download CSC course materials for <span class="fw-3">FREE!</span> </h1>
+            <button class="btn btn-lg btn-success px-3">Get started</button>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
