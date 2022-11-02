@@ -13,15 +13,17 @@ h1 {
     padding: 20px auto auto;
 }
 
-
-/* @media (max-width: 575px) {
+@media (max-width: 575px) {
     img.img-fluid {
-        display: inline;
-        max-width: 30%;
-        padding-top: 3%;
-        position: relative;
+        display: none;
     }
-} */
+    div.col-lg-7.col-md-8.mt-2.col-sm-7 {
+        padding-top: 3%;
+    }
+    div.bg-light.rounded-3 {
+        margin: 5%;
+    }
+}
 
 .brand-text {
     font-family: 'Work Sans', sans-serif;
