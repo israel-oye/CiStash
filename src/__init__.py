@@ -16,7 +16,7 @@ app.config["EXPLAIN_TEMPLATE_LOADING"] = True
 db.init_app(app)
 migrate.init_app(app)
 
-app.register_blueprint(home_bp)
+app.register_blueprint(home_bp, url_prefix="/home")
 
 
 if __name__ == "__main__":
