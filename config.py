@@ -18,5 +18,6 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEBUG = True
     DEVELOPMENT = True
+    EXPLAIN_TEMPLATE_LOADING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
 
