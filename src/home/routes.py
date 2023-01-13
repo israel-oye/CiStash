@@ -2,7 +2,7 @@ from typing import SupportsInt
 from flask import current_app, redirect, request, render_template, url_for, Blueprint
 from models.level import Level
 
-home_bp = Blueprint('home_bp', __name__, template_folder="src/templates", static_folder="static")
+home_bp = Blueprint('home_bp', __name__, template_folder="src/templates", static_folder="src/static")
 
 
 @home_bp.get("/")
