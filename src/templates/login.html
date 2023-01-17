@@ -1,0 +1,31 @@
+{% extends '_layout.html' %}
+<!--  -->
+{% block title %}Admin{% endblock %}
+<!--  -->
+{% block body %}
+<div class="container pt-5">
+    <div class="row justify-content-center">
+        <div class="col-6 bg-light rounded m-auto">
+            <form action="{{url_for('auth_bp.login')}}" method="post" class="form m-4 w-75">
+                <input type="hidden" name="csrf-token" value="{{csrf_token()}}">
+                <div class="p-auto">
+                    <div class="mb-3 align-content-center">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" name="email" class="form-control">
+                    </div>
+                    <div class="mb-3 align-content-center">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div class="mb-3 text-center">
+                        <input type="submit" value="Log in" formaction="{{url_for('auth_bp.login')}}" class="btn btn-success mt-2">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
