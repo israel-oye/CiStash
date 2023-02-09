@@ -9,9 +9,9 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField("Confirm Password", render_kw={"class": "form-control", "placeholder": "Confirm password"})
 
     def validate_email(self, email):
-        if Moderator.query.filter_by(email.data):
+        if Moderator.query.filter_by(email=email.data).first():
             raise ValidationError("Account exists for this email address!")
     
     def validate_username(self, username):
-        if Moderator.query.filter_by(username.data):
+        if Moderator.query.filter_by(username=username.data).first():
             raise ValidationError("Username is not available!")
