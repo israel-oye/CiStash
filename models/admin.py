@@ -18,7 +18,7 @@ class Moderator(db.Model, UserMixin):
         return super().is_active
 
     def get_id(self):
-        return super().get_id()
+        return self.id_
 
     def password_is_correct(self, password_candidate: str):
         return sha256_crypt.verify(self.password, password_candidate)
