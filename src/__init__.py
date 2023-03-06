@@ -16,7 +16,7 @@ app.config.from_object(DevelopmentConfig)
 
 crsf.init_app(app)
 db.init_app(app)
-migrate.init_app(app)
+migrate.init_app(app, db)
 login_manager.init_app(app)
 
 with app.app_context():

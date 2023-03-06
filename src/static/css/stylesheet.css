@@ -2,6 +2,10 @@ body {
     min-height: 100vh;
     font-family: 'Roboto', sans-serif;
     font-family: 'Work Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Fredoka One', cursive;
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Varela Round', sans-serif;
 }
 
 h1 {
@@ -22,8 +26,9 @@ table {
 }
 
 .brand-text {
-    font-family: 'Work Sans', sans-serif;
-    font-weight: 700;
+    /* font-family: 'Work Sans', sans-serif; */
+    font-family: 'Varela Round', sans-serif;
+    font-weight: 900;
 }
 
 .nav-text {
@@ -32,13 +37,22 @@ table {
 }
 
 @media (max-width: 575px) {
-    img.img-fluid {
+    img.fold-img {
         display: none;
+    }
+    img.table-img {
+        width: 30%;
     }
     div.col-lg-7.col-md-8.mt-2.col-sm-7 {
         padding-top: 3%;
     }
     div.bg-light.rounded-3 {
         margin: 5%;
+    }
+}
+
+@media (max-width: 767px) {
+    p.lh-sm {
+        display: none;
     }
 }

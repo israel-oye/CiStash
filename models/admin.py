@@ -2,7 +2,7 @@ from extensions import db, UserMixin
 from passlib.hash import sha256_crypt
 from typing import AnyStr
 class Moderator(db.Model, UserMixin):
-    """Uploader, i.e Moderator user model"""
+    """Uploader, i.e Moderator user model or an Admin."""
     query : db.Query
     id_ = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
