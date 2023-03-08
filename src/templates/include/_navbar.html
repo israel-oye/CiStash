@@ -19,7 +19,7 @@
                 </li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" href="#">Upload</a>
+                    <a class="nav-link nav-text" href="{{url_for('auth_bp.upload')}}">Upload</a>
                 </li>
                 {% endif %}
                 <li class="nav-item px-3">

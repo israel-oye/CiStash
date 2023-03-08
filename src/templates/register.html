@@ -12,7 +12,7 @@
                     {{ form.username }}
                     <!--  -->
                     {% for error in form.username.errors %}
-                    <small class="form-text">{{ error }}</small>
+                    <small class="form-text"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</small>
                     <!--  -->
                     {% endfor %}
                 </div>
@@ -21,7 +21,7 @@
                     {{ form.email }}
                     <!--  -->
                     {% for error in form.email.errors %}
-                    <small class="form-text">{{ error }}</small>
+                    <small class="form-text"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</small>
                     <!--  -->
                     {% endfor %}
                 </div>
