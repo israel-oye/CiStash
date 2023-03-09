@@ -17,14 +17,17 @@
                         {% endfor %}
                     </ul>
                 </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link nav-text" href="#">Info</a>
+                </li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text" href="{{url_for('auth_bp.upload')}}">Upload</a>
                 </li>
-                {% endif %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" href="#">About</a>
+                    <a class="nav-link nav-text" href="{{url_for('auth_bp.logout')}}"><i class="fa-solid fa-right-from-bracket"></i></a>
                 </li>
+                {% endif %}
             </ul>
 
         </div>
