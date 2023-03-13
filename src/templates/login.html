@@ -1,17 +1,18 @@
 {% extends '_layout.html' %}
 <!--  -->
-{% block title %}Admin login{% endblock %}
+{% block title %}Moderator login{% endblock %}
 <!--  -->
 {% block body %}
 <div class="container pt-5">
     <div class="row justify-content-center">
         <div class="col-6 bg-light rounded m-auto">
+            <h4 class="text-center pt-3"><i class="fa-solid fa-right-to-bracket"></i> Login</h4>
             <form action="{{url_for('auth_bp.login')}}" method="post" class="form m-4 w-85">
                 <input type="hidden" name="csrf-token" value="{{csrf_token()}}">
                 <div class="p-auto">
                     <div class="mb-3 align-content-center">
                         <label class="form-label" for="email">Email</label>
-                        <input type="email" name="email" class="form-control">
+                        <input type="email" name="email" class="form-control" placeholder="example@mail.com">
                     </div>
                     <div class="mb-3 align-content-center">
                         <label class="form-label" for="password">Password</label>
