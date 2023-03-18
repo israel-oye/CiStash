@@ -18,7 +18,7 @@
                     </ul>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" href="{{url_for('home_bp.index')}}">Info</a>
+                    <a class="nav-link nav-text" id="info-link" href="#" data-bs-toggle="modal" data-bs-target="#info-modal">Info</a>
                 </li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
@@ -33,3 +33,44 @@
         </div>
     </div>
 </nav>
+
+<div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">About Uploading</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            {% if current_user.is_authenticated %}
+            <!--  -->
+            <div class="modal-body">
+                <p class="text-wrap">Only Upload course details that are verified and relevant course materials. Non compliant uploads will be deleted by the admin.
+                </p>
+            </div>
+            {% else %}
+            <!--  -->
+            <div class="modal-body">
+                <p>Before now, the upload section was closed off to regular users, but now users can upload but MUST only upload course details that are verified and relevant course materials. Non compliant uploads will be deleted by the admin.
+                </p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <form method="GET">
+                                <button class="btn btn-lg btn-success" formaction="/auth/login"> Login <i class="fa-solid fa-right-to-bracket"></i></button>
+                            </form>
+                        </div>
+                        <div class="col-6 text-center">
+                            <form method="GET">
+                                <button class="btn btn-lg btn-success" formaction="/auth/register"> Sign up <i class="fa-regular fa-user"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
