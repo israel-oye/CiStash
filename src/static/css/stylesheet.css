@@ -40,6 +40,19 @@ table {
     font-weight: 500;
 }
 
+.dropzone .dz-preview .dz-error-message {
+    top: 35% !important;
+}
+
+.dropzone .dz-preview .dz-error-message:after {
+    left: 12% !important;
+}
+
+.dropzone .dz-preview .dz-remove {
+    margin-top: 4px;
+    text-transform: uppercase;
+}
+
 @media (max-width: 575px) {
     img.fold-img {
         display: none;

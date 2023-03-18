@@ -66,10 +66,9 @@
 
                             <div class="mb-3 align-content-center dropzone" id="upload">
                                 <!-- DROPZONE -->
-
                             </div>
                             <div class="mb-3 text-center">
-                                <button class="btn btn-danger mt-2" type="submit" formaction="{{url_for('auth_bp.file_upload')}}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                                <button class="btn btn-danger mt-2" id="upload-btn" type="submit" formaction="{{url_for('auth_bp.file_upload')}}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
                             </div>
                             <input type="hidden" id="upload-url" value="{{url_for('auth_bp.file_upload')}}">
                         </div>
@@ -81,11 +80,8 @@
 </div>
 <!--  -->
 
+<!-- DROPZONE handler -->
 <script src="{{url_for('static', filename='assets/form-handler.js' )}}" defer>
 </script>
-<!-- <script type="text/javascript">
-
-</script> -->
-
 <!--  -->
 {% endblock %}

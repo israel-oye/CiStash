@@ -1,31 +1,62 @@
-// import Dropzone from "dropzone";
+Dropzone.options.upload = {
+    paramName: "file",
+    acceptedFiles: ".pdf, .doc, .docx, .odt, .ppt, .pptx",
+    addRemoveLinks: true,
+    autoProcessQueue: false,
+    chunking: true,
+    forceChunking: true,
+    url: document.querySelector("#upload-url").value,
+    uploadMultiple: false,
+    maxFiles: 1,
+    maxFilesize: 512, // megabytes
+    chunkSize: 1000000, // bytes
+    dictDefaultMessage: '<h5>Upload relevant course document. <i class="fa-solid fa-2x fa-cloud-arrow-up"></i></h5>',
+    dictCancelUpload: "Cancel Upload",
+    dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+    dictRemoveFile: "Remove",
+    init: function() {
+        var myDropzone = this;
 
+        this.on('error', function(file, errorMessage) {
+            if (file.accepted) {
+                var mypreview = document.getElementsByClassName('dz-error');
+                mypreview = mypreview[mypreview.length - 1];
+                mypreview.classList.toggle('dz-error');
+                mypreview.classList.toggle('dz-success');
+            }
+        });
 
-// Dropzone.options.upload = {
-//     paramName: "file",
-//     acceptedFiles: ".pdf, .doc, .docx, .odt, .ppt, .pptx",
-//     addRemoveLinks: true,
-//     chunking: true,
-//     forceChunking: true,
-//     url: document.querySelector("#upload-url").value,
-//     uploadMultiple: false,
-//     maxFilesize: 1025, // megabytes
-//     chunkSize: 1000000, // bytes
-//     dictDefaultMessage: "Upload relevant course document.",
-//     dictCancelUpload: "Cancel Upload",
-//     dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
-//     init: function() {
-//         this.on('error', function(file, errorMessage) {
-//             if (file.accepted) {
-//                 var mypreview = document.getElementsByClassName('dz-error');
-//                 mypreview = mypreview[mypreview.length - 1];
-//                 mypreview.classList.toggle('dz-error');
-//                 mypreview.classList.toggle('dz-success');
-//             }
-//         });
-//     },
+        this.on('sending', function(data, xhr, formData) {
+            var selectedCourseId = document.querySelector('#dyna_course_code')
+            formData.append("course_id", selectedCourseId.value)
+        })
 
-// }
+        upload_btn = document.querySelector("#upload-btn");
+        upload_btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            myDropzone.processQueue();
+        })
+    },
+    success: function(file, response) {
+        const alertString = `<div class="alert  alert-success mt-4 mx-5 text-center fw-bold alert-dismissible fade show" role="alert">
+                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <div>
+                                        Document uploaded successfully!
+                                    </div>
+                                </div>`
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(alertString, "text/html");
+        const alertElem = doc.querySelector('div')
+        const alertAnchor = document.querySelector('#alert-anchor');
+        alertAnchor.insertAdjacentElement("afterend", alertElem);
+
+        return file.previewElement.classList.add("dz-success");
+    }
+
+}
 
 async function submitForm(formData) {
     try {
