@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, flash, render_template, redirect, url_for, request, jsonify
 from werkzeug.datastructures import ImmutableMultiDict
 from extensions import login_manager, current_user, login_user, login_required, logout_user, db
-from models.admin import Moderator
+from models.moderator import Moderator
 from models.course import Course
 from .form import RegisterForm, CourseForm
 from passlib.hash import sha256_crypt

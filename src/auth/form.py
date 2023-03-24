@@ -1,6 +1,6 @@
 from extensions import FlaskForm, StringField, PasswordField, EmailField, SelectField, InputRequired, ValidationError
 from wtforms import validators
-from models.admin import Moderator
+from models.moderator import Moderator
 from models.course import Course
 from models.level import LevelEnum
 

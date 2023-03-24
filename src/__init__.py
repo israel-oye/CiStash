@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from dotenv import load_dotenv
 from extensions import db, migrate, crsf, login_manager
-from models.admin import Moderator
+from models.moderator import Moderator
 
 from .home import home_bp
 from .auth import auth_bp
