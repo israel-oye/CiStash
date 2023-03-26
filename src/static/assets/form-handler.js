@@ -1,6 +1,6 @@
 Dropzone.options.upload = {
     paramName: "file",
-    acceptedFiles: ".pdf, .doc, .docx, .odt, .ppt, .pptx",
+    acceptedFiles: ".pdf, .doc, .docx, .odt, .rtf, .txt, .epub, .ppt, .pptx",
     addRemoveLinks: true,
     autoProcessQueue: false,
     chunking: true,
