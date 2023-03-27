@@ -1,4 +1,4 @@
-from extensions import db
+from extensions import db, ModelView
 
 class Course(db.Model):
     __tablename__ = "course"
@@ -11,3 +11,12 @@ class Course(db.Model):
 
     def __repr__(self) -> str:
         return f"<Course>: {self.course_code}" 
+
+
+class CourseView(ModelView):
+    can_create = False
+    can_edit = True
+    can_delete = True
+    create_modal = True
+    edit_modal = True
+    

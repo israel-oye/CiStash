@@ -10,6 +10,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = True
+    FLASK_ADMIN_SWATCH = 'Solar'
 
 class ProductionConfig(Config):
     DEBUG = False

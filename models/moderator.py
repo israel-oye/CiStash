@@ -1,4 +1,5 @@
-from extensions import db, UserMixin
+from flask import redirect, url_for, flash, make_response
+from extensions import db, UserMixin, ModelView, AdminIndexView, current_user
 from passlib.hash import sha256_crypt
 
 class Moderator(db.Model, UserMixin):
@@ -22,3 +23,21 @@ class Moderator(db.Model, UserMixin):
 
     def password_is_correct(self, password_candidate: str):
         return sha256_crypt.verify(password_candidate, self.password)
+
+
+class ModeratorView(ModelView):
+    can_create = False
+    can_edit = False
+    can_delete = False
+    
+
+class IndexView(AdminIndexView):
+    
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.id_ == 1:
+            return super().is_accessible()
+        return False
+    
+    def inaccessible_callback(self, name, **kwargs):
+        flash("Out of bounds!", "error")
+        return make_response(redirect(url_for("home_bp.index")), 403)

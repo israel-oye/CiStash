@@ -1,4 +1,4 @@
-from extensions import db
+from extensions import db, ModelView
 
 class Document(db.Model):
     __tablename__ = "document"
@@ -12,3 +12,10 @@ class Document(db.Model):
 
     def __repr__(self) -> str:
         return f"<Document: {self.uuid}>"
+    
+    
+class DocumentView(ModelView):
+    can_create = False
+    can_edit = False
+    can_delete = True
+    
