@@ -23,9 +23,6 @@ migrate.init_app(app, db, render_as_batch=True)
 login_manager.init_app(app)
 admin.init_app(app, index_view=IndexView(name='Admin',url="/auth/admin") )
 
-# admin.add_view(ModeratorView(Moderator, db.session))
-# admin.add_view(CourseView(Course, db.session))
-# admin.add_view(DocumentView(Document, db.session))
 
 with app.app_context():
     db.create_all()
