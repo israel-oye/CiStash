@@ -5,8 +5,8 @@
 {% block body %}
 <div class="container pt-5">
     <div class="row justify-content-center">
-        <div class="col-6 bg-light rounded m-auto">
-            <h4 class="text-center pt-3"><i class="fa-solid fa-right-to-bracket"></i> Login</h4>
+        <div class="col-6 bg-dark rounded m-auto">
+            <h4 class="text-center text-light pt-3"><i class="fa-solid fa-right-to-bracket"></i> Login</h4>
             <form action="{{url_for('auth_bp.login')}}" method="post" class="form m-4 w-85">
                 <input type="hidden" name="csrf-token" value="{{csrf_token()}}">
                 <div class="p-auto">

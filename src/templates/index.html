@@ -3,23 +3,23 @@
 {% block title %}Home{% endblock %}
 <!--  -->
 {% block body %}
-<div class="container pt-lg-4 pt-md-3 pt-sm-4">
-    <div class="p-5 mb-4 bg-light border-secondary rounded-3 mb-lg-5">
+<div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
+    <div class="p-5 mb-4 bg-dark border-secondary rounded-3 mb-lg-5" id="home-innercontainer">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-5">
-                <img class="img-fluid mt-sm-4 fold-img" src="{{url_for('static', filename='/images/folder.png')}}" alt="Folder image">
+                <img class="img-fluid mt-sm-4 folder-img" src="{{url_for('static', filename='/images/folder.png')}}" alt="Folder image">
             </div>
-            <div class="col-lg-7 col-md-8 mt-2 col-sm-7 pt-3 fs-4">
+            <div class="col-lg-7 col-md-8 mt-2 col-sm-7 pt-3 fs-4" id="home-jumbotron">
                 <h1 class="text-align-center">Download CSC course materials for <span class="fw-3">FREE!</span> </h1>
                 <p class="lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quibusdam cumque id ipsam tempora quae dolorum officiis accusamus pariatur ullam minima et</p>
-                <button class="btn btn-lg btn-success px-3">Get started</button>
+                <button class="btn btn-lg btn-primary px-3">Get started</button>
             </div>
         </div>
     </div>
     <div class="container" id="levels">
         <div class="row">
             <div class="col-lg-6 col-md-5 col-sm-4">
-                <table class="table text-center table-bordered table-light table-hover table-striped">
+                <table class="table text-center table-bordered table-dark table-hover table-striped">
                     <thead></thead>
                     <tbody class="lead nav-text">
                         {% for level in levels %}
@@ -43,4 +43,18 @@
 
 
 </div>
+<script type="text/javascript">
+    function image_changer(media_query) {
+        imageElem = document.querySelector(".folder-img");
+        if (media_query.matches) {
+            imageElem.src = "{{url_for('static', filename='images/download.png')}}"
+        } else {
+            imageElem.src = "{{url_for('static', filename='images/folder.png')}}"
+        }
+    }
+
+    const mq = window.matchMedia("(max-width: 575px)");
+    mq.addListener(image_changer);
+    image_changer(mq);
+</script>
 {% endblock %}
