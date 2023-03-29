@@ -39,5 +39,5 @@ class IndexView(AdminIndexView):
         return False
     
     def inaccessible_callback(self, name, **kwargs):
-        flash("Out of bounds!", "error")
+        flash("Out of bounds!", "warning")
         return make_response(redirect(url_for("home_bp.index")), 403)

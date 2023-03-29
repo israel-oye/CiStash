@@ -4,7 +4,7 @@
 <!--  -->
 {% block body %}
 <div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
-    <div class="p-5 mb-4 bg-dark border-secondary rounded-3 mb-lg-5" id="home-innercontainer">
+    <div class="p-5 mb-4 bg-dark bg-gradient border-secondary rounded-3 mb-lg-5" id="home-innercontainer">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-5">
                 <img class="img-fluid mt-sm-4 folder-img" src="{{url_for('static', filename='/images/folder.png')}}" alt="Folder image">
@@ -12,20 +12,20 @@
             <div class="col-lg-7 col-md-8 mt-2 col-sm-7 pt-3 fs-4" id="home-jumbotron">
                 <h1 class="text-align-center">Download CSC course materials for <span class="fw-3">FREE!</span> </h1>
                 <p class="lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quibusdam cumque id ipsam tempora quae dolorum officiis accusamus pariatur ullam minima et</p>
-                <button class="btn btn-lg btn-primary px-3">Get started</button>
+                <button class="btn btn-lg btn-primary px-3"><i class="fa-solid fa-rocket fa-beat"></i>  Get started</button>
             </div>
         </div>
     </div>
     <div class="container" id="levels">
         <div class="row">
             <div class="col-lg-6 col-md-5 col-sm-4">
-                <table class="table text-center table-bordered table-dark table-hover table-striped">
+                <table class="table text-center table-bordered table-hover table-striped">
                     <thead></thead>
                     <tbody class="lead nav-text">
                         {% for level in levels %}
                         <tr>
                             <td>
-                                <a href="{{url_for('home_bp.index')}}" class="text-decoration-none">
+                                <a href="{{url_for('home_bp.index')}}" class="text-decoration-underline text-primary fw-bolder">
                                     {{level.name}}
                                 </a>
                             </td>
