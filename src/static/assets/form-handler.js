@@ -27,15 +27,23 @@ Dropzone.options.upload = {
         });
 
         this.on('sending', function(data, xhr, formData) {
-            var selectedCourseId = document.querySelector('#dyna_course_code')
-            formData.append("course_id", selectedCourseId.value)
+            var selectedCourseId = document.querySelector('#dyna_course_code');
+            var tokenElem = document.querySelector("#upload-token");
+
+            formData.append("course_id", selectedCourseId.value);
+            formData.append("csrf_token", tokenElem.value);
         })
 
         upload_btn = document.querySelector("#upload-btn");
         upload_btn.addEventListener("click", function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            myDropzone.processQueue();
+            if (confirm("Please, press OK if you have selected a relevant course material.") == true) {
+                e.preventDefault();
+                e.stopPropagation();
+                myDropzone.processQueue();
+            } else {
+                alert("Please select relevant course material for upload.")
+            }
+
         })
     },
     success: function(file, response) {
