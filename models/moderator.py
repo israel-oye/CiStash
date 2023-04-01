@@ -9,6 +9,7 @@ class Moderator(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(500), nullable=False)
+    uploads = db.relationship("Document", back_populates="uploader", lazy="select")
 
     @property
     def is_authenticated(self):
