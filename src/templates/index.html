@@ -22,11 +22,11 @@
                 <table class="table text-center table-bordered table-hover table-striped">
                     <thead></thead>
                     <tbody class="lead nav-text">
-                        {% for level in levels %}
+                        {% for level in lvl_mapping.items() %}
                         <tr>
                             <td>
-                                <a href="{{url_for('home_bp.index')}}" class="text-decoration-underline text-primary fw-bolder">
-                                    {{level.name}}
+                                <a href="{{url_for('home_bp.level_page', level_id=level[1][0])}}" class="text-decoration-underline text-primary fw-bolder">
+                                    {{level[1]}}
                                 </a>
                             </td>
 

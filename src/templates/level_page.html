@@ -1,0 +1,20 @@
+{% extends '_layout.html' %}
+<!--  -->
+{% block title %} {{level.name.value}} level courses {% endblock %}
+<!--  -->
+{% block body %}
+<div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
+    <h2 class="text-light text-center border-bottom">
+        {{level.name.value}} Level Courses
+    </h2>
+    {% for course in level.courses %}
+    <div class="coursebox container pt-2 border-bottom">
+        <a href="/course/{{course.id_}}" class="text-decoration-none">
+            <h3>
+                <i class="fa-solid fa-graduation-cap"></i> {{course.course_code}} - {{course.course_title}}
+            </h3>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

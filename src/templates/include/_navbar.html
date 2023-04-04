@@ -12,8 +12,8 @@
                 <li class="nav-item dropdown px-3">
                     <a class="nav-link dropdown-toggle nav-text" href="#levels" role="button" data-bs-toggle="dropdown" aria-expanded="false">Levels</a>
                     <ul class="dropdown-menu">
-                        {% for level in levels %}
-                        <li><a class="dropdown-item" href="level/{{level['id']}}">{{level['name']}}</a></li>
+                        {% for level in lvl_mapping.items() %}
+                        <li><a class="dropdown-item" href="{{url_for('home_bp.level_page', level_id=level[1][0])}}">{{level[1]}}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
