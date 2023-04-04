@@ -55,7 +55,7 @@
                 </div>
                 <div class="tab-pane fade" id="doc-upload" role="tabpanel" aria-labelledby="upload-document-tab">
                     <form action="" method="post" class="form m-4 w-85" enctype="multipart/form-data">
-                        <input type="hidden" name="csrf-token" value="{{csrf_token()}}">
+                        <input type="hidden" name="csrf-token" id="#upload-token" value="{{csrf_token()}}">
                         <div class="p-auto">
 
                             <div class="mb-4 align-content-center">
@@ -65,6 +65,9 @@
                             </div>
 
                             <div class="mb-3 align-content-center bg-light dropzone" id="upload">
+                                <div class="fallback">
+                                    <input name="file" type="file" class="form-control" accept=".pdf, .doc, .docx, .odt, .rtf, .txt, .epub, .ppt, .pptx" />
+                                </div>
                                 <!-- DROPZONE -->
                             </div>
                             <div class="mb-3 text-center">
