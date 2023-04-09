@@ -17,13 +17,20 @@ Dropzone.options.upload = {
     init: function() {
         var myDropzone = this;
 
-        this.on('error', function(file, errorMessage) {
-            if (file.accepted) {
-                var mypreview = document.getElementsByClassName('dz-error');
-                mypreview = mypreview[mypreview.length - 1];
-                mypreview.classList.toggle('dz-error');
-                mypreview.classList.toggle('dz-success');
+        this.on('error', function(file, response) {
+            if (typeof response === "string") {
+                var message = response;
+            } else {
+                var message = response.message;
             }
+            file.previewElement.classList.add("dz-error");
+            _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                node = _ref[_i];
+                _results.push(node.textContent = message);
+            }
+            return _results;
         });
 
         this.on('sending', function(data, xhr, formData) {
@@ -36,9 +43,9 @@ Dropzone.options.upload = {
 
         upload_btn = document.querySelector("#upload-btn");
         upload_btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             if (confirm("Please, press OK if you have selected a relevant course material.") == true) {
-                e.preventDefault();
-                e.stopPropagation();
                 myDropzone.processQueue();
             } else {
                 alert("Please select relevant course material for upload.")
@@ -59,6 +66,7 @@ Dropzone.options.upload = {
         const doc = parser.parseFromString(alertString, "text/html");
         const alertElem = doc.querySelector('div')
         const alertAnchor = document.querySelector('#alert-anchor');
+        //TODO check if alert anchor has an alert in display before appending
         alertAnchor.insertAdjacentElement("afterend", alertElem);
 
         return file.previewElement.classList.add("dz-success");
