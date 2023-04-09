@@ -37,16 +37,7 @@ login_manager.needs_refresh_message_category = "info"
 from models.course import CourseView, Course
 from models.doc import DocumentView, Document
 from models.moderator import ModeratorView, Moderator
-# from dotenv import load_dotenv
-# import os
 
-# load_dotenv()
 admin.add_view(ModeratorView(Moderator, db.session))
 admin.add_view(CourseView(Course, db.session))
 admin.add_view(DocumentView(Document, db.session))
-# admin.add_view(S3FileAdmin(
-#     bucket_name="testing-lator",
-#      eregion="us-west-004",
-#     aws_access_key_id=os.getenv("B2_KEY_ID"),
-#     aws_secret_access_key=os.getenv("B2_APPLICATION_KEY")
-#     ))
