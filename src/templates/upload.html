@@ -38,14 +38,14 @@
                                 <!--  -->
                                 {{ form.course_code }}
                                 <!--  -->
-                                <small class="form-text" id="course-code-error" style="display: none;"><i class="fa-solid fa-circle-exclamation"></i> </small>
+                                <small class="form-text" id="course-code-error" style="display: none;"><i class="fa-solid fa-circle-exclamation"></i> <span></span></small>
                             </div>
                             <div class="mb-3 align-content-center">
                                 {{ form.course_title.label(class_="form-label") }}
                                 <!--  -->
                                 {{ form.course_title }}
                                 <!--  -->
-                                <small class="form-text" id="course-title-error" style="display: none;"><i class="fa-solid fa-circle-exclamation"></i> </small>
+                                <small class="form-text" id="course-title-error" style="display: none;"><i class="fa-solid fa-circle-exclamation"></i> <span></span></small>
                             </div>
                             <div class="mb-3 text-center">
                                 <button class="btn btn-success mt-2" type="submit" formaction="{{url_for('auth_bp.upload')}}"><i class="fa-regular fa-square-plus"></i> Add Course</button>
