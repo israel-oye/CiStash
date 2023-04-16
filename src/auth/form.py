@@ -1,8 +1,11 @@
-from extensions import FlaskForm, StringField, PasswordField, EmailField, SelectField, InputRequired, ValidationError
 from wtforms import validators
-from models.moderator import Moderator
+
+from extensions import (EmailField, FlaskForm, InputRequired, PasswordField,
+                        SelectField, StringField, ValidationError)
 from models.course import Course
 from models.level import LevelEnum
+from models.moderator import Moderator
+
 
 class RegisterForm(FlaskForm):
     username = StringField("Username", [validators.Length(3, 25, "Username must be at least %(min)d long!")], render_kw={"autofocus": True, "class": "form-control", "placeholder": "Username"})
@@ -13,11 +16,11 @@ class RegisterForm(FlaskForm):
     def validate_email(self, email):
         if Moderator.query.filter_by(email=email.data).first():
             raise ValidationError("Account exists for this email address")
-    
+
     def validate_username(self, username):
         if Moderator.query.filter_by(username=username.data).first():
             raise ValidationError("Username is not available")
-        
+
 class CourseForm(FlaskForm):
     levels = SelectField(
                         "Course Level",
@@ -46,14 +49,13 @@ class CourseForm(FlaskForm):
     def validate_levels(self, selected_level):
         if selected_level.data not in [l.name for l in LevelEnum]:
             raise ValidationError("Please select a valid level.")
-    
+
     def validate_course_code(self, course_code_field):
         if Course.query.filter_by(course_code=course_code_field.data).first():
             raise ValidationError(f"Oops, {course_code_field.data} has been registered.")
-        
+
     def validate_course_title(self, course_title_field):
         field_data = str(course_title_field.data).title()
-        
+
         if Course.query.filter_by(course_title=field_data).first():
             raise ValidationError(f"It seems like this course has been registered, please check carefully and try again.")
-    
