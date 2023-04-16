@@ -1,7 +1,9 @@
-from extensions import db, ModelView
+from extensions import ModelView, db
+
 
 class Course(db.Model):
     __tablename__ = "course"
+    query: db.Query
 
     id_ = db.Column(db.Integer, primary_key=True)
     course_title = db.Column(db.String(60), unique=True)
@@ -11,7 +13,7 @@ class Course(db.Model):
     course_level = db.relationship("Level", back_populates="courses")
 
     def __repr__(self) -> str:
-        return f"<Course>: {self.course_code}" 
+        return f"<Course: {self.course_code}>"
 
 
 class CourseView(ModelView):
@@ -20,4 +22,3 @@ class CourseView(ModelView):
     can_delete = True
     create_modal = True
     edit_modal = True
-    

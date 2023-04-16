@@ -1,7 +1,9 @@
-from extensions import db, ModelView
+from extensions import ModelView, db
+
 
 class Document(db.Model):
     __tablename__ = "document"
+    query: db.Query
 
     id_ = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(255), unique=True)
@@ -14,10 +16,9 @@ class Document(db.Model):
 
     def __repr__(self) -> str:
         return f"<Document: {self.uuid}>"
-    
-    
+
+
 class DocumentView(ModelView):
     can_create = False
     can_edit = False
     can_delete = True
-    
