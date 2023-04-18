@@ -9,10 +9,14 @@ Dropzone.options.upload = {
     uploadMultiple: false,
     maxFiles: 1,
     maxFilesize: 512, // megabytes
-    chunkSize: 1000000, // bytes
+    chunkSize: 1 * 1024 * 1024, // bytes
+    retryChunks: true,
+    retryChunksLimit: 3,
     dictDefaultMessage: '<h5>Upload relevant course document. <i class="fa-solid fa-2x fa-cloud-arrow-up"></i></h5>',
     dictCancelUpload: "Cancel Upload",
     dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+    dictUploadCanceled: "Upload canceled.",
+    dictResponseError: "Server responded with {{statusCode}} code",
     dictRemoveFile: "Remove",
     init: function() {
         var myDropzone = this;
@@ -70,8 +74,11 @@ Dropzone.options.upload = {
         alertAnchor.insertAdjacentElement("afterend", alertElem);
 
         return file.previewElement.classList.add("dz-success");
+    },
+    chunksUploaded: function(file, done) {
+        console.log("The chunks are done!");
+        done();
     }
-
 }
 
 async function submitForm(formData) {

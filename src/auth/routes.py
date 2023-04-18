@@ -1,16 +1,17 @@
 import os
+from pathlib import Path
 from tempfile import NamedTemporaryFile
 from uuid import uuid4
 
 import b2sdk.v2 as b2
 from dotenv import load_dotenv
 from flask import (Blueprint, current_app, flash, jsonify, redirect,
-                   render_template, request, url_for, send_file)
+                   render_template, request, url_for, make_response)
 from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
 
 from extensions import (current_user, db, login_manager, login_required,
-                        login_user, logout_user, NotFound, InternalServerError, SQLAlchemyError)
+                        login_user, logout_user, CORS, NotFound, InternalServerError, SQLAlchemyError)
 from models.course import Course
 from models.doc import Document
 from models.level import Level, LevelEnum
@@ -22,6 +23,7 @@ load_dotenv()
 
 
 auth_bp = Blueprint("auth_bp", __name__, template_folder="src/templates", static_folder="static")
+CORS(auth_bp)
 
 b2_info = b2.InMemoryAccountInfo()
 b2_encryption_setting = b2.EncryptionSetting(mode=b2.EncryptionMode.SSE_B2, algorithm=b2.EncryptionAlgorithm.AES256)
@@ -33,6 +35,7 @@ b2_api.authorize_account(
 )
 bucket = b2_api.get_bucket_by_name(os.getenv("UPLOAD_BUCKET_NAME"))
 
+temp_dir = temp_file = Path(__file__).resolve().parent.parent / "static" / "temp"
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -94,7 +97,8 @@ def logout():
 def get_upload_page():
     form = CourseForm()
     form.dyna_course_code.choices = [(course.id_, course.course_code) for course in Course.query.order_by("course_code")]
-
+    # resp = make_response(render_template("upload.html", form=form))
+    # resp.headers["Access-Control-Allow-Origin"] = "https://unpkg.com"
     return render_template("upload.html", form=form)
 
 
@@ -128,24 +132,22 @@ def upload():
 @auth_bp.route("/file_upload", methods=["POST"])
 @login_required
 def file_upload():
-    global bucket
-    bucket = bucket.update(default_server_side_encryption=b2_encryption_setting)
-
-    if "file" in request.files:
-        uploaded_file = request.files['file']
-        uploaded_file_uid = request.files['dzuuid']
+    file = request.files.get("file", None)
+    if file:
+        uploaded_file = file
+        uploaded_file_uid = request.form['dzuuid']  #TODO Handle no JS fallback upload on Server-Side
         unique_filename = f"{uploaded_file_uid[:8]}_{secure_filename(uploaded_file.filename)}"
 
         current_chunk = int(request.form["dzchunkindex"])
 
-        temp_file = NamedTemporaryFile(delete=False)
-        with temp_file as f:
+        temp_file = Path(temp_dir / unique_filename)
+        with open(temp_file, "ab") as f:
             f.seek(int(request.form["dzchunkbyteoffset"]))
             f.write(uploaded_file.stream.read())
 
         total_chunks = int(request.form.get("dztotalchunkcount"))
         if current_chunk + 1 == total_chunks:
-            if os.path.getsize(temp_file.name) != int(request.form["dztotalfilesize"]):
+            if os.path.getsize(temp_file) != int(request.form["dztotalfilesize"]):
                 return jsonify({"message": "Size mismatch", "status": 400}), 400
 
             course_id = int(request.form["course_id"])
@@ -155,40 +157,44 @@ def file_upload():
                 return jsonify({"message": "Related course not found, please select a valid course from option above", "code": 400}), 400
             except Exception as e:
                 current_app.log_exception(e)
+                return jsonify({"message": "Internal server error...", "code": 500}), 500
             metadata = {
                 "filename": unique_filename[9:],
                 "unique_filename": unique_filename,
                 "document_course": doc_course.course_code
             }
-
-            with open(temp_file.name, "rb") as f:
+            global bucket
+            try:
+                uploaded_bucket_file = bucket.upload_local_file(
+                    local_file=temp_file,
+                    file_name=metadata["unique_filename"],
+                    file_infos=metadata,
+                    # encryption=b2_encryption_setting
+                )
+                download_url = b2_api.get_download_url_for_fileid(uploaded_bucket_file.id_)
+            except Exception as e:
+                current_app.logger.error(e)
+                return jsonify({"message": "An error occured while uploading, please try again...", "code": 500}), 500
+            else:
                 try:
-                    uploaded_bucket_file = bucket.upload_bytes(
-                        data_bytes=f.read(),
-                        file_name=metadata["filename"],
-                        file_infos=metadata
+                    new_document = Document(
+                        uuid=uploaded_bucket_file.id_,
+                        filename=metadata["filename"],
+                        download_link=download_url,
+                        course_id=doc_course.id_,
+                        uploader_id=current_user.id_
                     )
-                    download_url = b2_api.get_download_url_for_fileid(uploaded_bucket_file.id_)
+                    db.session.add(new_document)
+                    db.session.commit()
+                except SQLAlchemyError:
+                    jsonify({"message": "An error occured while saving, please try again...", "code": 500}), 500
                 except Exception as e:
-                    current_app.logger.error(e)
-                    return jsonify({"message": "An error occured while uploading, please try again...", "code": 500}), 500
-                else:
-                    try:
-                        new_document = Document(
-                            uuid=uploaded_bucket_file.id_,
-                            filename=metadata["filename"],
-                            download_link=download_url,
-                            course_id=doc_course.id_,
-                            uploader_id=current_user.id_
-                        )
-                        db.session.add(new_document)
-                        db.session.commit()
-                    except SQLAlchemyError:
-                        jsonify({"message": "An error occured while saving, please try again...", "code": 500}), 500
-                    except Exception as e:
-                        current_app.log_exception(e)
-                    else:
-                        return jsonify({"message": "Upload success!", "code": 200}), 200
-                finally:
-                    temp_file.close()
-    return jsonify({"message": "Invalid/No file part in request body", "code": 400}), 400
+                    current_app.log_exception(e)
+            finally:
+                os.remove(temp_file)
+        else:
+            current_app.logger.debug(f"Chunk {current_chunk + 1} of {total_chunks} for file {secure_filename(uploaded_file.filename)} complete")
+
+        return jsonify({"message": "Upload success!", "code": 200}), 200
+    else:
+        return jsonify({"message": "Invalid/No file part in request body", "code": 400}), 400
