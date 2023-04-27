@@ -1,7 +1,14 @@
+from datetime import datetime
+
 from extensions import ModelView, db
 
 
-class Document(db.Model):
+class TimestampMixin:
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    modified = db.Column(db.DateTime, onupdate=datetime.utcnow)
+
+
+class Document(db.Model, TimestampMixin):
     __tablename__ = "document"
     query: db.Query
 
@@ -15,10 +22,10 @@ class Document(db.Model):
     uploader = db.relationship("Moderator", back_populates="uploads")
 
     def __repr__(self) -> str:
-        return f"<Document: {self.uuid}>"
+        return f"<Document: {self.filename}>"
 
 
 class DocumentView(ModelView):
     can_create = False
-    can_edit = False
+    can_edit = True
     can_delete = True
