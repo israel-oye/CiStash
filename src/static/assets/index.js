@@ -1,8 +1,12 @@
-document.querySelector("#upload-nav").addEventListener("mouseover", function() {
-    var text = this.innerText
-    this.innerHTML = `<i class="fa-solid fa-upload fa-bounce fa-xl"></i>`
+let values = ['Upload', `<i class=" text-primary fa-solid fa-upload fa-bounce fa-xl"></i>`, 'Add Course'];
+let currentIndex = 0;
+let uploadElem = document.querySelector('#upload-nav');
 
-    this.addEventListener("mouseout", function() {
-        this.innerHTML = text
-    })
-})
+setInterval(() => {
+    uploadElem.innerHTML = values[currentIndex];
+    currentIndex++;
+    if (currentIndex === 2) {
+        currentIndex = 0;
+    }
+
+}, 10000)

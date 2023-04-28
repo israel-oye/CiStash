@@ -4,14 +4,14 @@
 <!--  -->
 {% block body %}
 <div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
-    <h2 class="text-light text-center border-bottom">
+    <h2 class="text-light text-center border-bottom mb-5">
         {{level.name.value}} Level Courses
     </h2>
     {% for course in level.courses %}
-    <div class="coursebox container pt-2 border-bottom">
-        <a href="/course/{{course.id_}}" class="text-decoration-none">
+    <div class="coursebox container bg-dark my-2 border-bottom">
+        <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
             <h3>
-                <i class="fa-solid fa-graduation-cap"></i> {{course.course_code}} - {{course.course_title}}
+                <i class="fa-solid fa-graduation-cap fa-sm"></i> <span class="text-decoration-underline">{{course.course_code}}</span> - {{course.course_title}}
             </h3>
         </a>
     </div>
