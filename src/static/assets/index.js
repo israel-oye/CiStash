@@ -5,7 +5,7 @@ let uploadElem = document.querySelector('#upload-nav');
 setInterval(() => {
     uploadElem.innerHTML = values[currentIndex];
     currentIndex++;
-    if (currentIndex === 2) {
+    if (currentIndex === 3) {
         currentIndex = 0;
     }
 
