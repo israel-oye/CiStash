@@ -68,10 +68,14 @@ Dropzone.options.upload = {
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(alertString, "text/html");
-        const alertElem = doc.querySelector('div')
+        const newAlertElem = doc.querySelector('div')
+
         const alertAnchor = document.querySelector('#alert-anchor');
-        //TODO check if alert anchor has an alert in display before appending
-        alertAnchor.insertAdjacentElement("afterend", alertElem);
+        const alertAnchorSibling = alertAnchor.nextElementSibling;
+        if (alertAnchorSibling.classList.contains("alert")) {
+            alertAnchorSibling.remove();
+        }
+        alertAnchor.insertAdjacentElement("afterend", newAlertElem);
 
         return file.previewElement.classList.add("dz-success");
     },
@@ -99,6 +103,8 @@ async function submitForm(formData) {
         });
 
         const data = await response.json();
+        const alertAnchor = document.querySelector('#alert-anchor');
+        const parser = new DOMParser();
 
         if (response.status === 200) {
             const alertString = `<div class="alert  alert-success mt-4 mx-5 text-center fw-bold alert-dismissible fade show" role="alert">
@@ -109,12 +115,14 @@ async function submitForm(formData) {
                                     </div>
                                 </div>`
 
-            const parser = new DOMParser();
             const doc = parser.parseFromString(alertString, "text/html");
             const alertElem = doc.querySelector('div')
-            const formContainerElem = document.querySelector('#form-container')
 
-            formContainerElem.insertAdjacentElement("beforebegin", alertElem);
+            const alertAnchorSibling = alertAnchor.nextElementSibling;
+            if (alertAnchorSibling.classList.contains("alert")) {
+                alertAnchorSibling.remove();
+            }
+            alertAnchor.insertAdjacentElement("afterend", alertElem);
         } else if (response.status === 400) {
             //data = resp => {'errors': {'fieldName': [listOfErrors]}}
 
@@ -146,12 +154,14 @@ async function submitForm(formData) {
                                     </div>
                                 </div>`
 
-            const parser = new DOMParser();
             const doc = parser.parseFromString(alertString, "text/html");
             const alertElem = doc.querySelector('div')
-            const formContainerElem = doc.querySelector('#form-container')
 
-            formContainerElem.insertAdjacentElement("beforebegin", alertElem);
+            const alertAnchorSibling = alertAnchor.nextElementSibling;
+            if (alertAnchorSibling.classList.contains("alert")) {
+                alertAnchorSibling.remove();
+            }
+            alertAnchor.insertAdjacentElement("afterend", alertElem);
         }
 
     } catch (error) {
