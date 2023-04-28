@@ -11,7 +11,7 @@ from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
 
 from extensions import (current_user, db, login_manager, login_required,
-                        login_user, logout_user, CORS, NotFound, InternalServerError, SQLAlchemyError)
+                        login_user, logout_user, NotFound, InternalServerError, SQLAlchemyError)
 from models.course import Course
 from models.doc import Document
 from models.level import Level, LevelEnum
@@ -23,7 +23,7 @@ load_dotenv()
 
 
 auth_bp = Blueprint("auth_bp", __name__, template_folder="src/templates", static_folder="static")
-CORS(auth_bp)
+
 
 b2_info = b2.InMemoryAccountInfo()
 b2_encryption_setting = b2.EncryptionSetting(mode=b2.EncryptionMode.SSE_B2, algorithm=b2.EncryptionAlgorithm.AES256)
@@ -97,8 +97,6 @@ def logout():
 def get_upload_page():
     form = CourseForm()
     form.dyna_course_code.choices = [(course.id_, course.course_code) for course in Course.query.order_by("course_code")]
-    # resp = make_response(render_template("upload.html", form=form))
-    # resp.headers["Access-Control-Allow-Origin"] = "https://unpkg.com"
     return render_template("upload.html", form=form)
 
 
@@ -164,12 +162,13 @@ def file_upload():
                 "document_course": doc_course.course_code
             }
             global bucket
+            bucket.update(default_server_side_encryption=b2_encryption_setting)
             try:
                 uploaded_bucket_file = bucket.upload_local_file(
                     local_file=temp_file,
                     file_name=metadata["unique_filename"],
                     file_infos=metadata,
-                    # encryption=b2_encryption_setting
+                    encryption=b2_encryption_setting
                 )
                 download_url = b2_api.get_download_url_for_fileid(uploaded_bucket_file.id_)
             except Exception as e:
