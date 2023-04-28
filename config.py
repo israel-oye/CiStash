@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,6 +13,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = True
     FLASK_ADMIN_SWATCH = 'Solar'
+    PERMANENT_SESSION_LIFETIME = timedelta(days=1, hours=6)
 
 class ProductionConfig(Config):
     DEBUG = False

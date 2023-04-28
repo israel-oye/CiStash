@@ -31,7 +31,8 @@ login_manager = LoginManager()
 crsf = CSRFProtect()
 admin = Admin(template_mode='bootstrap4')
 
-login_manager.blueprint_login_views = {"moderator": "auth_bp.login"}
+
+login_manager.login_view = "auth_bp.login"
 login_manager.login_message = "Unauthorized access!"
 login_manager.login_message_category = "danger"
 login_manager.needs_refresh_message = (u"Session timedout, please re-login")
@@ -40,8 +41,8 @@ login_manager.needs_refresh_message_category = "info"
 
 from models.course import Course, CourseView
 from models.doc import Document, DocumentView
-from models.moderator import Moderator, ModeratorView
 from models.level import Level, LevelView
+from models.moderator import Moderator, ModeratorView
 
 admin.add_view(ModeratorView(Moderator, db.session))
 admin.add_view(CourseView(Course, db.session))

@@ -1,14 +1,16 @@
 import os
-from flask import Flask
+
 from dotenv import load_dotenv
-from extensions import db, migrate, crsf, login_manager, admin
-from models.moderator import Moderator, IndexView
-from models.level import Level, LevelEnum
+from flask import Flask, session
 
-
-from .home import home_bp
-from .auth import auth_bp
 from config import DevelopmentConfig
+from extensions import admin, crsf, db, login_manager, migrate, IntegrityError
+from models.level import Level, LevelEnum
+from models.moderator import IndexView, Moderator
+
+from .auth import auth_bp
+from .home import home_bp
+from .resource import resource_bp
 
 load_dotenv()
 
@@ -20,7 +22,7 @@ crsf.init_app(app)
 db.init_app(app)
 migrate.init_app(app, db, render_as_batch=True)
 login_manager.init_app(app)
-admin.init_app(app, index_view=IndexView(name='Admin',url="/auth/admin"))
+admin.init_app(app, index_view=IndexView(name='Admin', url="/auth/admin"))
 
 
 with app.app_context():
@@ -34,9 +36,13 @@ with app.app_context():
     try:
         db.session.add_all(levels)
         db.session.commit()
-    except Exception as e:
-        pass
-    
+    except IntegrityError as e:
+        db.session.rollback()
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+
 @app.context_processor
 def inject_levels():
     lvls = {level.name: level.value for level in LevelEnum}
@@ -48,6 +54,7 @@ def load_user(user_id):
 
 app.register_blueprint(home_bp, url_prefix="/home")
 app.register_blueprint(auth_bp, url_prefix="/auth")
+app.register_blueprint(resource_bp, url_prefix="/resource")
 
 if __name__ == "__main__":
     app.run()
