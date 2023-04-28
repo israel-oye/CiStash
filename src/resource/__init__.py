@@ -1,0 +1,1 @@
+from .routes import resource_bp
