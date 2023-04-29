@@ -19,16 +19,23 @@ p {
 
 .body-text {
     font-family: 'Poppins', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 .top-img {
     padding: 20px auto auto;
 }
 
+.empty-folder-img {
+    max-width: 20% !important;
+    opacity: .25!important;
+}
+
 .brand-text {
     /* font-family: 'Work Sans', sans-serif; */
     font-family: 'Varela Round', sans-serif;
     font-weight: 900;
+    color: rgb(255 193 0) !important;
 }
 
 .nav-text {

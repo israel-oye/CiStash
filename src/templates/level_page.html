@@ -4,8 +4,14 @@
 <!--  -->
 {% block body %}
 <div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
-    <h2 class="text-light text-center border-bottom mb-5">
-        {{level.name.value}} Level Courses
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-5">
+            <li class="breadcrumb-item"><a class="text-primary" href="{{url_for('home_bp.index')}}#levels">Levels</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-primary" href="{{url_for('home_bp.level_page', level_id=level.id_)}}">{{level.name.value}}</a></li>
+        </ol>
+    </nav>
+    <h2 class="text-light text-center border-bottom mb-3">
+        {{level.name.value}} Level Courses <i class="fa-sharp fa-solid fa-book"></i>
     </h2>
     {% for course in level.courses %}
     <div class="coursebox container bg-dark my-2 border-bottom">
