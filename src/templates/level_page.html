@@ -13,7 +13,7 @@
     <h2 class="text-light text-center border-bottom mb-3">
         {{level.name.value}} Level Courses <i class="fa-sharp fa-solid fa-book"></i>
     </h2>
-    {% for course in level.courses %}
+    {% for course in level_courses %}
     <div class="coursebox container bg-dark my-2 border-bottom">
         <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
             <h3>

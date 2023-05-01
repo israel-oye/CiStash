@@ -15,8 +15,8 @@ resource_bp = Blueprint("resource_bp", __name__, template_folder="src/templates"
 @resource_bp.get("/course/<int:course_id>")
 def get_course(course_id):
     course = Course.query.get_or_404(course_id)
-    course_docs = course.course_docs
-    is_empty = False if bool(len(course_docs.all())) else True
+    course_docs = course.course_docs.all()
+    is_empty = False if bool(len(course_docs)) else True
 
     context = {
         "course": course,

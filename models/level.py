@@ -15,7 +15,7 @@ class Level(db.Model):
 
     id_ = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Enum(LevelEnum), nullable=False, unique=True)
-    courses = db.relationship("Course", back_populates="course_level")
+    courses = db.relationship("Course", back_populates="course_level", lazy="dynamic")
 
     def __repr__(self) -> str:
         return f"<Level: {self.name.value}>"

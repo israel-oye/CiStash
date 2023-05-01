@@ -1,6 +1,7 @@
 from flask import (Blueprint, abort, current_app, flash, redirect,
                    render_template, request, url_for)
 
+from models.course import Course
 from models.level import Level, LevelEnum
 
 home_bp = Blueprint('home_bp', __name__, template_folder="src/templates", static_folder="src/static")
@@ -23,4 +24,6 @@ def level_page(level_id):
 
     if not level:
         abort(404)
-    return render_template("level_page.html", level=level)
+
+    level_courses = level.courses.order_by(Course.course_code).all()
+    return render_template("level_page.html", level=level, level_courses=level_courses)
