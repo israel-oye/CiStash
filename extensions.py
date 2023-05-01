@@ -33,8 +33,8 @@ admin = Admin(template_mode='bootstrap4')
 
 
 login_manager.login_view = "auth_bp.login"
-login_manager.login_message = "Unauthorized access!"
-login_manager.login_message_category = "danger"
+login_manager.login_message = "Please login to access that page..."
+login_manager.login_message_category = "info"
 login_manager.needs_refresh_message = (u"Session timedout, please re-login")
 login_manager.needs_refresh_message_category = "info"
 
