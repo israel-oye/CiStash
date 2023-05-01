@@ -91,12 +91,27 @@ def logout():
     flash("Successfully logged out", 'success')
     return redirect(url_for("auth_bp.login"))
 
+@auth_bp.route("/upload/<level_name>/courses")
+def get_level_courses(level_name):
+    selected_level = Level.query.filter_by(name=level_name).first_or_404()
+    level_courses = selected_level.courses.order_by(Course.course_code).all()
+
+    course_array = []
+    for course_obj in level_courses:
+        course_array.append(
+            {
+                "id": course_obj.id_,
+                "course_code": course_obj.course_code
+            }
+        )
+    return jsonify({"courses": course_array}), 200
+
 
 @auth_bp.route("/upload", methods=['GET'])
 @login_required
 def get_upload_page():
     form = CourseForm()
-    form.dyna_course_code.choices = [(course.id_, course.course_code) for course in Course.query.order_by("course_code")]
+    form.dyna_course_code.choices = []
     return render_template("upload.html", form=form)
 
 

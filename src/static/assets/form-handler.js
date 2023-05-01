@@ -169,6 +169,31 @@ async function submitForm(formData) {
     }
 }
 
+async function get_level_courses(level_name) {
+    try {
+        const response = await fetch(`upload/${level_name}/courses`);
+
+        let data = await response.json();
+
+        const optionArray = [];
+        for (let course of data.courses) {
+            var optionElem = document.createElement('option');
+            optionElem.value = course.id;
+            optionElem.innerHTML = course.course_code;
+            optionArray.push(optionElem);
+        }
+
+        return optionArray;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+let form_2_level_select = document.querySelector("#form2-level");
+let course_code_select = document.querySelector("#dyna_course_code");
+
 document.addEventListener("DOMContentLoaded", function() {
     const form_1 = document.getElementById("form1");
 
@@ -177,4 +202,32 @@ document.addEventListener("DOMContentLoaded", function() {
         const formData = new FormData(form_1);
         submitForm(formData);
     });
+
+    let first_option = form_2_level_select.firstElementChild;
+    if (first_option.innerHTML == '100') {
+
+        get_level_courses(first_option.value).
+        then((optionArray) => {
+            var updated_options = optionArray;
+            for (option of updated_options) {
+                course_code_select.appendChild(option);
+            }
+        })
+    }
 })
+
+
+form_2_level_select.addEventListener('change', function(e) {
+    let selected_level = form_2_level_select.value;
+    course_code_select.innerHTML = "";
+
+    get_level_courses(selected_level).
+    then((optionArray) => {
+        var updated_options = optionArray;
+
+        for (option of updated_options) {
+            course_code_select.appendChild(option);
+        }
+    })
+
+});

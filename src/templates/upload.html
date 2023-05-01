@@ -5,7 +5,7 @@
 {% block body %}
 <div class="container pt-5" id="form-container">
     <div class="row justify-content-center">
-        <div class="col-6 bg-dark rounded m-auto pt-3">
+        <div class="col-9 col-lg-6 bg-dark rounded m-auto pt-3">
             <ul class="nav nav-tabs nav-fill mt-2" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="add-course-tab" data-bs-toggle="tab" data-bs-target="#add-course" type="button" role="tab" aria-controls="home" aria-selected="true">
@@ -57,6 +57,16 @@
                     <form action="" method="post" class="form m-4 w-85" enctype="multipart/form-data">
                         <input type="hidden" name="csrf-token" id="upload-token" value="{{csrf_token()}}">
                         <div class="p-auto">
+                            <div class="mb-4 align-content-center">
+                                {{form.levels.label(class_="form-label")}}
+                                <!--  -->
+                                {{form.levels(id="form2-level")}}
+                                <!--  -->
+                                {% for error in form.levels.errors %}
+                                <small class="form-text" id="level-error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</small>
+                                <!--  -->
+                                {% endfor %}
+                            </div>
 
                             <div class="mb-4 align-content-center">
                                 <label for="dyna_course_code" class="form-label">Course Code <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="right" title="If the course code is not in the list of options, add the course on other form"></i></label>
