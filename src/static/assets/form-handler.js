@@ -1,3 +1,7 @@
+const parser = new DOMParser();
+const alertAnchor = document.querySelector('#alert-anchor');
+
+
 Dropzone.options.upload = {
     paramName: "file",
     acceptedFiles: ".pdf, .doc, .docx, .odt, .rtf, .txt, .epub, .ppt, .pptx",
@@ -58,24 +62,8 @@ Dropzone.options.upload = {
         })
     },
     success: function(file, response) {
-        const alertString = `<div class="alert  alert-success mt-4 mx-5 text-center fw-bold alert-dismissible fade show" role="alert">
-                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    <div>
-                                        Document uploaded successfully!
-                                    </div>
-                                </div>`
-
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(alertString, "text/html");
-        const newAlertElem = doc.querySelector('div')
-
-        const alertAnchor = document.querySelector('#alert-anchor');
-        const alertAnchorSibling = alertAnchor.nextElementSibling;
-        if (alertAnchorSibling.classList.contains("alert")) {
-            alertAnchorSibling.remove();
-        }
-        alertAnchor.insertAdjacentElement("afterend", newAlertElem);
+        const alertElem = construct_alert_element("success", "Document uploaded successfully");
+        add_alert(alertElem);
 
         return file.previewElement.classList.add("dz-success");
     },
@@ -84,6 +72,41 @@ Dropzone.options.upload = {
         done();
     }
 }
+
+
+/**
+ * @param {string} bg_color
+ * @param {string} body_content
+ */
+function construct_alert_element(bg_color, body_content) {
+
+    const alertString = `<div class="alert  alert-${bg_color} mt-4 mx-5 text-center fw-bold alert-dismissible fade show" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <div>
+                                ${body_content}
+                            </div>
+                            </div>`
+
+    const doc = parser.parseFromString(alertString, "text/html");
+    const alertElem = doc.querySelector('div');
+
+    return alertElem;
+}
+
+
+/**
+ * @param {HTMLDivElement} new_alert
+ */
+function add_alert(new_alert) {
+    const alertAnchorSibling = alertAnchor.nextElementSibling;
+
+    if (alertAnchorSibling.role == "alert") {
+        alertAnchorSibling.remove();
+    }
+    alertAnchor.insertAdjacentElement("afterend", new_alert);
+}
+
 
 async function submitForm(formData) {
     try {
@@ -107,22 +130,8 @@ async function submitForm(formData) {
         const parser = new DOMParser();
 
         if (response.status === 200) {
-            const alertString = `<div class="alert  alert-success mt-4 mx-5 text-center fw-bold alert-dismissible fade show" role="alert">
-                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    <div>
-                                        ${data.message}
-                                    </div>
-                                </div>`
-
-            const doc = parser.parseFromString(alertString, "text/html");
-            const alertElem = doc.querySelector('div')
-
-            const alertAnchorSibling = alertAnchor.nextElementSibling;
-            if (alertAnchorSibling.classList.contains("alert")) {
-                alertAnchorSibling.remove();
-            }
-            alertAnchor.insertAdjacentElement("afterend", alertElem);
+            const alertElem = construct_alert_element("success", `${data.message}`)
+            add_alert(alertElem);
         } else if (response.status === 400) {
             //data = resp => {'errors': {'fieldName': [listOfErrors]}}
 
