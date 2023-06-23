@@ -99,4 +99,11 @@ p {
     p.lh-sm {
         display: none;
     }
+    .err-img {
+        width: 40%;
+        display: block;
+    }
+    .right-pane {
+        text-align: center;
+    }
 }

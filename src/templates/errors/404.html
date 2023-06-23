@@ -1,7 +1,19 @@
 {% extends '_layout.html' %}
 <!--  -->
-{% block title %}Page not found{% endblock %}
+{% block title %}Error 404{% endblock %}
 <!--  -->
 {% block body %}
-<!--  -->
+<div class="container p-5">
+    <div class="row pt-3 mt-5">
+        <div class="col-12 col-lg-4 col-md-4 left-pane">
+            <img class="img-fluid mx-auto pb-5 err-img" src="{{url_for('static', filename='/images/error-404.webp')}}" alt="Error 404 image">
+        </div>
+        <div class="col-12 col-lg-8 col-md-8 right-pane">
+            <h2 class="text-light mb-3"> Error 404 </h2>
+            <p>
+                Page/Resource not found. It looks like you're lost, but don't worry. Try using the search bar or returning to the <a class="text-decoration-none" href="{{url_for('home_bp.index')}}">homepage</a> to find what you're looking for."
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}
