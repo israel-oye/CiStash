@@ -1,3 +1,5 @@
+import re
+
 from wtforms import validators
 
 from extensions import (EmailField, FlaskForm, InputRequired, PasswordField,
@@ -51,8 +53,12 @@ class CourseForm(FlaskForm):
             raise ValidationError("Please select a valid level.")
 
     def validate_course_code(self, course_code_field):
+        pattern = r"\b[A-Z]{3} \b(1[0-9]{2}|[2-5][0-9]{2}|599)\b"
+
         if Course.query.filter_by(course_code=course_code_field.data).first():
             raise ValidationError(f"Oops, {course_code_field.data} has been registered.")
+        elif re.match(pattern, str(course_code_field.data)) is None:
+            raise ValidationError("Please enter the course code correctly. e.g ABC 415 (All caps with a space in-between.)")
 
     def validate_course_title(self, course_title_field):
         field_data = str(course_title_field.data).title()
