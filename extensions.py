@@ -42,9 +42,10 @@ login_manager.needs_refresh_message_category = "info"
 from models.course import Course, CourseView
 from models.doc import Document, DocumentView
 from models.level import Level, LevelView
-from models.moderator import Moderator, ModeratorView
+from models.moderator import Moderator, ModeratorView, Role, RoleView
 
 admin.add_view(ModeratorView(Moderator, db.session))
+admin.add_view(RoleView(Role, db.session))
 admin.add_view(CourseView(Course, db.session))
 admin.add_view(DocumentView(Document, db.session))
 admin.add_view(LevelView(Level, db.session))

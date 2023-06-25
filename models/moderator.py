@@ -1,13 +1,31 @@
+from datetime import datetime
+
 from flask import abort, flash, make_response, redirect, url_for
 from passlib.hash import sha256_crypt
 
 from extensions import AdminIndexView, ModelView, UserMixin, current_user, db
 
-ROLES = {
-    "guest": 0,
-    "moderator": 1,
-    "admin": 2
-}
+
+users_x_roles = db.Table(
+    "users_roles",
+    db.Column("user_id", db.ForeignKey("moderator.id_")),
+    db.Column("role_id", db.ForeignKey("role.id_")),
+    db.Column("assigned_at", db.DateTime, default=datetime.utcnow)
+)
+
+
+class Role(db.Model):
+    query: db.Query
+
+    id_ = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    description = db.Column(db.String(255))
+
+    users = db.relationship("Moderator", secondary="users_roles", back_populates="roles")
+
+    def __repr__(self):
+        return f"<Role: {self.name}>"
+
 
 class Moderator(db.Model, UserMixin):
     """Uploader, i.e Moderator user model or an Admin."""
@@ -17,9 +35,9 @@ class Moderator(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(500), nullable=False)
+
     uploads = db.relationship("Document", back_populates="uploader", lazy="select")
-    is_admin = db.Column(db.Boolean, default=False)
-    role_number = db.Column(db.Integer(), nullable=False, default=ROLES['moderator'])
+    roles = db.relationship("Role", secondary="users_roles", back_populates="users")
 
     @property
     def is_authenticated(self):
@@ -28,6 +46,11 @@ class Moderator(db.Model, UserMixin):
     @property
     def is_active(self):
         return super().is_active
+
+    @property
+    def is_admin(self):
+        admin_role = Role.query.filter_by(name="admin").first()
+        return admin_role in self.roles
 
     def __repr__(self) -> str:
         return f"<Moderator: {self.email}>"
@@ -39,12 +62,13 @@ class Moderator(db.Model, UserMixin):
         return sha256_crypt.verify(password_candidate, self.password)
 
 
+#Flask-Admin Views
+
 class ModeratorView(ModelView):
     can_create = True
     can_edit = True
     can_delete = False
     column_exclude_list = ['password']
-    form_edit_rules = ('is_admin', 'role_number')
     form_widget_args = {
         'username': {
             'readonly': True
@@ -56,9 +80,16 @@ class ModeratorView(ModelView):
             'readonly': True
         },
         'uploads': {
-            'readonly': True
+            'readonly': True,
+            'disabled': True
         },
     }
+
+
+class RoleView(ModelView):
+    can_create = True
+    can_edit = True
+    can_delete = True
 
 
 class IndexView(AdminIndexView):
