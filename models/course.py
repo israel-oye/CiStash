@@ -8,7 +8,9 @@ class Course(db.Model):
     id_ = db.Column(db.Integer, primary_key=True)
     course_title = db.Column(db.String(60), unique=True)
     course_code = db.Column(db.String(20), unique=True, nullable=False)
+
     course_docs = db.relationship("Document", back_populates="course", lazy="dynamic")
+
     level_id = db.Column(db.Integer, db.ForeignKey("level.id_"))
     course_level = db.relationship("Level", back_populates="courses")
 

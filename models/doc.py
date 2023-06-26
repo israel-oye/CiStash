@@ -16,8 +16,10 @@ class Document(db.Model, TimestampMixin):
     uuid = db.Column(db.String(255), unique=True)
     filename = db.Column(db.String(255))
     download_link = db.Column(db.Text)
+
     course_id = db.Column(db.Integer, db.ForeignKey("course.id_"))
     course = db.relationship("Course", back_populates="course_docs")
+
     uploader_id = db.Column(db.Integer, db.ForeignKey("moderator.id_"))
     uploader = db.relationship("Moderator", back_populates="uploads")
 
@@ -29,3 +31,23 @@ class DocumentView(ModelView):
     can_create = False
     can_edit = True
     can_delete = True
+    edit_modal = True
+    form_widget_args = {
+        'created': {
+                'readonly': True,
+                'disabled': True
+        },
+        'download_link': {
+                'readonly': True
+        },
+        'modified': {
+                'readonly': True,
+                'disabled': True
+        },
+        'uploader': {
+                'readonly': True,
+        },
+        'uuid': {
+                'disabled': True
+        },
+    }

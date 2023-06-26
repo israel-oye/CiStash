@@ -68,6 +68,8 @@ class ModeratorView(ModelView):
     can_create = True
     can_edit = True
     can_delete = False
+    column_display_pk = True
+    edit_modal = True
     column_exclude_list = ['password']
     form_widget_args = {
         'username': {
@@ -90,6 +92,8 @@ class RoleView(ModelView):
     can_create = True
     can_edit = True
     can_delete = True
+    create_modal = True
+    edit_modal = True
 
 
 class IndexView(AdminIndexView):
