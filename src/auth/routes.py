@@ -71,12 +71,12 @@ def login():
         try:
             user = Moderator.query.filter_by(email=input_email).first_or_404()
         except NotFound as e:
-            error = "User not found"
+            error = "Incorrect email/password combination"
             return render_template("login.html", error=error)
         else:
             if user.password_is_correct(password_candidate=input_pwd):
-                flash("Login successful!", "success")
                 login_user(user=user)
+                flash(f"Login success. Welcome {current_user.username}!", "success")
                 return redirect(url_for("auth_bp.upload"))
             else:
                 error = "Incorrect password/email combination"
