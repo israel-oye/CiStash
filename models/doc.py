@@ -15,6 +15,7 @@ class Document(db.Model, TimestampMixin):
     id_ = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(255), unique=True)
     filename = db.Column(db.String(255))
+    file_size = db.Column(db.String(10))
     download_link = db.Column(db.Text)
 
     course_id = db.Column(db.Integer, db.ForeignKey("course.id_"))
