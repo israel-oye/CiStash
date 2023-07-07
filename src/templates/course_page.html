@@ -25,12 +25,36 @@
     <div class="table-responsive">
         <table class="table table-striped table-hover bg-dark caption-top">
             <caption>List of resources</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Filename</th>
+                    <th scope="col">Size</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
             {% for doc in course_docs %}
+            <!---->
+            {% set file_format = get_file_format(doc.filename) %}
             <tr>
                 <td>
-                    <a class="link-downloader text-info" href="{{url_for('resource_bp.download_document', file_uuid=doc.uuid)}}">
-                        <i class="fa-solid fa-file-lines"></i> {{doc.filename}}
-                    </a>
+                    {% if file_format == "pdf" %}
+                    <i class="fa-solid fa-file-pdf fa-lg"></i>
+                    <!---->
+                    {% elif file_format == "doc" or file_format == "docx" or file_format == "rtf" or file_format == "odt" %}
+                    <i class="fa-solid fa-file-word fa-lg"></i>
+                    <!---->
+                    {% elif file_format == "ppt" or file_format == "pptx" %}
+                    <i class="fa-solid fa-file-powerpoint fa-lg"></i>
+                    <!---->
+                    {% else %}
+                    <i class="fa-solid fa-file-lines fa-lg"></i>
+                    <!---->
+                    {% endif %}
+                    <a class="link-downloader text-info ps-2" href="{{url_for('resource_bp.download_document', file_uuid=doc.uuid)}}">   {{doc.filename}}</a>
+                </td>
+                <td>
+                    {{doc.file_size}} MB
                 </td>
                 <td>
                     <a class="btn btn-sm btn-secondary float-end" href="{{doc.download_link}}" target="_blank" rel="noopener noreferrer" title="Open in browser">
