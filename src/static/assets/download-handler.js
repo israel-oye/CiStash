@@ -121,13 +121,13 @@ if (link_downloaders.length > 0) {
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', this.href, true);
+            xhr.responseType = "blob";
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     const contentDisposition = xhr.getResponseHeader('Content-Disposition');
                     const fileNameMatch = contentDisposition.match(/filename=([^;]+)/i);
                     const fileName = fileNameMatch ? fileNameMatch[1] : 'file';
-
-                    const blob = new Blob([xhr.response], { type: xhr.getResponseHeader('Content-Type') });
+                    const blob = xhr.response;
                     const d_link = document.createElement('a');
                     d_link.href = window.URL.createObjectURL(blob)
                     d_link.download = fileName;
