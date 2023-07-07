@@ -158,6 +158,7 @@ def file_upload():
             f.seek(int(request.form["dzchunkbyteoffset"]))
             f.write(uploaded_file.stream.read())
 
+        total_file_size = int(request.form.get("dztotalfilesize", "N/A"))
         total_chunks = int(request.form.get("dztotalchunkcount"))
         if current_chunk + 1 == total_chunks:
             if os.path.getsize(temp_file) != int(request.form["dztotalfilesize"]):
@@ -174,7 +175,8 @@ def file_upload():
             metadata = {
                 "filename": unique_filename[9:],
                 "unique_filename": unique_filename,
-                "document_course": doc_course.course_code
+                "document_course": doc_course.course_code,
+                "document_size": format(total_file_size * (10**-6), ".2f")
             }
             global bucket
             bucket.update(default_server_side_encryption=b2_encryption_setting)
@@ -194,6 +196,7 @@ def file_upload():
                     new_document = Document(
                         uuid=uploaded_bucket_file.id_,
                         filename=metadata["filename"],
+                        file_size=metadata["document_size"],
                         download_link=download_url,
                         course_id=doc_course.id_,
                         uploader_id=current_user.id_
