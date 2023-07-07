@@ -44,9 +44,12 @@ def make_session_permanent():
     session.permanent = True
 
 @app.context_processor
-def inject_levels():
+def utility_processor():
+    def get_file_format(file_name: str):
+        return file_name.split('.')[-1]
+
     lvls = {level.name: level.value for level in LevelEnum}
-    return dict(lvl_mapping=lvls)
+    return dict(get_file_format=get_file_format, lvl_mapping=lvls)
 
 @login_manager.user_loader
 def load_user(user_id):

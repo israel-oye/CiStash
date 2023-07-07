@@ -20,10 +20,14 @@
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text" id="info-link" href="#" data-bs-toggle="modal" data-bs-target="#info-modal">Info</a>
                 </li>
-                {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text" id="upload-nav" href="{{url_for('auth_bp.upload')}}">Upload</a>
                 </li>
+                {% if current_user.is_admin %}
+                <li class="nav-item px-3">
+                    <a class="nav-link nav-text text-primary" href="/auth/admin" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i></a>
+                </li>
+                {% endif %} {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text text-primary" href="{{url_for('auth_bp.logout')}}"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade"></i></a>
                 </li>

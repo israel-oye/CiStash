@@ -13,11 +13,21 @@
     <h2 class="text-light text-center border-bottom mb-3">
         {{level.name.value}} Level Courses <i class="fa-sharp fa-solid fa-book"></i>
     </h2>
+    <table class="table table-active mt-4 mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Folders</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+    </table>
     {% for course in level_courses %}
     <div class="coursebox container bg-dark my-2 border-bottom">
         <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
             <h3>
-                <i class="fa-solid fa-graduation-cap fa-sm"></i> <span class="text-decoration-underline">{{course.course_code}}</span> - {{course.course_title}}
+                <i class="fa-solid fa-folder text-secondary"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
             </h3>
         </a>
     </div>
