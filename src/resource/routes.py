@@ -1,7 +1,7 @@
 from tempfile import NamedTemporaryFile
 
 from flask import (Blueprint, abort, current_app, jsonify, render_template,
-                   send_file)
+                   request, send_file)
 from urllib3.exceptions import ReadTimeoutError
 
 from models.course import Course
@@ -50,3 +50,28 @@ def download_document(file_uuid):
         )
     return resp, 200
 
+
+@resource_bp.post("/search")
+def search():
+    user_query = request.form.get("searched")
+    search_hits = []
+
+    courses_from_code = Course.query.filter(Course.course_code.like('%'+user_query+'%'))
+    search_hits += [course for course in courses_from_code.order_by(Course.course_code).all()]
+
+    courses_from_title = Course.query.filter(Course.course_title.like('%'+user_query+'%'))
+    search_hits += [course for course in courses_from_title.order_by(Course.course_code).all()]
+
+    docs_from_filename = Document.query.filter(Document.filename.like('%'+user_query+'%'))
+    doc_hits = [document for document in docs_from_filename.order_by(Document.filename).distinct().all()]
+
+    context = {
+        "search_query": user_query,
+        "is_empty": False if len(search_hits) else True,
+        "no_docs_match": False if len(doc_hits) else True,
+        "hits": search_hits,
+        "doc_hits": doc_hits,
+        "result_count": len(search_hits) + len(doc_hits)
+    }
+
+    return render_template("search.html", **context)
