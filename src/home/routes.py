@@ -11,6 +11,11 @@ home_bp = Blueprint('home_bp', __name__, template_folder="src/templates", static
 def page_not_found(error):
     return render_template("errors/404.html"), 404
 
+#TODO: For production only
+# @home_bp.app_errorhandler(500)
+# def internal_server_error(error):
+#     return render_template("errors/500.html"), 500
+
 
 @home_bp.get("/")
 def index():
