@@ -18,6 +18,10 @@ p {
     font-family: 'Roboto', sans-serif;
 }
 
+mark {
+    background-color: yellow !important;
+}
+
 .body-text {
     font-family: 'Nunito', sans-serif;
 }
