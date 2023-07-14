@@ -29,5 +29,6 @@ class TestingConfig(Config):
     TESTING = True
     EXPLAIN_TEMPLATE_LOADING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///../test.db"
+    SQLALCHEMY_ECHO = True
     WTF_CSRF_ENABLED = False
 
