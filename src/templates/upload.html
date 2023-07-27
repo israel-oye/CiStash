@@ -20,7 +20,7 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="add-course" role="tabpanel" aria-labelledby="add-course-tab">
-                    <form action="{{url_for('auth_bp.upload')}}" id="form1" method="post" class="form m-4 w-85">
+                    <form action="{{url_for('resource_bp.upload')}}" id="form1" method="post" class="form m-4 w-85">
                         <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                         <div class="p-auto">
                             <div class="mb-4 align-content-center">
@@ -48,7 +48,7 @@
                                 <small class="form-text" id="course-title-error" style="display: none;"><i class="fa-solid fa-circle-exclamation"></i> <span></span></small>
                             </div>
                             <div class="mb-3 text-center">
-                                <button class="btn btn-success mt-2" type="submit" formaction="{{url_for('auth_bp.upload')}}"><i class="fa-regular fa-square-plus"></i> Add Course</button>
+                                <button class="btn btn-success mt-2" type="submit" formaction="{{url_for('resource_bp.upload')}}"><i class="fa-regular fa-square-plus"></i> Add Course</button>
                             </div>
                         </div>
                     </form>
@@ -81,9 +81,9 @@
                                 <!-- DROPZONE -->
                             </div>
                             <div class="mb-3 text-center">
-                                <button class="btn btn-danger mt-2" id="upload-btn" type="submit" formaction="{{url_for('auth_bp.file_upload')}}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                                <button class="btn btn-danger mt-2" id="upload-btn" type="submit" formaction="{{url_for('resource_bp.file_upload')}}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
                             </div>
-                            <input type="hidden" id="upload-url" value="{{url_for('auth_bp.file_upload')}}">
+                            <input type="hidden" id="upload-url" value="{{url_for('resource_bp.file_upload')}}">
                         </div>
                     </form>
                 </div>

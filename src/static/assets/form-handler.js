@@ -110,7 +110,7 @@ function add_alert(new_alert) {
 
 async function submitForm(formData) {
     try {
-        const response = await fetch('/auth/upload', {
+        const response = await fetch('/resource/upload', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ async function submitForm(formData) {
 
 async function get_level_courses(level_name) {
     try {
-        const response = await fetch(`upload/${level_name}/courses`);
+        const response = await fetch(`/resource/upload/${level_name}/courses`);
 
         let data = await response.json();
 

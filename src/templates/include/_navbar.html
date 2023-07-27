@@ -18,11 +18,11 @@
                     <a class="nav-link nav-text" id="info-link" href="#" data-bs-toggle="modal" data-bs-target="#info-modal">Info</a>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" id="upload-nav" href="{{url_for('auth_bp.upload')}}">Upload</a>
+                    <a class="nav-link nav-text" id="upload-nav" href="{{url_for('resource_bp.upload')}}">Upload</a>
                 </li>
                 <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                    <input class="form-control me-2" name="searched" type="search" placeholder="Looking for something?" aria-label="Search">
+                    <input class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Looking for something?" aria-label="Search">
                     <button class="btn rounded-circle btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
                 {% if current_user.is_admin %}
