@@ -31,7 +31,7 @@
                 </li>
                 {% endif %} {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text text-primary" href="{{url_for('auth_bp.logout')}}"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade"></i></a>
+                    <a class="nav-link nav-text text-primary" href="#" data-bs-toggle="modal" data-bs-target="#logout-modal"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade"></i></a>
                 </li>
                 {% endif %}
             </ul>
@@ -76,6 +76,26 @@
             {% endif %}
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="logout-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Logout?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-light text-wrap">Are you sure you want to log out?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mx-3" data-bs-dismiss="modal">No</button>
+                <form action="{{url_for('auth_bp.logout')}}" method="post">
+                    <button type="submit" class="btn btn-warning"><i class="fa-solid fa-right-from-bracket"></i> Yes</button>
+                </form>
             </div>
         </div>
     </div>
