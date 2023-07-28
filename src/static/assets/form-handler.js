@@ -1,5 +1,5 @@
-const parser = new DOMParser();
-const alertAnchor = document.querySelector('#alert-anchor');
+var parser = new DOMParser();
+var alertAnchor = document.querySelector('#alert-anchor');
 
 
 Dropzone.options.upload = {
@@ -62,9 +62,7 @@ Dropzone.options.upload = {
         })
     },
     success: function(file, response) {
-        const alertElem = construct_alert_element("success", "Document uploaded successfully");
-        add_alert(alertElem);
-
+        show_modal("Document uploaded successfully!");
         return file.previewElement.classList.add("dz-success");
     },
     chunksUploaded: function(file, done) {
@@ -108,6 +106,19 @@ function add_alert(new_alert) {
 }
 
 
+/**
+ *
+ * @param {string} modal_text
+ */
+function show_modal(modal_text) {
+    const ModalElem = document.querySelector('#success-modal')
+    const modal = new bootstrap.Modal(ModalElem);
+
+    document.querySelector("#success-modal-text").innerText = modal_text;
+    modal.show();
+}
+
+
 async function submitForm(formData) {
     try {
         const response = await fetch('/resource/upload', {
@@ -126,12 +137,9 @@ async function submitForm(formData) {
         });
 
         const data = await response.json();
-        const alertAnchor = document.querySelector('#alert-anchor');
-        const parser = new DOMParser();
 
         if (response.status === 200) {
-            const alertElem = construct_alert_element("success", `${data.message}`)
-            add_alert(alertElem);
+            show_modal(`${data.message}!`);
         } else if (response.status === 400) {
             //data = resp => {'errors': {'fieldName': [listOfErrors]}}
 

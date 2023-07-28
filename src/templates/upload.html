@@ -4,6 +4,23 @@
 <!--  -->
 {% block body %}
 <div class="container pt-5" id="form-container">
+    <div class="modal fade" id="success-modal" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title text-light"><i class="fa-solid fa-circle-check text-success"></i> Success</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="success-modal-text" class="text-light fs-6"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-9 col-lg-6 bg-dark rounded m-auto pt-3">
             <ul class="nav nav-tabs nav-fill mt-2" id="myTab" role="tablist">
