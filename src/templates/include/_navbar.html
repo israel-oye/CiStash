@@ -22,7 +22,7 @@
                 </li>
                 <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                    <input class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Looking for something?" aria-label="Search">
+                    <input id="search-box" class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Looking for something?" aria-label="Search">
                     <button class="btn rounded-circle btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
                 {% if current_user.is_admin %}

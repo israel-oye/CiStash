@@ -105,6 +105,19 @@
     <!--  -->
     {% endif %}
 </div>
+<script type="text/javascript">
+    function decodeSpecialString(specialString) {
+        const parser = new DOMParser();
+        const decodedElement = parser.parseFromString(`<div>${specialString}</div>`, 'text/html');
+        return decodedElement.documentElement.textContent;
+    }
+
+    const specialString = '{{search_query}}';
+    const rawString = decodeSpecialString(specialString);
+
+    let search_box = document.getElementById("search-box");
+    search_box.value = rawString;
+</script>
 <script src="{{url_for('static', filename='assets/download-handler.js')}}"></script>
 <!--  -->
 {% endblock %}
