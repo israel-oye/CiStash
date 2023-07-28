@@ -1,11 +1,12 @@
-const alertAnchor = document.querySelector('#alert-anchor');
-const parser = new DOMParser();
+var alertAnchor = document.querySelector('#alert-anchor');
+var parser = new DOMParser();
 
 
 /**
  * @param {HTMLDivElement} new_alert
  */
 function add_alert(new_alert) {
+
     const alertAnchorSibling = alertAnchor.nextElementSibling;
 
     if (alertAnchorSibling.role == "alert") {
@@ -25,7 +26,7 @@ function add_alert(new_alert) {
  * @param {string} body_content
  */
 function construct_alert_element(bg_color, header_content, body_content) {
-    const alertString = `<div class="toast ms-auto me-3 mt-3 bg-${bg_color} bg-gradient text-light fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay=20000>
+    const alertString = `<div class="toast ms-auto me-3 mt-3 bg-${bg_color} bg-gradient text-light fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay=25000>
                                 <div class="toast-header bg-${bg_color} text-light">
                                     <strong class="me-auto">${header_content}</strong>
                                     <small>Now</small>
