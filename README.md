@@ -28,19 +28,19 @@ This is CiStash, a web application and the ultimate repository for academic cour
 
 ## Contributing
 
-We welcome contributions from developers, designers, and enthusiasts who share our passion for enhancing education through technology. Feel free to fork this repository and submit pull requests to suggest improvements, report bugs, or add new features.
+Contributions are welcome from developers, designers, and enthusiasts who share the passion for enhancing education through technology. Feel free to fork this repository and submit pull requests to suggest improvements, report bugs, or add new features.
 
 ## Support
 
-If you encounter any issues or have questions, don't hesitate to reach out to our support team at support@coursewarehub.com. We are committed to providing a smooth experience for all users and will respond promptly to assist you.
+If you encounter any issues or have questions, don't hesitate to reach out to me at pelumioyeboade7@gmail.com.
 
 ## License
 
-CourseWare Hub is released under the [MIT License*]().
+CiStash is released under the [MIT License*]().
 
 ## Acknowledgments
 
-We extend our gratitude to the open-source community for their invaluable contributions, enabling us to build CiStash Hub on a solid foundation.
+I extend my gratitude to the open-source community for their invaluable contributions, enabling me to build CiStash Hub on a solid foundation.
 [Flask](https://flask.palletsprojects.com/), [Backblaze](https://www.backblaze.com/), [Dropzone Js](https://www.dropzone.dev/), [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/), [Bootswatch](https://bootswatch.com), [FontAwesome](https://fontawesome.com), [FlatIcons](https://flaticons.com)
 ---
 
