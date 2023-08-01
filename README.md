@@ -1,6 +1,7 @@
 # CiStash - Share and Explore Academic Course Materials
 
-![CiStash](src/static/images/folder-tree-solid.svg)
+![CiStash](src/static/images/folder-tree-solid.svg.|width=100px)
+
 
 This is CiStash, a web application and the ultimate repository for academic course materials. Whether you are a student, educator, or lifelong learner, CiStash provides a user-friendly platform to upload, share, and explore a wide range of course-related resources.
 
