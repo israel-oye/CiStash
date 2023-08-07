@@ -14,8 +14,14 @@ This is CiStash, a web application and the ultimate repository for academic cour
 
 - **Secure and Private:** We take your data's security seriously. Rest assured that your uploads and personal information are kept confidential, accessible only to those you choose to share with.
 
-## Getting Started
+## Getting Started (Dev)
+1. Clone repo
+2. Create python virtual environment
+3. ```pip install -r requirements.txt```
+4. ```flask run```
+5. CiStash is up and running
 
+## Getting Started
 1. Open CiStash
 2. Explore course materials.
 3. Download!
