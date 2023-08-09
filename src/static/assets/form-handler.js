@@ -213,38 +213,53 @@ let course_code_select = document.querySelector("#dyna_course_code");
 
 document.addEventListener("DOMContentLoaded", function() {
     const form_1 = document.getElementById("form1");
+    if (form_1) {
+        form_1.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(form_1);
+            submitForm(formData);
+        });
+    }
+})
 
-    form_1.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const formData = new FormData(form_1);
-        submitForm(formData);
-    });
+if (form_2_level_select) {
+    let form_2_tab_btn = document.getElementById("doc-tab");
 
-    let first_option = form_2_level_select.firstElementChild;
-    if (first_option.innerHTML == '100') {
+    form_2_tab_btn.addEventListener('click', function(e) {
+        let selected_level = form_2_level_select.value;
+        course_code_select.innerHTML = "";
 
-        get_level_courses(first_option.value).
+        get_level_courses(selected_level).
         then((optionArray) => {
             var updated_options = optionArray;
+
             for (option of updated_options) {
                 course_code_select.appendChild(option);
             }
         })
-    }
-})
 
-
-form_2_level_select.addEventListener('change', function(e) {
-    let selected_level = form_2_level_select.value;
-    course_code_select.innerHTML = "";
-
-    get_level_courses(selected_level).
-    then((optionArray) => {
-        var updated_options = optionArray;
-
-        for (option of updated_options) {
-            course_code_select.appendChild(option);
-        }
     })
 
-});
+    form_2_level_select.addEventListener('change', function(e) {
+        let selected_level = form_2_level_select.value;
+        course_code_select.innerHTML = "";
+
+        get_level_courses(selected_level).
+        then((optionArray) => {
+            var updated_options = optionArray;
+
+            for (option of updated_options) {
+                course_code_select.appendChild(option);
+            }
+        })
+
+    });
+}
+
+let add_file_dialog = document.getElementById("add-file-modal")
+
+if (add_file_dialog) {
+    add_file_dialog.addEventListener('hidden.bs.modal', function(e) {
+        window.location.reload()
+    })
+}

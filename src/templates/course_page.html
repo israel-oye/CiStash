@@ -3,7 +3,7 @@
 {% block title %}{{course.course_code}} resources{% endblock %}
 <!-- -->
 {% block body %}
-<div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
+<main class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-5">
             <li class="breadcrumb-item"><a class="text-primary" href="{{url_for('home_bp.index')}}#levels">Levels</a></li>
@@ -11,17 +11,87 @@
             <li class="breadcrumb-item active" aria-current="page">{{course.course_code}}</li>
         </ol>
     </nav>
-    <!--  -->
+    <!-- ADD FILE MODAL -->
+    <div class="modal fade" id="add-file-modal" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered" data-bs-config={backdrop:true}>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title text-light"><i class="fa-solid fa-file-circle-plus fa-lg"></i> Add file for {{course.course_code}}</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" class="form m-4 w-85" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf-token" id="upload-token" value="{{csrf_token()}}">
+                        <div class="p-auto">
+                            <div class="mb-4 align-content-center">
+                                <label for="dyna_course_code" class="form-label">Course Code <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="right" title="If the course code is not in the list of options, add the course on other form"></i></label>
+                                <select aria-label="Select course code" class="form-select" id="dyna_course_code" disabled="disabled" name="dyna_course_code">
+                                        <option value="{{course.id_}}">{{course.course_code}}</option>
+                                    </select>
+                            </div>
+
+                            <div class="mb-3 align-content-center bg-light dropzone" id="upload">
+                                <div class="fallback">
+                                    <input name="file" type="file" class="form-control" accept=".pdf, .doc, .docx, .odt, .rtf, .txt, .epub, .ppt, .pptx" />
+                                </div>
+                                <!-- DROPZONE -->
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-danger mt-2" id="upload-btn" type="submit" formaction="{{url_for('resource_bp.file_upload')}}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                            </div>
+                            <input type="hidden" id="upload-url" value="{{url_for('resource_bp.file_upload')}}">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- SUCCESS MESSAGE MODAL -->
+    <div class="modal fade" id="success-modal" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title text-light"><i class="fa-solid fa-circle-check text-success"></i> Success</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="success-modal-text" class="text-light fs-6"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #TODO: LOGIN MODAL Restructure Login view to JSON only resp -->
     {% if is_empty %}
     <div class="mx-5">
         <img class="empty-folder-img img-fluid d-block mx-auto pb-5" src="{{url_for('static', filename='/images/empty-folder.webp')}}" alt="Empty folder image">
         <h4>{{course.course_code}} does not have any document uploaded, do you want to upload some?</h4>
+        {% if current_user.is_authenticated %}
+        <a class="btn btn-info btn-lg text-left" data-bs-toggle="modal" data-bs-target="#add-file-modal">
+            <i class="fa-regular fa-square-plus"></i> Add Docs
+        </a>
+        {% else %}
         <a class="btn btn-info btn-lg text-left" href="{{url_for('resource_bp.get_upload_page')}}">
             <i class="fa-regular fa-square-plus"></i> Add Docs
         </a>
+        {% endif %}
     </div>
     <!--  -->
     {% else %}
+    <!--  -->
+    {% if current_user.is_authenticated %}
+    <div class="text-center mb-2">
+        <a title="Add new document" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#add-file-modal">
+            <i class="fa-solid fa-file-circle-plus fa-lg"></i>
+        </a>
+    </div>
+    <!--  -->
+    {% endif %}
     <div class="table-responsive">
         <table class="table table-striped table-hover bg-dark caption-top">
             <caption>List of resources</caption>
@@ -70,7 +140,10 @@
     </div>
     <!--  -->
     {% endif %}
-
-</div>
+</main>
+<!-- 'form-handler' script is placed before 'download-handler' -->
+<!-- 'construct_alert' func in both scripts exhibit different behaviours -->
+<!-- 'download-handler js' func overwrites behaviour in  'form-handler' script because it is placed after -->
+<script src="{{url_for('static', filename='assets/form-handler.js')}}"></script>
 <script src="{{url_for('static', filename='assets/download-handler.js')}}"></script>
 {% endblock %}
