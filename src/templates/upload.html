@@ -25,12 +25,12 @@
         <div class="col-9 col-lg-6 bg-primary bg-gradient rounded m-auto pt-3">
             <ul class="nav nav-tabs nav-fill mt-2" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="add-course-tab" data-bs-toggle="tab" data-bs-target="#add-course" type="button" role="tab" aria-controls="home" aria-selected="true">
-                        <h4><i class="fa-solid fa-book-open"></i> Add Course</h4>
+                    <button class="nav-link active tab-btn" id="add-course-tab" data-bs-toggle="tab" data-bs-target="#add-course" type="button" role="tab" aria-controls="home" aria-selected="true">
+                        <h4 class="text-warning"><i class="fa-solid fa-book-open"></i> Add Course</h4>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="doc-tab" data-bs-toggle="tab" data-bs-target="#doc-upload" type="button" role="tab" aria-controls="doc" aria-selected="false">
+                    <button class="nav-link tab-btn" id="document-tab" data-bs-toggle="tab" data-bs-target="#doc-upload" type="button" role="tab" aria-controls="doc" aria-selected="false">
                         <h4><i class="fa-solid fa-arrow-up-from-bracket fa-bounce" style="--fa-animation-duration: 4s;"></i> Upload document</h4>
                     </button>
                 </li>
@@ -112,6 +112,23 @@
 
 <!-- DROPZONE handler -->
 <script src="{{url_for('static', filename='assets/form-handler.js' )}}" defer>
+</script>
+<script type="text/javascript">
+    let tabButtons = document.querySelectorAll(".tab-btn");
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            tabButtons.forEach(btn => {
+                if (btn.ariaSelected != "true") {
+                    btn.firstElementChild.classList.remove("text-warning");
+                    btn.firstElementChild.classList.add("text-dark");
+                } else {
+                    btn.firstElementChild.classList.remove("text-dark");
+                    btn.firstElementChild.classList.add("text-warning");
+                }
+            })
+        })
+    })
 </script>
 <!--  -->
 {% endblock %}

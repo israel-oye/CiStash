@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 if (form_2_level_select) {
-    let form_2_tab_btn = document.getElementById("doc-tab");
+    let form_2_tab_btn = document.getElementById("document-tab");
 
     form_2_tab_btn.addEventListener('click', function(e) {
         let selected_level = form_2_level_select.value;
