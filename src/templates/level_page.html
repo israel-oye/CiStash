@@ -13,8 +13,8 @@
     <h2 class="text-center border-bottom mb-3">
         {{level.name.value}} Level Courses <i class="fa-sharp fa-solid fa-book text-info"></i>
     </h2>
-    <table class="table table-active mt-4 mb-0">
-        <thead class="table-secondary">
+    <table class="table table-primary table-active mt-4 mb-0">
+        <thead>
             <tr>
                 <th scope="col">Folders</th>
                 <th scope="col"></th>
@@ -27,10 +27,16 @@
     <div class="coursebox container bg-secondary my-2 border-bottom">
         <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
             <h3>
-                <i class="fa-solid fa-folder text-info"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
+                <i class="fa-solid fa-folder text-dark"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
             </h3>
         </a>
     </div>
     {% endfor %}
 </div>
+<script text="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        let body = document.body
+        body.classList.remove("bg-secondary");
+    })
+</script>
 {% endblock %}
