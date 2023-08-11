@@ -44,7 +44,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -141,6 +141,14 @@
     <!--  -->
     {% endif %}
 </main>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(e) {
+        let cloudIconElement = document.querySelector("i.fa-cloud-arrow-up");
+        if (cloudIconElement) {
+            cloudIconElement.classList.add("text-primary");
+        }
+    })
+</script>
 <!-- 'form-handler' script is placed before 'download-handler' -->
 <!-- 'construct_alert' func in both scripts exhibit different behaviours -->
 <!-- 'download-handler js' func overwrites behaviour in  'form-handler' script because it is placed after -->

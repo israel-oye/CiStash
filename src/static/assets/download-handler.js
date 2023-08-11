@@ -26,8 +26,8 @@ function add_alert(new_alert) {
  * @param {string} body_content
  */
 function construct_alert_element(bg_color, header_content, body_content) {
-    const alertString = `<div class="toast ms-auto me-3 mt-3 bg-${bg_color} bg-gradient text-light fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay=25000>
-                                <div class="toast-header bg-${bg_color} text-light">
+    const alertString = `<div class="toast ms-auto me-3 mt-3 bg-${bg_color} bg-gradient text-dark fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay=25000>
+                                <div class="toast-header bg-${bg_color} text-dark">
                                     <strong class="me-auto">${header_content}</strong>
                                     <small>Now</small>
                                     <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true"></span>
