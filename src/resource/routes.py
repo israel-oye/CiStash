@@ -125,8 +125,10 @@ def get_upload_page():
 
 
 @resource_bp.post("/upload")
-@login_required
 def upload():
+    if not current_user.is_authenticated:
+        return jsonify({'message': 'An error occured, please re-login to complete action'}), 401
+
     form = CourseForm(data=request.get_json())
 
     if form.validate_on_submit():
