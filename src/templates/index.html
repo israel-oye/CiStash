@@ -4,33 +4,33 @@
 <!--  -->
 {% block body %}
 <div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
-    <div class="p-5 mb-4 bg-dark bg-gradient border-secondary rounded-3 mb-lg-5" id="home-innercontainer">
+    <div class="p-5 mb-4 bg-primary bg-gradient border-secondary rounded-3 mb-lg-5" id="home-innercontainer">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-5">
                 <img class="img-fluid mt-sm-4 folder-img" src="{{url_for('static', filename='/images/folder.png')}}" alt="Folder image">
             </div>
             <div class="col-lg-7 col-md-8 mt-2 col-sm-7 pt-3 fs-4" id="home-jumbotron">
-                <h1 class="text-align-center text-light">Download CSC course materials for <span class="fw-3">FREE!</span> </h1>
+                <h1 class="text-align-center text-light">Download CIS course materials for <span class="fw-3">FREE!</span> </h1>
                 <p class="text-light lh-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quibusdam cumque id ipsam tempora quae dolorum officiis accusamus pariatur ullam minima et</p>
-                <button class="btn btn-lg btn-primary px-3" id="get-started-btn" data-bs-toggle="modal" data-bs-target="#startingModal"><i class="fa-solid fa-rocket fa-beat"></i>  Get started</button>
+                <button class="btn btn-lg btn-success px-3" id="get-started-btn" data-bs-toggle="modal" data-bs-target="#startingModal"><i class="fa-solid fa-rocket fa-beat"></i>  Get started</button>
 
                 <div class="modal fade" id="startingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="text-light modal-title" id="exampleModalLabel">
+                                <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="brand-text fa-solid fa-folder-tree fa-flip fa-xs" style="--fa-animation-duration: 4s;"></i> Getting started
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p class="text-light fs-6">To find resources, please choose one of the following options:
+                                <p class="fs-6">To find resources, please choose one of the following options:
                                     <br> 1. Check the Course level table for resources.
                                     <br> 2. Enter some course details in the search bar.
                                 </p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -41,14 +41,14 @@
     <div class="container" id="levels">
         <div class="row">
             <div class="col-lg-6 col-md-5 col-sm-4">
-                <table class="table text-center table-bordered table-hover table-striped level-table caption-top">
+                <table class="table table-secondary text-center table-bordered table-hover table-striped level-table caption-top">
                     <caption>Resources</caption>
                     <thead></thead>
                     <tbody class="lead nav-text">
                         {% for level in lvl_mapping.items() %}
                         <tr>
                             <td>
-                                <a href="{{url_for('home_bp.level_page', level_id=level[1][0])}}" class="text-decoration-underline text-primary fw-bolder">
+                                <a href="{{url_for('home_bp.level_page', level_id=level[1][0])}}" class="text-decoration-underline fw-bolder">
                                     {{level[1]}} level resources
                                 </a>
                             </td>

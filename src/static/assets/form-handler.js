@@ -62,7 +62,7 @@ Dropzone.options.upload = {
         })
     },
     success: function(file, response) {
-        show_modal("Document uploaded successfully!");
+        show_success_modal("Document uploaded successfully!");
         return file.previewElement.classList.add("dz-success");
     },
     chunksUploaded: function(file, done) {
@@ -110,11 +110,24 @@ function add_alert(new_alert) {
  *
  * @param {string} modal_text
  */
-function show_modal(modal_text) {
+function show_success_modal(modal_text) {
     const ModalElem = document.querySelector('#success-modal')
     const modal = new bootstrap.Modal(ModalElem);
 
     document.querySelector("#success-modal-text").innerText = modal_text;
+    modal.show();
+}
+
+
+/**
+ *
+ * @param {string} modal_text
+ */
+function show_error_modal(modal_text) {
+    const ModalElem = document.querySelector('#error-modal')
+    const modal = new bootstrap.Modal(ModalElem);
+
+    document.querySelector("#error-modal-text").innerText = modal_text;
     modal.show();
 }
 
@@ -139,7 +152,7 @@ async function submitForm(formData) {
         const data = await response.json();
 
         if (response.status === 200) {
-            show_modal(`${data.message}!`);
+            show_success_modal(`${data.message}!`);
         } else if (response.status === 400) {
             //data = resp => {'errors': {'fieldName': [listOfErrors]}}
 
@@ -162,6 +175,9 @@ async function submitForm(formData) {
                 const errorSpanElem = courseTitleErrorElem.firstElementChild.nextElementSibling;
                 errorSpanElem.innerHTML = courseTitle_error;
             }
+        } else if (response.status === 401) {
+            // Re-Authentication required
+            show_error_modal(`${data.message}!`);
         } else {
             // status = 500
             const alertString = `<div class="alert alert-danger mt-4 mx-5 py-2 text-center fw-bold" role="alert">
@@ -223,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 if (form_2_level_select) {
-    let form_2_tab_btn = document.getElementById("doc-tab");
+    let form_2_tab_btn = document.getElementById("document-tab");
 
     form_2_tab_btn.addEventListener('click', function(e) {
         let selected_level = form_2_level_select.value;

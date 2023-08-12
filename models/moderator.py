@@ -15,7 +15,6 @@ users_x_roles = db.Table(
 
 
 class Role(db.Model):
-    query: db.Query
 
     id_ = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -23,13 +22,19 @@ class Role(db.Model):
 
     users = db.relationship("Moderator", secondary="users_roles", back_populates="roles")
 
+    def __init__(self, role_name: str, role_description: str):
+        self.name = role_name
+        self.description = role_description
+
     def __repr__(self):
         return f"<Role: {self.name}>"
+
+    def __str__(self):
+        return self.name
 
 
 class Moderator(db.Model, UserMixin):
     """Uploader, i.e Moderator user model or an Admin."""
-    query: db.Query
 
     id_ = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
@@ -38,6 +43,21 @@ class Moderator(db.Model, UserMixin):
 
     uploads = db.relationship("Document", back_populates="uploader", lazy="select")
     roles = db.relationship("Role", secondary="users_roles", back_populates="users")
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
+
+        default_role = Role.query.filter_by(name="regular").first()
+        if default_role:
+            self.roles.append(default_role)
+        else:
+            new_default_role = Role(role_name="regular", role_description="Can upload files, can add course details.")
+            self.roles.append(new_default_role)
+
+    def __repr__(self) -> str:
+        return f"<Moderator: {self.email}>"
 
     @property
     def is_authenticated(self):
@@ -52,9 +72,6 @@ class Moderator(db.Model, UserMixin):
         admin_role = Role.query.filter_by(name="admin").first()
         return admin_role in self.roles
 
-    def __repr__(self) -> str:
-        return f"<Moderator: {self.email}>"
-
     def get_id(self):
         return self.id_
 
@@ -65,12 +82,14 @@ class Moderator(db.Model, UserMixin):
 #Flask-Admin Views
 
 class ModeratorView(ModelView):
-    can_create = True
+    can_create = False
     can_edit = True
-    can_delete = False
+    can_delete = True
     column_display_pk = True
     edit_modal = True
     column_exclude_list = ['password']
+    column_list = ('username', 'email', 'roles')
+    form_columns = ['username', 'email', 'roles']
     form_widget_args = {
         'username': {
             'readonly': True
@@ -94,6 +113,7 @@ class RoleView(ModelView):
     can_delete = True
     create_modal = True
     edit_modal = True
+    column_list = ('name', 'description', 'users')
 
 
 class IndexView(AdminIndexView):

@@ -3,7 +3,6 @@ from extensions import ModelView, db
 
 class Course(db.Model):
     __tablename__ = "course"
-    query: db.Query
 
     id_ = db.Column(db.Integer, primary_key=True)
     course_title = db.Column(db.String(60), unique=True)

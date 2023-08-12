@@ -4,7 +4,7 @@
 <!--  -->
 {% block body %}
 <div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
-    <h4 class="text-light border-bottom pb-3"> You searched for: <em><mark>{{search_query}}</mark></em></h4>
+    <h4 class="border-bottom pb-3"> You searched for: <em><mark>{{search_query}}</mark></em></h4>
     <!--  -->
     {% if is_empty %}
     <div class="row pt-3 mt-5 mx-5">
@@ -12,7 +12,7 @@
             <img class="img-fluid mx-auto pb-5 err-img" src="{{url_for('static', filename='/images/no-results.webp')}}" alt="Search not found image">
         </div>
         <div class="col-12 col-lg-8 col-md-8 right-pane">
-            <h2 class="text-light mb-3">No results found</h2>
+            <h2 class="mb-3">No results found</h2>
             <p>
                 No results found. Please try a different search term.
             </p>
@@ -20,8 +20,8 @@
     </div>
     {% else %}
     <!--  -->
-    <p class="text-light"><em>{{result_count}}</em> search results.</p>
-    <section>
+    <p class=""><em>{{result_count}}</em> search results.</p>
+    <section class="bg-light">
         <ul class="nav nav-tabs nav-fill mt-5 mb-3" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" data-bs-toggle="tab" href="#courses" aria-selected="true" role="tab"><i class="fa-solid fa-folder text-secondary"></i> Courses</a>
@@ -33,10 +33,10 @@
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active show" id="courses" role="tabpanel">
                 {% for course in hits %}
-                <div class="coursebox container bg-dark my-2 border-bottom">
+                <div class="coursebox container bg-secondary my-2 border-bottom">
                     <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
                         <h3>
-                            <i class="fa-solid fa-folder text-secondary"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
+                            <i class="fa-solid fa-folder"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
                         </h3>
                     </a>
                 </div>

@@ -5,17 +5,17 @@
 {% block body %}
 <div class="container pt-5">
     <div class="row justify-content-center">
-        <div class="col-9 col-lg-6 bg-dark rounded m-auto">
+        <div class="col-9 col-lg-6 bg-primary bg-gradient rounded m-auto">
             <h4 class="text-center text-light pt-3"><i class="fa-solid fa-right-to-bracket"></i> Login</h4>
             <form action="{{url_for('auth_bp.login')}}" method="post" class="form m-4 w-85">
                 <input type="hidden" name="csrf-token" value="{{csrf_token()}}">
                 <div class="p-auto">
                     <div class="mb-3 align-content-center">
-                        <label class="form-label" for="email">Email</label>
+                        <label class="form-label text-light" for="email">Email</label>
                         <input type="email" name="email" class="form-control" placeholder="example@mail.com">
                     </div>
                     <div class="mb-3 align-content-center">
-                        <label class="form-label" for="password">Password</label>
+                        <label class="form-label text-light" for="password">Password</label>
                         <input type="password" name="password" class="form-control">
                     </div>
                     <div class="mb-3 text-center">

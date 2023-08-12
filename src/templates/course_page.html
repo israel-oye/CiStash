@@ -6,8 +6,8 @@
 <main class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-5">
-            <li class="breadcrumb-item"><a class="text-primary" href="{{url_for('home_bp.index')}}#levels">Levels</a></li>
-            <li class="breadcrumb-item"><a class="text-primary" href="{{url_for('home_bp.level_page', level_id=course.level_id)}}">{{course.course_level.name.value}}</a></li>
+            <li class="breadcrumb-item"><a class="" href="{{url_for('home_bp.index')}}#levels">Levels</a></li>
+            <li class="breadcrumb-item"><a class="" href="{{url_for('home_bp.level_page', level_id=course.level_id)}}">{{course.course_level.name.value}}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{course.course_code}}</li>
         </ol>
     </nav>
@@ -16,7 +16,7 @@
         <div class="modal-dialog modal-sm modal-dialog-centered" data-bs-config={backdrop:true}>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title text-light"><i class="fa-solid fa-file-circle-plus fa-lg"></i> Add file for {{course.course_code}}</h6>
+                    <h6 class="modal-title"><i class="fa-solid fa-file-circle-plus fa-lg"></i> Add file for {{course.course_code}}</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -44,7 +44,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -54,11 +54,11 @@
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title text-light"><i class="fa-solid fa-circle-check text-success"></i> Success</h6>
+                    <h6 class="modal-title"><i class="fa-solid fa-circle-check text-success"></i> Success</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p id="success-modal-text" class="text-light fs-6"></p>
+                    <p id="success-modal-text" class="fs-6"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
@@ -86,7 +86,7 @@
     <!--  -->
     {% if current_user.is_authenticated %}
     <div class="text-center mb-2">
-        <a title="Add new document" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#add-file-modal">
+        <a title="Add new document" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#add-file-modal">
             <i class="fa-solid fa-file-circle-plus fa-lg"></i>
         </a>
     </div>
@@ -121,7 +121,7 @@
                     <i class="fa-solid fa-file-lines fa-lg"></i>
                     <!---->
                     {% endif %}
-                    <a class="link-downloader text-info ps-2" href="{{url_for('resource_bp.download_document', file_uuid=doc.uuid)}}">   {{doc.filename}}</a>
+                    <a class="link-downloader ps-2" href="{{url_for('resource_bp.download_document', file_uuid=doc.uuid)}}">   {{doc.filename}}</a>
                 </td>
                 <td>
                     {{doc.file_size}} MB
@@ -141,6 +141,14 @@
     <!--  -->
     {% endif %}
 </main>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(e) {
+        let cloudIconElement = document.querySelector("i.fa-cloud-arrow-up");
+        if (cloudIconElement) {
+            cloudIconElement.classList.add("text-primary");
+        }
+    })
+</script>
 <!-- 'form-handler' script is placed before 'download-handler' -->
 <!-- 'construct_alert' func in both scripts exhibit different behaviours -->
 <!-- 'download-handler js' func overwrites behaviour in  'form-handler' script because it is placed after -->

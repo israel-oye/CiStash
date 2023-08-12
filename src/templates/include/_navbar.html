@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark navbar-expand-lg bg-dark border-bottom border-primary sticky-top">
+<nav class="navbar navbar-dark navbar-expand-lg bg-primary sticky-top" data-bs-theme="light">
     <div class="container-fluid mx-4 my-2">
         <a class="navbar-brand brand-text" href="{{url_for('home_bp.index')}}">CiStash <i class="fa-solid fa-folder-tree"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,6 +6,9 @@
       </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 px-4">
+                <li class="nav-item px-3">
+                    <a class="nav-link nav-text active" href="{{url_for('home_bp.index')}}">Home</a>
+                </li>
                 <li class="nav-item dropdown px-3">
                     <a class="nav-link dropdown-toggle nav-text" href="#levels" role="button" data-bs-toggle="dropdown" aria-expanded="false">Levels</a>
                     <ul class="dropdown-menu">
@@ -15,23 +18,31 @@
                     </ul>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" id="info-link" href="#" data-bs-toggle="modal" data-bs-target="#info-modal">Info</a>
-                </li>
-                <li class="nav-item px-3">
                     <a class="nav-link nav-text" id="upload-nav" href="{{url_for('resource_bp.upload')}}">Upload</a>
                 </li>
                 <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <input id="search-box" class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Looking for something?" aria-label="Search">
-                    <button class="btn rounded-circle btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="btn rounded-circle btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
+                <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                    <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+                    <hr class="d-lg-none my-2 text-white-50">
+                </li>
                 {% if current_user.is_admin %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text text-primary" href="/auth/admin" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i></a>
+                    <a class="nav-link nav-text" href="/auth/admin" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i></a>
                 </li>
                 {% endif %} {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text text-primary" href="#" data-bs-toggle="modal" data-bs-target="#logout-modal"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade" style="--fa-animation-duration: 5s;"></i></a>
+                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-info"></i></a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link nav-text brand-text" href="#" data-bs-toggle="modal" data-bs-target="#logout-modal"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade" style="--fa-animation-duration: 5s;"></i></a>
+                </li>
+                {% else %}
+                <li class="nav-item px-3">
+                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-circle-user fa-2xl"></i></a>
                 </li>
                 {% endif %}
             </ul>
@@ -40,23 +51,25 @@
     </div>
 </nav>
 
+<!-- INFO MODAL -->
 <div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-light" id="exampleModalLabel">About Uploading</h5>
+                <h5 class="modal-title" id="exampleModalLabel">About Uploading</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             {% if current_user.is_authenticated %}
             <!--  -->
             <div class="modal-body">
-                <p class="text-light text-wrap">Only Upload course details that are verified and relevant course materials. Non compliant uploads will be deleted by the admin.
+                <p class="text-wrap">Only Upload course details that are verified and relevant course materials. Non compliant uploads will be deleted by the admin.
                 </p>
             </div>
             {% else %}
             <!--  -->
             <div class="modal-body">
-                <p class="text-light">Before now, the upload section was closed off to regular users, but now users can upload but MUST only upload course details that are verified and relevant course materials. Non compliant uploads will be deleted by the admin.
+                <p class="">Before now, the <a href="{{url_for('resource_bp.upload')}}">upload section</a> was closed off to regular users, but now users can upload but MUST only upload course details that are verified and relevant course materials. Non compliant
+                    uploads will be deleted by the admin.
                 </p>
                 <div class="container">
                     <div class="row">
@@ -81,6 +94,7 @@
     </div>
 </div>
 
+<!-- LOG OUT MODAL -->
 <div class="modal fade" id="logout-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -89,12 +103,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="text-light text-wrap">Are you sure you want to log out?</p>
+                <p class="text-wrap">Are you sure you want to log out?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mx-3" data-bs-dismiss="modal">No</button>
                 <form action="{{url_for('auth_bp.logout')}}" method="post">
-                    <button type="submit" class="btn btn-warning"><i class="fa-solid fa-right-from-bracket"></i> Yes</button>
+                    <button type="submit" class="btn btn-danger">Yes <i class="fa-solid fa-right-from-bracket"></i></button>
                 </form>
             </div>
         </div>
