@@ -11,7 +11,6 @@ class LevelEnum(enum.Enum):
 
 class Level(db.Model):
     __tablename__ = "level"
-    query: db.Query
 
     id_ = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Enum(LevelEnum), nullable=False, unique=True)

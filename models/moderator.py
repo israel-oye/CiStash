@@ -15,7 +15,6 @@ users_x_roles = db.Table(
 
 
 class Role(db.Model):
-    query: db.Query
 
     id_ = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -29,7 +28,6 @@ class Role(db.Model):
 
 class Moderator(db.Model, UserMixin):
     """Uploader, i.e Moderator user model or an Admin."""
-    query: db.Query
 
     id_ = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
