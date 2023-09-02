@@ -30,7 +30,7 @@ UPLOAD_BUCKET_NAME=bucket-name
 FLASK_APP=src
 FLASK_DEBUG=1
 ```
-4. Create python virtual environment
+4. Create python [virtual environment](https://github.com/israel-oye/My-Wikihow/blob/954f01d13658d4a3886edb013d99c309f6d63279/HOW%20TO%20CREATE%20A%20VIRTUAL%20ENVIRONMENT%20on%20Python%20and%20install%20external%20libraries.txt#L1)
 5. ```pip install -r requirements.txt```
 6. ```flask run```
 7. CiStash is up and running!
