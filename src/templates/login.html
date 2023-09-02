@@ -14,9 +14,10 @@
                         <label class="form-label text-light" for="email">Email</label>
                         <input type="email" name="email" class="form-control" placeholder="example@mail.com">
                     </div>
-                    <div class="mb-3 align-content-center">
+                    <div class="mb-3 align-content-center" style="position: relative;">
                         <label class="form-label text-light" for="password">Password</label>
-                        <input type="password" name="password" class="form-control">
+                        <input type="password" name="password" id="password" class="form-control">
+                        <i class="fa-solid fa-lg fa-eye" id="eye-icon" style="top: 3.1rem;"></i>
                     </div>
                     <div class="mb-3 text-center">
                         <button class="btn btn-lg btn-success mt-2" type="submit" formaction="{{url_for('auth_bp.login')}}"><i class="fa-solid fa-door-open"></i> Login</button>
@@ -29,4 +30,5 @@
     </div>
 
 </div>
+<script src="{{url_for('static', filename='assets/auth-handler.js')}}"></script>
 {% endblock %}
