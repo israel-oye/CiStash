@@ -3,7 +3,7 @@
 {% block title %} {{level.name.value}} level courses {% endblock %}
 <!--  -->
 {% block body %}
-<div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
+<main class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-5">
             <li class="breadcrumb-item"><a class="" href="{{url_for('home_bp.index')}}#levels">Levels</a></li>
@@ -32,7 +32,7 @@
         </a>
     </div>
     {% endfor %}
-</div>
+</main>
 <script text="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         let body = document.body

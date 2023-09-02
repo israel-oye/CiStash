@@ -3,8 +3,8 @@
 {% block title %}Home{% endblock %}
 <!--  -->
 {% block body %}
-<div class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
-    <div class="p-5 mb-4 bg-primary bg-gradient border-secondary rounded-3 mb-lg-5" id="home-innercontainer">
+<main class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
+    <section class="p-5 mb-4 bg-primary bg-gradient border-secondary rounded-3 mb-lg-5" id="home-innercontainer">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-5">
                 <img class="img-fluid mt-sm-4 folder-img" src="{{url_for('static', filename='/images/folder.png')}}" alt="Folder image">
@@ -37,8 +37,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container" id="levels">
+    </section>
+    <section class="container" id="levels">
         <div class="row">
             <div class="col-lg-6 col-md-5 col-sm-4">
                 <table class="table table-secondary text-center table-bordered table-hover table-striped level-table caption-top">
@@ -62,10 +62,10 @@
                 <img src="{{url_for('static', filename='/images/download.png')}}" alt="Person downloading" class="img-fluid table-img">
             </div>
         </div>
-    </div>
+    </section>
 
 
-</div>
+</main>
 <script type="text/javascript">
     function image_changer(media_query) {
         imageElem = document.querySelector(".folder-img");

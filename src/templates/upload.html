@@ -3,7 +3,7 @@
 {% block title %}Add Course, Upload File{% endblock %}
 <!--  -->
 {% block body %}
-<div class="container pt-5" id="form-container">
+<main class="container pt-5" id="form-container">
     <!-- SUCCESS MODAL -->
     <div class="modal fade" id="success-modal" role="dialog">
         <div class="modal-dialog modal-sm modal-dialog-centered">
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="row justify-content-center">
+    <section class="row justify-content-center">
         <div class="col-9 col-lg-6 bg-primary bg-gradient rounded m-auto pt-3">
             <ul class="nav nav-tabs nav-fill mt-2" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -54,8 +54,8 @@
                     </button>
                 </li>
             </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="add-course" role="tabpanel" aria-labelledby="add-course-tab">
+            <div class="tab-content" id="tabsContent">
+                <section class="tab-pane fade show active" id="add-course" role="tabpanel" aria-labelledby="add-course-tab">
                     <form action="{{url_for('resource_bp.upload')}}" id="form1" method="post" class="form m-4 w-85">
                         <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                         <div class="p-auto">
@@ -88,8 +88,8 @@
                             </div>
                         </div>
                     </form>
-                </div>
-                <div class="tab-pane fade" id="doc-upload" role="tabpanel" aria-labelledby="upload-document-tab">
+                </section>
+                <section class="tab-pane fade" id="doc-upload" role="tabpanel" aria-labelledby="upload-document-tab">
                     <form action="" method="post" class="form m-4 w-85" enctype="multipart/form-data">
                         <input type="hidden" name="csrf-token" id="upload-token" value="{{csrf_token()}}">
                         <div class="p-auto">
@@ -122,11 +122,11 @@
                             <input type="hidden" id="upload-url" value="{{url_for('resource_bp.file_upload')}}">
                         </div>
                     </form>
-                </div>
+                </section>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+</main>
 <!--  -->
 
 <!-- DROPZONE handler -->
