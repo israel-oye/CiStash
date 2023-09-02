@@ -29,20 +29,20 @@
                     <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
                     <hr class="d-lg-none my-2 text-white-50">
                 </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-info"></i></a>
+                </li>
                 {% if current_user.is_admin %}
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text" href="/auth/admin" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i></a>
                 </li>
                 {% endif %} {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-info"></i></a>
-                </li>
-                <li class="nav-item px-3">
                     <a class="nav-link nav-text brand-text" href="#" data-bs-toggle="modal" data-bs-target="#logout-modal"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade" style="--fa-animation-duration: 5s;"></i></a>
                 </li>
                 {% else %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-circle-user fa-2xl"></i></a>
+                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user fa-2xl"></i></a>
                 </li>
                 {% endif %}
             </ul>
@@ -52,11 +52,14 @@
 </nav>
 
 <!-- INFO MODAL -->
-<div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">About Uploading</h5>
+                <h5 class="modal-title" id="infoModalLabel">
+                    <i class="brand-text fa-solid fa-folder-tree fa-flip fa-xs" style="--fa-animation-duration: 4s;"></i> About Uploading</h5>
+                </h5>
+
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             {% if current_user.is_authenticated %}
@@ -68,8 +71,8 @@
             {% else %}
             <!--  -->
             <div class="modal-body">
-                <p class="">Before now, the <a href="{{url_for('resource_bp.upload')}}">upload section</a> was closed off to regular users, but now users can upload but MUST only upload course details that are verified and relevant course materials. Non compliant
-                    uploads will be deleted by the admin.
+                <p class="">To maintain a high-quality repository, please ensure you upload only verified and relevant course materials. Our administrators will promptly remove any non-compliant uploads. To get started, kindly log in or sign up to continue with your
+                    uploads. Thank you for contributing to this platform!
                 </p>
                 <div class="container">
                     <div class="row">
@@ -87,6 +90,39 @@
                 </div>
             </div>
             {% endif %}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal fade" id="auth-modal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authModalLabel">
+                    <img src="{{url_for('static', filename='/images/contribution.webp')}}" style="height: 30px; width: 30px" alt="Contributor image"> Become a Contributor!
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <form method="GET">
+                                <button class="btn btn-lg btn-success" formaction="/auth/login"> Login <i class="fa-solid fa-right-to-bracket"></i></button>
+                            </form>
+                        </div>
+                        <div class="col-6 text-center">
+                            <form method="GET">
+                                <button class="btn btn-lg btn-success" formaction="/auth/register"> Sign up <i class="fa-regular fa-user"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
