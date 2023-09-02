@@ -16,10 +16,24 @@ This is CiStash, a web application and the ultimate repository for academic cour
 
 ## Getting Started (Dev)
 1. Clone repo
-2. Create python virtual environment
-3. ```pip install -r requirements.txt```
-4. ```flask run```
-5. CiStash is up and running
+2. Create .env file and add following variables:
+```
+APP_SETTINGS=config.ProductionConfig
+DATABASE_URL=sqlite:///db_file.db
+SECRET_KEY=ourLittleSecret
+B2_KEY_ID=000111KeyIDFromBackblaze
+B2_APPLICATION_KEY=K003ApplicationKeyFromBackblaze
+UPLOAD_BUCKET_NAME=bucket-name
+```
+3. Create .flaskenv file and add following variables:
+```
+FLASK_APP=src
+FLASK_DEBUG=1
+```
+4. Create python virtual environment
+5. ```pip install -r requirements.txt```
+6. ```flask run```
+7. CiStash is up and running!
 
 ## Getting Started
 1. Open CiStash
