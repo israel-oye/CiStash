@@ -47,7 +47,7 @@ class Moderator(db.Model, UserMixin):
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
-        self.password = password
+        self.password = sha256_crypt.encrypt(password)
 
         default_role = Role.query.filter_by(name="regular").first()
         if default_role:

@@ -1,5 +1,4 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from passlib.hash import sha256_crypt
 
 from extensions import (NotFound, current_user, db, login_required, login_user,
                         logout_user)
@@ -20,7 +19,7 @@ def register():
     if request.method == "POST" and register_form.validate_on_submit():
         uname = register_form.username.data
         mail = register_form.email.data
-        pwd = sha256_crypt.encrypt(str(register_form.password.data))
+        pwd = register_form.password.data
 
         mod = Moderator(username=uname, email=mail, password=pwd)
         db.session.add(mod)
