@@ -1,4 +1,10 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+import json
+import os
+
+import requests
+from dotenv import load_dotenv
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from oauthlib.oauth2 import WebApplicationClient
 
 from extensions import (NotFound, current_user, db, login_required, login_user,
                         logout_user)
@@ -8,6 +14,22 @@ from ..form import RegisterForm
 
 auth_bp = Blueprint("auth_bp", __name__, template_folder="src/templates", static_folder="static")
 
+load_dotenv()
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
+
+client = WebApplicationClient(GOOGLE_CLIENT_ID)
+
+def get_google_provider():
+    try:
+        r = requests.get(GOOGLE_DISCOVERY_URL)
+    except requests.exceptions.RequestException as e:
+        abort(500)
+    else:
+        return r.json()
+
+google_provider_cfg = get_google_provider()
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -54,6 +76,69 @@ def login():
                 error = "Incorrect password/email combination"
                 return render_template("login.html", error=error)
     return render_template("login.html")
+
+
+@auth_bp.route("/google/login", methods=["POST"])
+def oauth_login():
+    global google_provider_cfg
+    authorization_endpoint = google_provider_cfg["authorization_endpoint"]
+
+    request_uri = client.prepare_request_uri(
+        uri=authorization_endpoint,
+        redirect_uri=request.base_url+"/callback",
+        scope=["openid", "email", "profile"]
+    )
+    return redirect(request_uri)
+
+
+@auth_bp.route("/google/login/callback")
+def oauth_login_callback():
+    code = request.args.get("code")
+
+    global google_provider_cfg
+    token_endpoint = google_provider_cfg["token_endpoint"]
+    token_url, headers, body = client.prepare_token_request(
+        token_url=token_endpoint,
+        authorization_response=request.url,
+        redirect_url=request.base_url,
+        code=code
+    )
+    token_response = requests.post(
+        url=token_url,
+        headers=headers,
+        data=body,
+        auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)
+    )
+
+    client.parse_request_body_response(json.dumps(token_response.json()))
+    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+
+    uri, headers, body = client.add_token(userinfo_endpoint)
+    userinfo_response = requests.get(
+        url=uri,
+        headers=headers,
+        data=body
+    )
+    user_info = userinfo_response.json()
+    if user_info.get("email_verified"):
+        unique_id = user_info['sub']
+        user_mail = user_info['email']
+        user_name = user_info['given_name']
+    else:
+        flash("Email not verified. Please try again...", "danger")
+        return redirect(url_for("auth_bp.register"))
+
+    user = Moderator.query.filter_by(email=user_mail).first()
+    if user is None:
+        new_user = Moderator(username=user_name, email=user_mail, password=unique_id)
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(user=new_user)
+        flash(f"{current_user.username}, you're now a contributor!", "success")
+    else:
+        login_user(user=user)
+        flash(f"Login success. Welcome, {current_user.username}!", "success")
+    return redirect(url_for("resource_bp.upload"))
 
 
 @auth_bp.post("/logout")
