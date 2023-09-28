@@ -7,6 +7,11 @@ from models.level import Level, LevelEnum
 home_bp = Blueprint('home_bp', __name__, template_folder="src/templates", static_folder="src/static")
 
 
+@home_bp.app_errorhandler(403)
+def page_not_found(error):
+    return render_template("errors/403.html"), 403
+
+
 @home_bp.app_errorhandler(404)
 def page_not_found(error):
     return render_template("errors/404.html"), 404
