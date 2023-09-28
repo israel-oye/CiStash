@@ -4,6 +4,7 @@ from flask_admin.contrib.fileadmin.s3 import S3FileAdmin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import (LoginManager, UserMixin, current_user, login_fresh,
                          login_required, login_user, logout_user)
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -30,6 +31,7 @@ migrate = Migrate()
 login_manager = LoginManager()
 crsf = CSRFProtect()
 admin = Admin(template_mode='bootstrap4')
+mail = Mail()
 
 
 login_manager.login_view = "auth_bp.login"

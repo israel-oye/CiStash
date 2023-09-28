@@ -16,6 +16,7 @@ from models.doc import Document
 from models.level import Level, LevelEnum
 
 from ..form import CourseForm
+from ..utils.decorators import verification_required
 
 load_dotenv()
 
@@ -32,7 +33,7 @@ b2_api.authorize_account(
 )
 bucket = b2_api.get_bucket_by_name(os.getenv("UPLOAD_BUCKET_NAME"))
 
-temp_dir = temp_file = Path(__file__).resolve().parent.parent / "static" / "temp"
+temp_dir = Path(__file__).resolve().parent.parent / "static" / "temp"
 
 
 @resource_bp.get("/course/<int:course_id>")
@@ -118,6 +119,7 @@ def get_level_courses(level_name):
 
 @resource_bp.get("/upload")
 @login_required
+@verification_required
 def get_upload_page():
     form = CourseForm()
     form.dyna_course_code.choices = []
@@ -155,6 +157,7 @@ def upload():
 
 @resource_bp.post("/file_upload")
 @login_required
+@verification_required
 def file_upload():
     file = request.files.get("file", None)
     if file:

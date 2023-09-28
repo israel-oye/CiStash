@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 import requests
 from dotenv import load_dotenv
@@ -11,6 +12,9 @@ from extensions import (NotFound, current_user, db, login_required, login_user,
 from models.moderator import Moderator
 
 from ..form import RegisterForm
+from ..utils.mail import send_email
+from ..utils.token import confirm_token, generate_token
+
 
 auth_bp = Blueprint("auth_bp", __name__, template_folder="src/templates", static_folder="static")
 
@@ -47,8 +51,18 @@ def register():
         db.session.add(mod)
         db.session.commit()
 
-        flash("Successfully registered. Please log in.", "success")
-        return redirect(url_for("auth_bp.login"))
+        token = generate_token(mod.email)
+        confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
+        mail_html = render_template("confirm_mail.html", confirm_url=confirm_url)
+        subject = "CiStash | Please confirm your mail"
+        send_email(mail_recipient=mod.email, mail_subject=subject, template=mail_html)
+
+        login_user(mod)
+        db.session.add(mod)
+        db.session.commit()
+
+        flash("Please confirm your mail before proceeding.", "info")
+        return redirect(url_for("auth_bp.inactive"))
 
     return render_template("register.html", form=register_form)
 
@@ -76,6 +90,51 @@ def login():
                 error = "Incorrect password/email combination"
                 return render_template("login.html", error=error)
     return render_template("login.html")
+
+
+@auth_bp.route("/confirm/<token>")
+@login_required
+def confirm_email(token):
+    if current_user.is_verified:
+        flash("Account already confirmed.", "info")
+        return redirect(url_for('resource_bp.upload'))
+    to_be_verified_email = confirm_token(token)
+    moderator = Moderator.query.filter_by(email=current_user.email).first()
+    if moderator is not None and moderator.email == to_be_verified_email:
+        moderator.is_verified = True
+        moderator.confirmed_on = datetime.now()
+
+        db.session.add(moderator)
+        db.session.commit()
+        flash("Your email has been confirmed. Thanks!", "success")
+        return redirect(url_for('resource_bp.upload'))
+    else:
+        flash("The confirmation link is invalid or has expired.", "danger")
+        return redirect(url_for("auth_bp.resend_confirmation"))
+
+
+@auth_bp.route("/inactive")
+@login_required
+def inactive():
+    if current_user.is_verified:
+        return redirect(url_for('resource_bp.upload'))
+    return render_template("inactive.html")
+
+
+@auth_bp.route("/resend")
+@login_required
+def resend_confirmation():
+    if current_user.is_verified:
+        flash("Your account has already been verified.", "info")
+        return redirect(url_for('resource_bp.upload'))
+    token = generate_token(current_user.email)
+    confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
+    mail_html = render_template("confirm_mail.html", confirm_url=confirm_url)
+    subject = "CiStash | Please confirm your mail"
+    send_email(mail_recipient=current_user.email, mail_subject=subject, template=mail_html)
+
+    flash("A new confirmation link has been sent to your email.", "success")
+    return redirect(url_for('auth_bp.inactive'))
 
 
 @auth_bp.route("/google/login", methods=["POST"])

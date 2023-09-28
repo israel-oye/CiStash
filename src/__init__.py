@@ -1,10 +1,10 @@
 import os
-
+from datetime import timedelta
 from dotenv import load_dotenv
 from flask import Flask, session
 
 from config import DevelopmentConfig
-from extensions import admin, crsf, db, login_manager, migrate, IntegrityError
+from extensions import admin, crsf, db, login_manager, mail, migrate, IntegrityError
 from models.level import Level, LevelEnum
 from models.moderator import IndexView, Moderator
 
@@ -23,7 +23,7 @@ db.init_app(app)
 migrate.init_app(app, db, render_as_batch=True)
 login_manager.init_app(app)
 admin.init_app(app, index_view=IndexView(name='Admin', url="/auth/admin"))
-
+mail.init_app(app)
 
 with app.app_context():
     db.create_all()
@@ -42,6 +42,7 @@ with app.app_context():
 @app.before_request
 def make_session_permanent():
     session.permanent = True
+    app.permanent_session_lifetime = timedelta(days=2, hours=12)
 
 @app.context_processor
 def utility_processor():
