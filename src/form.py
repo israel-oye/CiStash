@@ -10,10 +10,25 @@ from models.moderator import Moderator
 
 
 class RegisterForm(FlaskForm):
-    username = StringField("Username", [validators.Length(3, 25, "Username must be at least %(min)d long!")], render_kw={"autofocus": True, "class": "form-control", "placeholder": "Username"})
-    email = EmailField("Email", [InputRequired("Please enter an email!")], render_kw={"class": "form-control", "placeholder": "Email"})
-    password = PasswordField("Password", [InputRequired(), validators.EqualTo("confirm", message="Passwords do not match!")], render_kw={"class": "form-control", "placeholder": "Password"})
-    confirm = PasswordField("Confirm Password", render_kw={"class": "form-control", "placeholder": "Confirm password"})
+    username = StringField(
+                            "Username",
+                            [InputRequired("Please enter a username"), validators.Length(3, 25, "Username must be at least %(min)d long!")],
+                            render_kw={"autofocus": True, "class": "form-control", "placeholder": "Username"}
+                            )
+    email = EmailField(
+                        "Email",
+                        [InputRequired("Please enter an email!")],
+                        render_kw={"class": "form-control", "placeholder": "Email"}
+                        )
+    password = PasswordField(
+                            "Password",
+                            [InputRequired(),
+                            validators.EqualTo("confirm", message="Passwords do not match!")],
+                            render_kw={"class": "form-control", "placeholder": "Password"}
+                            )
+    confirm = PasswordField("Confirm Password",
+                            render_kw={"class": "form-control", "placeholder": "Confirm password"}
+                            )
 
     def validate_email(self, email):
         if Moderator.query.filter_by(email=email.data).first():
@@ -33,7 +48,7 @@ class CourseForm(FlaskForm):
                         )
     course_code = StringField(
                         "Course Code",
-                        [validators.Length(7, 7, "Please enter a valid course code."),  ],
+                        [InputRequired(), validators.Length(7, 7, "Please enter a valid course code."),  ],
                         render_kw={"class": "form-control", "placeholder": "e.g CSC 199"}
                         )
     course_title = StringField(
