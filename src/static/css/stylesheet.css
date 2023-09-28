@@ -33,6 +33,10 @@ mark {
     font-family: 'Nunito', sans-serif;
 }
 
+.google-btn {
+    text-transform: none !important;
+}
+
 .top-img {
     padding: 20px auto auto;
 }
@@ -100,6 +104,8 @@ mark {
     }
     img.table-img {
         width: 30%;
+        display: block;
+        margin: auto;
     }
     div#home-innercontainer {
         margin: 5%;

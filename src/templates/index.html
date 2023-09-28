@@ -40,7 +40,7 @@
     </section>
     <section class="container" id="levels">
         <div class="row">
-            <div class="col-lg-6 col-md-5 col-sm-4">
+            <div class="col-lg-6 col-md-5 col-sm-8">
                 <table class="table table-secondary text-center table-bordered table-hover table-striped level-table caption-top">
                     <caption>Resources</caption>
                     <thead></thead>
@@ -58,8 +58,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-lg-6 col-md-9 col-sm-9">
-                <img src="{{url_for('static', filename='/images/download.png')}}" alt="Person downloading" class="img-fluid table-img">
+            <div class="col-lg-6 col-md-7 col-sm-4">
+                <img src="{{url_for('static', filename='/images/download.png')}}" alt="Person downloading" class="img-fluid table-img mt-sm=5">
             </div>
         </div>
     </section>
@@ -69,10 +69,14 @@
 <script type="text/javascript">
     function image_changer(media_query) {
         imageElem = document.querySelector(".folder-img");
+        imageElem2 = document.querySelector(".table-img");
+
         if (media_query.matches) {
             imageElem.src = "{{url_for('static', filename='images/download.png')}}"
+            imageElem2.src = "{{url_for('static', filename='images/folder-download.webp')}}";
         } else {
             imageElem.src = "{{url_for('static', filename='images/folder.png')}}"
+            imageElem2.src = "{{url_for('static', filename='images/download.png')}}"
         }
     }
 
