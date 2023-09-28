@@ -40,6 +40,8 @@ class Moderator(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(500), nullable=False)
+    email_verified = db.Column(db.Boolean(), nullable=False, default=False)
+    confirmed_on = db.Column(db.DateTime())
 
     uploads = db.relationship("Document", back_populates="uploader", lazy="select")
     roles = db.relationship("Role", secondary="users_roles", back_populates="users")
@@ -48,6 +50,7 @@ class Moderator(db.Model, UserMixin):
         self.username = username
         self.email = email
         self.password = sha256_crypt.encrypt(password)
+        self.email_verified = False
 
         default_role = Role.query.filter_by(name="regular").first()
         if default_role:
@@ -72,6 +75,14 @@ class Moderator(db.Model, UserMixin):
         admin_role = Role.query.filter_by(name="admin").first()
         return admin_role in self.roles
 
+    @property
+    def is_verified(self):
+        return self.email_verified
+
+    @is_verified.setter
+    def is_verified(self, value: bool):
+        self.email_verified = bool(value)
+
     def get_id(self):
         return self.id_
 
@@ -88,8 +99,8 @@ class ModeratorView(ModelView):
     column_display_pk = True
     edit_modal = True
     column_exclude_list = ['password']
-    column_list = ('username', 'email', 'roles')
-    form_columns = ['username', 'email', 'roles']
+    column_list = ('username', 'email', 'email_verified', 'roles', 'confirmed_on')
+    form_columns = ['username', 'email', 'email_verified', 'roles']
     form_widget_args = {
         'username': {
             'readonly': True
@@ -121,7 +132,7 @@ class IndexView(AdminIndexView):
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_admin:
             return super().is_accessible()
-        abort(404)
+        abort(403)
 
     def inaccessible_callback(self, name, **kwargs):
         flash("Out of bounds!", "warning")
