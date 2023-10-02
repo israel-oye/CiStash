@@ -11,12 +11,12 @@ from extensions import (NotFound, current_user, db, login_required, login_user,
                         logout_user)
 from models.moderator import Moderator
 
-from ..form import RegisterForm
+from ..utils.form import RegisterForm
 from ..utils.mail import send_email
 from ..utils.token import confirm_token, generate_token
 
 
-auth_bp = Blueprint("auth_bp", __name__, template_folder="src/templates", static_folder="static")
+auth_bp = Blueprint("auth_bp", __name__, template_folder="templates/auth", static_folder="static")
 
 load_dotenv()
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
@@ -29,6 +29,7 @@ def get_google_provider():
     try:
         r = requests.get(GOOGLE_DISCOVERY_URL)
     except requests.exceptions.RequestException as e:
+        print(e)
         abort(500)
     else:
         return r.json()
@@ -53,7 +54,7 @@ def register():
 
         token = generate_token(mod.email)
         confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
-        mail_html = render_template("confirm_mail.html", confirm_url=confirm_url)
+        mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url)
         subject = "CiStash | Please confirm your mail"
         send_email(mail_recipient=mod.email, mail_subject=subject, template=mail_html)
 
@@ -64,7 +65,7 @@ def register():
         flash("Please confirm your mail before proceeding.", "info")
         return redirect(url_for("auth_bp.inactive"))
 
-    return render_template("register.html", form=register_form)
+    return render_template("auth/register.html", form=register_form)
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
@@ -80,7 +81,7 @@ def login():
             user = Moderator.query.filter_by(email=input_email).first_or_404()
         except NotFound as e:
             error = "Incorrect email/password combination"
-            return render_template("login.html", error=error)
+            return render_template("auth/login.html", error=error)
         else:
             if user.password_is_correct(password_candidate=input_pwd):
                 login_user(user=user)
@@ -88,8 +89,8 @@ def login():
                 return redirect(url_for("resource_bp.upload"))
             else:
                 error = "Incorrect password/email combination"
-                return render_template("login.html", error=error)
-    return render_template("login.html")
+                return render_template("auth/login.html", error=error)
+    return render_template("auth/login.html")
 
 
 @auth_bp.route("/confirm/<token>")
@@ -118,7 +119,7 @@ def confirm_email(token):
 def inactive():
     if current_user.is_verified:
         return redirect(url_for('resource_bp.upload'))
-    return render_template("inactive.html")
+    return render_template("auth/inactive.html")
 
 
 @auth_bp.route("/resend")
@@ -129,7 +130,7 @@ def resend_confirmation():
         return redirect(url_for('resource_bp.upload'))
     token = generate_token(current_user.email)
     confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
-    mail_html = render_template("confirm_mail.html", confirm_url=confirm_url)
+    mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url)
     subject = "CiStash | Please confirm your mail"
     send_email(mail_recipient=current_user.email, mail_subject=subject, template=mail_html)
 

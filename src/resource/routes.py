@@ -15,12 +15,12 @@ from models.course import Course
 from models.doc import Document
 from models.level import Level, LevelEnum
 
-from ..form import CourseForm
+from ..utils.form import CourseForm
 from ..utils.decorators import verification_required
 
 load_dotenv()
 
-resource_bp = Blueprint("resource_bp", __name__, template_folder="src/templates", static_folder="src/static")
+resource_bp = Blueprint("resource_bp", __name__, template_folder="templates/resource", static_folder="src/static")
 
 
 b2_info = b2.InMemoryAccountInfo()
@@ -48,7 +48,7 @@ def get_course(course_id):
         "is_empty": is_empty
     }
 
-    return render_template("course_page.html", **context)
+    return render_template("resource/course_page.html", **context)
 
 
 @resource_bp.get("/document/<file_uuid>/download")
@@ -98,7 +98,7 @@ def search():
         "result_count": len(search_hits) + len(doc_hits)
     }
 
-    return render_template("search.html", **context)
+    return render_template("resource/search.html", **context)
 
 
 @resource_bp.route("/upload/<level_name>/courses")
@@ -123,7 +123,7 @@ def get_level_courses(level_name):
 def get_upload_page():
     form = CourseForm()
     form.dyna_course_code.choices = []
-    return render_template("upload.html", form=form)
+    return render_template("resource/upload.html", form=form)
 
 
 @resource_bp.post("/upload")

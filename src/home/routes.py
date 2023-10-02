@@ -4,7 +4,7 @@ from flask import (Blueprint, abort, current_app, flash, redirect,
 from models.course import Course
 from models.level import Level, LevelEnum
 
-home_bp = Blueprint('home_bp', __name__, template_folder="src/templates", static_folder="src/static")
+home_bp = Blueprint('home_bp', __name__, template_folder="templates/home", static_folder="src/static")
 
 
 @home_bp.app_errorhandler(403)
@@ -24,7 +24,7 @@ def page_not_found(error):
 
 @home_bp.get("/")
 def index():
-    return render_template("index.html")
+    return render_template("home/index.html")
 
 
 @home_bp.get("/level/<int:level_id>")
@@ -35,4 +35,4 @@ def level_page(level_id):
         abort(404)
 
     level_courses = level.courses.order_by(Course.course_code).all()
-    return render_template("level_page.html", level=level, level_courses=level_courses)
+    return render_template("home/level_page.html", level=level, level_courses=level_courses)

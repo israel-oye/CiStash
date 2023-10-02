@@ -1,0 +1,42 @@
+{% extends '_layout.html' %}
+<!--  -->
+{% block title %} {{level.name.value}} level courses {% endblock %}
+<!--  -->
+{% block body %}
+<main class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-5">
+            <li class="breadcrumb-item"><a class="" href="{{url_for('home_bp.index')}}#levels">Levels</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a class="" href="{{url_for('home_bp.level_page', level_id=level.id_)}}">{{level.name.value}}</a></li>
+        </ol>
+    </nav>
+    <h2 class="text-center border-bottom mb-3">
+        {{level.name.value}} Level Courses <i class="fa-sharp fa-solid fa-book text-info"></i>
+    </h2>
+    <table class="table table-primary table-active mt-4 mb-0">
+        <thead>
+            <tr>
+                <th scope="col">Folders</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+    </table>
+    {% for course in level_courses %}
+    <div class="coursebox container bg-secondary my-2 border-bottom">
+        <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
+            <h4>
+                <i class="fa-solid fa-folder text-dark"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
+            </h4>
+        </a>
+    </div>
+    {% endfor %}
+</main>
+<script text="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        let body = document.body
+        body.classList.remove("bg-secondary");
+    })
+</script>
+{% endblock %}

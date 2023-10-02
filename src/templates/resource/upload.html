@@ -1,0 +1,153 @@
+{% extends '_layout.html' %}
+<!--  -->
+{% block title %}Add Course, Upload File{% endblock %}
+<!--  -->
+{% block body %}
+<main class="container pt-5" id="form-container">
+    <!-- SUCCESS MODAL -->
+    <div class="modal fade" id="success-modal" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title"><i class="fa-solid fa-circle-check text-success"></i> Success</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="success-modal-text" class="fs-6"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR MODAL -->
+    <div class="modal fade" id="error-modal" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content bg-gradient bg-danger text-light">
+                <div class="modal-header">
+                    <h6 class="modal-title"><i class="fa-solid fa-circle-exclamation"></i> Error</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="error-modal-text" class="fs-6"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="row justify-content-center">
+        <div class="col-9 col-lg-6 bg-primary bg-gradient rounded m-auto pt-3">
+            <ul class="nav nav-tabs nav-fill mt-2" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active tab-btn" id="add-course-tab" data-bs-toggle="tab" data-bs-target="#add-course" type="button" role="tab" aria-controls="home" aria-selected="true">
+                        <h4 class="text-warning"><i class="fa-solid fa-book-open"></i> Add Course</h4>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link tab-btn" id="document-tab" data-bs-toggle="tab" data-bs-target="#doc-upload" type="button" role="tab" aria-controls="doc" aria-selected="false">
+                        <h4><i class="fa-solid fa-arrow-up-from-bracket fa-bounce" style="--fa-animation-duration: 4s;"></i> Upload document</h4>
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="tabsContent">
+                <section class="tab-pane fade show active" id="add-course" role="tabpanel" aria-labelledby="add-course-tab">
+                    <form action="{{url_for('resource_bp.upload')}}" id="form1" method="post" class="form m-4 w-85">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                        <div class="p-auto">
+                            <div class="mb-4 align-content-center">
+                                {{form.levels.label(class_="form-label text-light")}}
+                                <!--  -->
+                                {{form.levels}}
+                                <!--  -->
+                                {% for error in form.levels.errors %}
+                                <small class="form-text" id="level-error"><i class="fa-solid fa-circle-exclamation text-danger"></i> {{ error }}</small>
+                                <!--  -->
+                                {% endfor %}
+                            </div>
+                            <div class="mb-4 align-content-center">
+                                {{ form.course_code.label(class_="form-label text-light") }}
+                                <!--  -->
+                                {{ form.course_code }}
+                                <!--  -->
+                                <small class="form-text" id="course-code-error" style="display: none;"><i class="fa-solid fa-circle-exclamation text-danger"></i> <span></span></small>
+                            </div>
+                            <div class="mb-3 align-content-center">
+                                {{ form.course_title.label(class_="form-label text-light") }}
+                                <!--  -->
+                                {{ form.course_title }}
+                                <!--  -->
+                                <small class="form-text" id="course-title-error" style="display: none;"><i class="fa-solid fa-circle-exclamation text-danger"></i> <span></span></small>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-lg btn-success mt-2" type="submit" formaction="{{url_for('resource_bp.upload')}}"><i class="fa-regular fa-square-plus"></i> Add Course</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <section class="tab-pane fade" id="doc-upload" role="tabpanel" aria-labelledby="upload-document-tab">
+                    <form action="" method="post" class="form m-4 w-85" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf-token" id="upload-token" value="{{csrf_token()}}">
+                        <div class="p-auto">
+                            <div class="mb-4 align-content-center">
+                                {{form.levels.label(class_="form-label text-light")}}
+                                <!--  -->
+                                {{form.levels(id="form2-level")}}
+                                <!--  -->
+                                {% for error in form.levels.errors %}
+                                <small class="form-text" id="level-error"><i class="fa-solid fa-circle-exclamation text-danger"></i> {{ error }}</small>
+                                <!--  -->
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-4 align-content-center">
+                                <label for="dyna_course_code" class="form-label text-light">Course Code <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="right" title="If the course code is not in the list of options, add the course on other form"></i></label>
+                                <!--  -->
+                                {{ form.dyna_course_code }}
+                            </div>
+
+                            <div class="mb-3 align-content-center bg-light dropzone" id="upload">
+                                <div class="fallback">
+                                    <input name="file" type="file" class="form-control" accept=".pdf, .doc, .docx, .odt, .rtf, .txt, .epub, .ppt, .pptx" />
+                                </div>
+                                <!-- DROPZONE -->
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-lg btn-danger mt-2" id="upload-btn" type="submit" formaction="{{url_for('resource_bp.file_upload')}}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                            </div>
+                            <input type="hidden" id="upload-url" value="{{url_for('resource_bp.file_upload')}}">
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+</main>
+<!--  -->
+
+<!-- DROPZONE handler -->
+<script src="{{url_for('static', filename='assets/form-handler.js' )}}" defer>
+</script>
+<script type="text/javascript">
+    let tabButtons = document.querySelectorAll(".tab-btn");
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            tabButtons.forEach(btn => {
+                if (btn.ariaSelected != "true") {
+                    btn.firstElementChild.classList.remove("text-warning");
+                    btn.firstElementChild.classList.add("text-dark");
+                } else {
+                    btn.firstElementChild.classList.remove("text-dark");
+                    btn.firstElementChild.classList.add("text-warning");
+                }
+            })
+        })
+    })
+</script>
+<!--  -->
+{% endblock %}
