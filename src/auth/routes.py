@@ -54,7 +54,7 @@ def register():
 
         token = generate_token(mod.email)
         confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
-        mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url)
+        mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url, username=mod.username)
         subject = "CiStash | Please confirm your mail"
         send_email(mail_recipient=mod.email, mail_subject=subject, template=mail_html)
 
@@ -130,7 +130,7 @@ def resend_confirmation():
         return redirect(url_for('resource_bp.upload'))
     token = generate_token(current_user.email)
     confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
-    mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url)
+    mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url, username=current_user.username)
     subject = "CiStash | Please confirm your mail"
     send_email(mail_recipient=current_user.email, mail_subject=subject, template=mail_html)
 
