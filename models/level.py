@@ -8,6 +8,7 @@ class LevelEnum(enum.Enum):
     TWO = "200"
     THREE = "300"
     FOUR = "400"
+    FIVE = "500"
 
 class Level(db.Model):
     __tablename__ = "level"
