@@ -101,7 +101,7 @@ def search():
     return render_template("resource/search.html", **context)
 
 
-@resource_bp.route("/upload/<level_name>/courses")
+@resource_bp.get("/fetch/<level_name>/courses")
 def get_level_courses(level_name):
     selected_level = Level.query.filter_by(name=level_name).first_or_404()
     level_courses = selected_level.courses.order_by(Course.course_code).all()

@@ -204,7 +204,7 @@ async function submitForm(formData) {
 
 async function get_level_courses(level_name) {
     try {
-        const response = await fetch(`/resource/upload/${level_name}/courses`);
+        const response = await fetch(`/resource/fetch/${level_name}/courses`);
 
         let data = await response.json();
 
