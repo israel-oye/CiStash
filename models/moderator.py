@@ -37,7 +37,7 @@ class Moderator(db.Model, UserMixin):
     """Uploader, i.e Moderator user model or an Admin."""
 
     id_ = db.Column(db.Integer(), primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
+    username = db.Column(db.String(20), nullable=False, unique=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(500), nullable=False)
     email_verified = db.Column(db.Boolean(), nullable=False, default=False)
