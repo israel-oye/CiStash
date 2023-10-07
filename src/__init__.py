@@ -27,10 +27,12 @@ def register_blueprints(app: Flask):
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(resource_bp, url_prefix="/resource")
 
+    app.add_url_rule("/", endpoint="home_bp.index")
+
 def create_app(config_filename=None):
     app = Flask(__name__)
 
-    app.config.from_object(LifeWireConfig)
+    app.config.from_object(ProductionConfig)
 
     initialize_extensions(app)
     register_blueprints(app)
