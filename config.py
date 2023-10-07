@@ -32,6 +32,7 @@ class Config(object):
 class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
+    SESSION_COOKIE_SECURE = True
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
 

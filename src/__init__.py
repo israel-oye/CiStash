@@ -55,13 +55,6 @@ def create_app(config_filename=None):
     def make_session_permanent():
         session.permanent = True
 
-    @app.before_request
-    def fix_missing_csrf_token():
-        if app.config['WTF_CSRF_FIELD_NAME'] not in session:
-            if app.config['WTF_CSRF_FIELD_NAME'] in g:
-                g.pop(app.config['WTF_CSRF_FIELD_NAME'])
-
-
     @app.context_processor
     def utility_processor():
         def get_file_format(file_name: str):
