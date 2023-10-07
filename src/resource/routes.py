@@ -31,7 +31,7 @@ b2_api.authorize_account(
     application_key_id=os.getenv("B2_KEY_ID"),
     application_key=os.getenv("B2_APPLICATION_KEY")
 )
-bucket = b2_api.get_bucket_by_name(os.getenv("UPLOAD_BUCKET_NAME"))
+bucket = b2_api.get_bucket_by_name(os.getenv("B2_UPLOAD_BUCKET_NAME"))
 
 temp_dir = Path(__file__).resolve().parent.parent / "static" / "temp"
 
