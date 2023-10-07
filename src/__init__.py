@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import g, Flask, session
 
 from config import LifeWireConfig, ProductionConfig
 from extensions import admin, crsf, db, login_manager, mail, migrate, IntegrityError
@@ -54,6 +54,13 @@ def create_app(config_filename=None):
     @app.before_request
     def make_session_permanent():
         session.permanent = True
+
+    @app.before_request
+    def fix_missing_csrf_token():
+        if app.config['WTF_CSRF_FIELD_NAME'] not in session:
+            if app.config['WTF_CSRF_FIELD_NAME'] in g:
+                g.pop(app.config['WTF_CSRF_FIELD_NAME'])
+
 
     @app.context_processor
     def utility_processor():
