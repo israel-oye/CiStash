@@ -38,7 +38,7 @@ def send_verification_link(user: Moderator):
     token = generate_token(user.email)
     confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
     mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url, username=user.username)
-    subject = "CiStash | Please confirm your mail"
+    subject = "StashIT | Please confirm your mail"
 
     send_email(mail_recipient=user.email, mail_subject=subject, template=mail_html)
 
