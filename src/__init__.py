@@ -1,6 +1,6 @@
 from flask import Flask, session
 
-from config import DevelopmentConfig, ProductionConfig, TestingConfig
+from config import LifeWireConfig, ProductionConfig
 from extensions import admin, crsf, db, login_manager, mail, migrate, IntegrityError
 from models.level import Level, LevelEnum
 from models.moderator import IndexView, Moderator
@@ -30,7 +30,7 @@ def register_blueprints(app: Flask):
 def create_app(config_filename=None):
     app = Flask(__name__)
 
-    app.config.from_object(TestingConfig)
+    app.config.from_object(LifeWireConfig)
 
     initialize_extensions(app)
     register_blueprints(app)

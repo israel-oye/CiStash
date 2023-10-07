@@ -3,14 +3,14 @@ from datetime import timedelta
 
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 class Config(object):
     DEBUG = False
     TESTING = False
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    PERMANENT_SESSION_LIFETIME = timedelta(days=1, hours=6)
-    SECURITY_PASSWORD_SALT = os.urandom(16)
+    SECRET_KEY = os.getenv("SECRET_KEY", default=os.urandom(32))
+    PERMANENT_SESSION_LIFETIME = timedelta(days=2, hours=12)
+    SECURITY_PASSWORD_SALT = os.urandom(32)
 
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -32,6 +32,7 @@ class Config(object):
 class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
 
 class DevelopmentConfig(Config):
@@ -45,6 +46,12 @@ class TestingConfig(Config):
     TESTING = True
     EXPLAIN_TEMPLATE_LOADING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///../test.db"
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
+    WTF_CSRF_ENABLED = False
+
+
+class LifeWireConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL_PROD_TEST")
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
     WTF_CSRF_ENABLED = False
 
