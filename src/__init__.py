@@ -11,7 +11,7 @@ from .resource import resource_bp
 
 
 def initialize_extensions(app: Flask):
-    #crsf.init_app(app)
+    crsf.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     login_manager.init_app(app)
