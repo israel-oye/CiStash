@@ -34,6 +34,14 @@ def get_google_provider():
     else:
         return r.json()
 
+def send_verification_link(user: Moderator):
+    token = generate_token(user.email)
+    confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
+    mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url, username=user.username)
+    subject = "CiStash | Please confirm your mail"
+
+    send_email(mail_recipient=user.email, mail_subject=subject, template=mail_html)
+
 google_provider_cfg = get_google_provider()
 
 @auth_bp.route("/register", methods=["GET", "POST"])
@@ -52,11 +60,7 @@ def register():
         db.session.add(mod)
         db.session.commit()
 
-        token = generate_token(mod.email)
-        confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
-        mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url, username=mod.username)
-        subject = "CiStash | Please confirm your mail"
-        send_email(mail_recipient=mod.email, mail_subject=subject, template=mail_html)
+        send_verification_link(user=mod)
 
         login_user(mod)
         db.session.add(mod)
@@ -119,6 +123,7 @@ def confirm_email(token):
 def inactive():
     if current_user.is_verified:
         return redirect(url_for('resource_bp.upload'))
+    send_verification_link(user=current_user)
     return render_template("auth/inactive.html")
 
 
@@ -128,12 +133,7 @@ def resend_confirmation():
     if current_user.is_verified:
         flash("Your account has already been verified.", "info")
         return redirect(url_for('resource_bp.upload'))
-    token = generate_token(current_user.email)
-    confirm_url = url_for("auth_bp.confirm_email", token=token, _external=True)
-    mail_html = render_template("auth/confirm_mail.html", confirm_url=confirm_url, username=current_user.username)
-    subject = "CiStash | Please confirm your mail"
-    send_email(mail_recipient=current_user.email, mail_subject=subject, template=mail_html)
-
+    send_verification_link(user=current_user)
     flash("A new confirmation link has been sent to your email.", "success")
     return redirect(url_for('auth_bp.inactive'))
 
