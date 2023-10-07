@@ -33,7 +33,8 @@ class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
     SESSION_COOKIE_SECURE = True
-    SERVER_NAME = 'stashit.onrender.com'
+    REMEMBER_COOKIE_SECURE = True
+
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
 
