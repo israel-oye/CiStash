@@ -74,12 +74,14 @@ def register():
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    current_app.logger.debug(request.form.to_dict())
-    current_app.logger.debug(request.get_data(parse_form_data=True))
+
     if current_user.is_authenticated:
         return redirect(url_for("resource_bp.upload"))
 
     if request.method == "POST":
+        current_app.logger.debug(request.form.to_dict())
+        current_app.logger.debug(request.get_data(parse_form_data=True))
+
         input_email = request.form.get("email")
         input_pwd = request.form.get("password")
 
