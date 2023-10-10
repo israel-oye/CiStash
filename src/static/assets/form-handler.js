@@ -27,7 +27,13 @@ Dropzone.options.upload = {
 
         this.on('error', function(file, response) {
             if (typeof response === "string") {
-                var message = response;
+                var message = '';
+                // Flask aborting an E-500 renders an error page
+                if (response.startsWith("<!DOCTYPE html>")) {
+                    message = "Something is wrong at the server. Please try again later..."
+                } else {
+                    message = response;
+                }
             } else {
                 var message = response.message;
             }

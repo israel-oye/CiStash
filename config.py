@@ -50,8 +50,10 @@ class TestingConfig(Config):
     WTF_CSRF_ENABLED = False
 
 
-class LifeWireConfig(Config):
+class LiveWireConfig(Config):
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL_PROD_TEST")
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
-    WTF_CSRF_ENABLED = False
+    WTF_CSRF_ENABLED = True
+
 
