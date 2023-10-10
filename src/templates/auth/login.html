@@ -8,7 +8,7 @@
         <div class="col-9 col-lg-6 bg-primary bg-gradient rounded m-auto">
             <h4 class="text-center text-light pt-3"><i class="fa-solid fa-right-to-bracket"></i> Login</h4>
             <form action="{{url_for('auth_bp.login')}}" method="post" class="form m-4 w-85">
-                <input type="hidden" name="csrf-token" value="{{csrf_token()}}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="p-auto">
                     <div class="mb-3 align-content-center">
                         <label class="form-label text-light" for="email">Email</label>
@@ -32,6 +32,7 @@
 
             </form>
             <form method="post" action="{{url_for('auth_bp.oauth_login')}}" id="google-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             </form>
         </div>
     </div>

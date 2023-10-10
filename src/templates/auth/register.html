@@ -63,7 +63,7 @@
                 </div>
             </form>
             <form method="post" action="{{url_for('auth_bp.oauth_login')}}" id="google-form">
-                <input type="hidden" name="csrf-token" value="{{ csrf_token() }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             </form>
         </div>
     </div>
