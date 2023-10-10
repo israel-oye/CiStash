@@ -168,6 +168,15 @@ def file_upload():
         current_chunk = int(request.form["dzchunkindex"])
 
         temp_file = Path(temp_dir / unique_filename)
+
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        current_app.logger.info(BASE_DIR)
+        current_app.logger.info(temp_file.exists())
+
+        for f in os.listdir(temp_file):
+            current_app.logger.info(f)
+
+
         with open(temp_file, "ab") as f:
             f.seek(int(request.form["dzchunkbyteoffset"]))
             f.write(uploaded_file.stream.read())
