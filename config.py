@@ -30,7 +30,7 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    DEBUG = False
+    DEBUG = True
     TESTING = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
