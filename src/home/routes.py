@@ -24,6 +24,12 @@ def internal_server_error(error):
 
 @home_bp.get("/")
 def index():
+    import os
+
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    current_app.logger.info(BASE_DIR)
     return render_template("home/index.html")
 
 
