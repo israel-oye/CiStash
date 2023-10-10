@@ -4,7 +4,7 @@ from datetime import datetime
 
 import requests
 from dotenv import load_dotenv
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, current_app, flash, redirect, render_template, request, url_for
 from oauthlib.oauth2 import WebApplicationClient
 
 from extensions import (NotFound, current_user, db, login_required, login_user,
@@ -74,6 +74,8 @@ def register():
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
+    current_app.logger.debug(request.form.to_dict())
+    current_app.logger.debug(request.get_data(parse_form_data=True))
     if current_user.is_authenticated:
         return redirect(url_for("resource_bp.upload"))
 
