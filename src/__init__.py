@@ -33,12 +33,12 @@ def create_app(config_filename=None):
     app = Flask(__name__)
 
     app.config.from_object(ProductionConfig)
-
-
+    initialize_extensions(app)
+    register_blueprints(app)
 
     with app.app_context():
-        initialize_extensions(app)
-        register_blueprints(app)
+
+
         db.create_all()
 
         levels = []
