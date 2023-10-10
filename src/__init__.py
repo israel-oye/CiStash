@@ -1,6 +1,6 @@
 from flask import g, Flask, session
 
-from config import LifeWireConfig, ProductionConfig
+from config import LiveWireConfig, ProductionConfig
 from extensions import admin, crsf, db, login_manager, mail, migrate, IntegrityError
 from models.level import Level, LevelEnum
 from models.moderator import IndexView, Moderator
@@ -29,12 +29,20 @@ def register_blueprints(app: Flask):
 
     app.add_url_rule("/", endpoint="home_bp.index")
 
+def set_logging(app: Flask):
+    import logging
+
+    gunicorn_error_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers.extend(gunicorn_error_logger.handlers)
+    app.logger.setLevel(logging.DEBUG)
+
 def create_app(config_filename=None):
     app = Flask(__name__)
 
-    app.config.from_object(ProductionConfig)
+    app.config.from_object(LiveWireConfig)
     initialize_extensions(app)
     register_blueprints(app)
+    set_logging(app)
 
     with app.app_context():
         db.create_all()
