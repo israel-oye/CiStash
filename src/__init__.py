@@ -37,13 +37,6 @@ def create_app(config_filename=None):
     register_blueprints(app)
 
     with app.app_context():
-        import os
-
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-        app.logger.info(BASE_DIR)
-
-
         db.create_all()
 
         levels = []
