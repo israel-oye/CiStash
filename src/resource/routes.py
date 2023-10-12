@@ -166,15 +166,20 @@ def file_upload():
         unique_filename = f"{uploaded_file_uid[:8]}_{secure_filename(uploaded_file.filename)}"
 
         current_chunk = int(request.form["dzchunkindex"])
-
+        current_app.logger.info(f"Current chunk: {current_chunk}")
         temp_file = Path(temp_dir / unique_filename)
-
+        current_app.logger.info(f"Before touch: {temp_file.exists()}")
         if current_chunk == 0:
             temp_file.touch()
+        current_app.logger.info(f"Files before write: {os.listdir(temp_dir)}")
+        current_app.logger.info(f"File exist after touch: {temp_file.exists()}")
 
         with open(temp_file, "ab") as f:
             f.seek(int(request.form["dzchunkbyteoffset"]))
             f.write(uploaded_file.stream.read())
+
+        current_app.logger.info(f"Files after write: {os.listdir(temp_dir)}")
+        current_app.logger.info(f"File exist after write: {temp_file.exists()}")
 
         total_file_size = int(request.form.get("dztotalfilesize", "N/A"))
         total_chunks = int(request.form.get("dztotalchunkcount"))
@@ -219,7 +224,7 @@ def file_upload():
             finally:
                 os.remove(temp_file)
         else:
-            current_app.logger.debug(f"Chunk {current_chunk + 1} of {total_chunks} for file {secure_filename(uploaded_file.filename)} complete")
+            current_app.logger.info(f"Chunk {current_chunk + 1} of {total_chunks} for file {secure_filename(uploaded_file.filename)} complete")
 
         return jsonify({"message": "Upload success!", "code": 200}), 200
     else:
