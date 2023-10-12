@@ -121,7 +121,7 @@
                     <i class="fa-solid fa-file-lines fa-lg"></i>
                     <!---->
                     {% endif %}
-                    <a class="link-downloader ps-2" href="{{url_for('resource_bp.download_document', file_uuid=doc.uuid)}}">   {{doc.filename}}</a>
+                    <a class="link-downloader ps-2" href="{{url_for('resource_bp.download_document', file_uuid=doc.uuid)}}">   {{ truncate_filename(doc.filename) }}</a>
                 </td>
                 <td>
                     {{doc.file_size}} MB
