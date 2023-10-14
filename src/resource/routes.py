@@ -167,6 +167,7 @@ def file_upload():
 
         current_chunk = int(request.form["dzchunkindex"])
         current_app.logger.info(f"Current chunk: {current_chunk}")
+        temp_dir.mkdir()
         temp_file = Path(temp_dir / unique_filename)
         current_app.logger.info(f"Files before touch: {os.listdir(temp_dir)}")
         current_app.logger.info(f"Exist before touch: {temp_file.exists()}")
