@@ -34,7 +34,8 @@ b2_api.authorize_account(
 bucket = b2_api.get_bucket_by_name(os.getenv("B2_UPLOAD_BUCKET_NAME"))
 
 temp_dir = Path(__file__).resolve().parent.parent / "static" / "temp"
-temp_dir.mkdir()
+if not temp_dir.exists():
+    temp_dir.mkdir()
 
 @resource_bp.get("/course/<int:course_id>")
 def get_course(course_id):
