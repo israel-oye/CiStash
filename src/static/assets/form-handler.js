@@ -236,10 +236,17 @@ let course_code_select = document.querySelector("#dyna_course_code");
 document.addEventListener("DOMContentLoaded", function() {
     const form_1 = document.getElementById("form1");
     if (form_1) {
+        var courseButton = document.getElementById("add-course-btn");
         form_1.addEventListener('submit', (event) => {
+            courseButton.disabled = true;
             event.preventDefault();
             const formData = new FormData(form_1);
             submitForm(formData);
+
+            setTimeout(function() {
+                courseButton.disabled = false;
+            }, 1500)
+
         });
     }
 })

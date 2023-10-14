@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-9 col-lg-6 bg-primary bg-gradient rounded m-auto">
             <h4 class="text-center text-light pt-3"><i class="fa-solid fa-user-plus"></i> Register</h4>
-            <form action="{{url_for('auth_bp.register')}}" method="post" class="m-4 w-85">
+            <form action="{{url_for('auth_bp.register')}}" method="post" class="m-4 w-85" id="register-form">
                 {{ form.csrf_token }}
                 <div class="form-floating mb-3">
                     {{ form.username }}
@@ -59,7 +59,9 @@
                         </svg>
                         Google
                     </button>
-                    <button class="btn btn-lg btn-success mt-3" type="submit"><i class="fa-solid fa-circle-user fa-flip" style="--fa-animation-duration: 5s;"></i> Sign Up</button>
+                    <button class="btn btn-lg btn-success mt-3 signup-btn" type="submit" disabled="disabled" onclick="var e=this;setTimeout(function(){e.disabled=true;},0);return true;">
+                        <i class="fa-solid fa-circle-user fa-flip" style="--fa-animation-duration: 5s;"></i> Sign Up
+                    </button>
                 </div>
             </form>
             <form method="post" action="{{url_for('auth_bp.oauth_login')}}" id="google-form">
@@ -69,4 +71,25 @@
     </div>
 </main>
 <script src="{{url_for('static', filename='assets/auth-handler.js')}}"></script>
+<script type="text/javascript">
+    var form = document.getElementById("register-form");
+    var inputs = document.querySelectorAll('input')
+    var required_inputs = document.querySelectorAll('input[required]');
+    var submitButton = document.querySelector('button.signup-btn')
+
+    form.addEventListener('keyup', function(e) {
+        var disabled = false
+        required_inputs.forEach(function(input, index) {
+            if (input.value === '' || !input.value.replace(/\s/g, '').length) {
+                disabled = true
+            }
+        })
+        if (disabled) {
+            submitButton.setAttribute('disabled', 'disabled')
+        } else {
+            submitButton.removeAttribute('disabled')
+        }
+    })
+</script>
+
 {% endblock %}
