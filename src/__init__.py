@@ -39,7 +39,7 @@ def set_logging(app: Flask):
 def create_app(config_filename=None):
     app = Flask(__name__)
 
-    app.config.from_object(LiveWireConfig)
+    app.config.from_object(ProductionConfig)
     initialize_extensions(app)
     register_blueprints(app)
     set_logging(app)
