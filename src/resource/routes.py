@@ -203,7 +203,6 @@ def file_upload():
                 "document_size": format(total_file_size * (10**-6), ".2f")
             }
             global bucket
-            bucket.update(default_server_side_encryption=b2_encryption_setting)
             try:
                 uploaded_bucket_file = bucket.upload_local_file(
                     local_file=temp_file,
@@ -229,7 +228,7 @@ def file_upload():
             finally:
                 os.remove(temp_file)
         else:
-            current_app.logger.info(f"Chunk {current_chunk + 1} of {total_chunks} for file {secure_filename(uploaded_file.filename)} complete")
+            current_app.logger.debug(f"Chunk {current_chunk + 1} of {total_chunks} for file {secure_filename(uploaded_file.filename)} complete")
 
         return jsonify({"message": "Upload success!", "code": 200}), 200
     else:
