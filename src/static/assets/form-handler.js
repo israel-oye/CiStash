@@ -14,7 +14,7 @@ Dropzone.options.upload = {
     maxFiles: 1,
     maxFilesize: 512, // megabytes
     chunkSize: 1 * 1024 * 1024, // bytes
-    retryChunks: true,
+    retryChunks: false,
     retryChunksLimit: 3,
     dictDefaultMessage: '<h5>Drag file here or click to upload relevant course document. <i style="display: block;" class="fa-solid fa-2x fa-cloud-arrow-up"></i></h5>',
     dictCancelUpload: "Cancel Upload",
