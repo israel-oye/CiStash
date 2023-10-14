@@ -66,4 +66,4 @@ I extend my gratitude to the open-source community for their invaluable contribu
 
 Ready to share and explore academic course materials like never before? Try CiStash today and be a part of the academic community.
 
-Visit us at [www.cistash.undecided](#) and start your educational journey!
+Visit us at [StashIt](https://stashit.onrender.com) and start your educational journey!
