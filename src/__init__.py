@@ -67,8 +67,12 @@ def create_app(config_filename=None):
         def get_file_format(file_name: str):
             return file_name.split('.')[-1]
 
+        def truncate_filename(filename: str):
+            truncated_text = filename[:30] + '...' if len(filename) > 33 else filename
+            return truncated_text
+
         lvls = {level.name: level.value for level in LevelEnum}
-        return dict(get_file_format=get_file_format, lvl_mapping=lvls)
+        return dict(get_file_format=get_file_format, lvl_mapping=lvls, truncate_filename=truncate_filename)
 
 
     return app

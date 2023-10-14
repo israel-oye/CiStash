@@ -17,7 +17,7 @@ class Config(object):
 
     WTF_CSRF_ENABLED = True
 
-    FLASK_ADMIN_SWATCH = 'Solar'
+    FLASK_ADMIN_SWATCH = 'solar'
 
     MAIL_DEFAULT_SENDER="noreply@flask.com"
     MAIL_SERVER="smtp.googlemail.com"

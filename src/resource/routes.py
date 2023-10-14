@@ -34,7 +34,8 @@ b2_api.authorize_account(
 bucket = b2_api.get_bucket_by_name(os.getenv("B2_UPLOAD_BUCKET_NAME"))
 
 temp_dir = Path(__file__).resolve().parent.parent / "static" / "temp"
-
+if not temp_dir.exists():
+    temp_dir.mkdir()
 
 @resource_bp.get("/course/<int:course_id>")
 def get_course(course_id):
@@ -168,6 +169,9 @@ def file_upload():
         current_chunk = int(request.form["dzchunkindex"])
 
         temp_file = Path(temp_dir / unique_filename)
+        if current_chunk == 0:
+            temp_file.touch()
+
         with open(temp_file, "ab") as f:
             f.seek(int(request.form["dzchunkbyteoffset"]))
             f.write(uploaded_file.stream.read())
@@ -179,21 +183,16 @@ def file_upload():
                 return jsonify({"message": "Size mismatch", "status": 400}), 400
 
             course_id = int(request.form["course_id"])
-            try:
-                doc_course = Course.query.get_or_404(course_id)
-            except NotFound:
+            document_course = Course.query.get(course_id)
+            if not document_course:
                 return jsonify({"message": "Related course not found, please select a valid course from option above", "code": 400}), 400
-            except Exception as e:
-                current_app.log_exception(e)
-                return jsonify({"message": "Internal server error...", "code": 500}), 500
             metadata = {
                 "filename": unique_filename[9:],
                 "unique_filename": unique_filename,
-                "document_course": doc_course.course_code,
+                "document_course": document_course.course_code,
                 "document_size": format(total_file_size * (10**-6), ".2f")
             }
             global bucket
-            bucket.update(default_server_side_encryption=b2_encryption_setting)
             try:
                 uploaded_bucket_file = bucket.upload_local_file(
                     local_file=temp_file,
@@ -206,21 +205,16 @@ def file_upload():
                 current_app.logger.error(e)
                 return jsonify({"message": "An error occured while uploading, please try again...", "code": 500}), 500
             else:
-                try:
-                    new_document = Document(
-                        uuid=uploaded_bucket_file.id_,
-                        filename=metadata["filename"],
-                        file_size=metadata["document_size"],
-                        download_link=download_url,
-                        course_id=doc_course.id_,
-                        uploader_id=current_user.id_
-                    )
-                    db.session.add(new_document)
-                    db.session.commit()
-                except SQLAlchemyError:
-                    jsonify({"message": "An error occured while saving, please try again...", "code": 500}), 500
-                except Exception as e:
-                    current_app.log_exception(e)
+                new_document = Document(
+                    uuid=uploaded_bucket_file.id_,
+                    filename=metadata["filename"],
+                    file_size=metadata["document_size"],
+                    download_link=download_url,
+                    course_id=document_course.id_,
+                    uploader_id=current_user.id_
+                )
+                db.session.add(new_document)
+                db.session.commit()
             finally:
                 os.remove(temp_file)
         else:
