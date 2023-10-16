@@ -27,6 +27,7 @@ class RegisterForm(FlaskForm):
                             render_kw={"class": "form-control", "placeholder": "Password"}
                             )
     confirm = PasswordField("Confirm Password",
+                            [InputRequired()],
                             render_kw={"class": "form-control", "placeholder": "Confirm password"}
                             )
 
