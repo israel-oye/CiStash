@@ -27,6 +27,11 @@ def index():
     return render_template("home/index.html")
 
 
+@home_bp.get("/terms-of-privacy")
+def privacy_page():
+    return render_template("home/privacy.html")
+
+
 @home_bp.get("/level/<int:level_id>")
 def level_page(level_id):
     level = Level.query.get(level_id)

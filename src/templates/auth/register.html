@@ -43,7 +43,7 @@
                     {% endfor %}
                 </div>
 
-                <div>
+                <div class="mb-2">
                     {{ form.confirm }}
                     <!--  -->
                     {% for error in form.confirm.errors %}
@@ -51,7 +51,14 @@
                     <!--  -->
                     {% endfor %}
                 </div>
-
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck" required>
+                        <label class="form-check-label" for="gridCheck">
+                            By signing up, you agree to our <a class="text-secondary" data-bs-toggle="offcanvas" href="#offcanvasPrivacy" role="button" aria-controls="offcanvasPrivacy">Terms of Privacy</a>
+                        </label>
+                    </div>
+                </div>
                 <div class="mb-3 text-center">
                     <button class="google-btn btn btn-secondary mt-3 mx-1" form="google-form" title="Sign up with Google">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="25" viewBox="0 0 100 100">
@@ -63,12 +70,55 @@
                         <i class="fa-solid fa-circle-user fa-flip" style="--fa-animation-duration: 5s;"></i> Sign Up
                     </button>
                 </div>
+
             </form>
             <form method="post" action="{{url_for('auth_bp.oauth_login')}}" id="google-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             </form>
         </div>
     </div>
+
+    <!-- TERMS OF PRIVACY OFFCANVAS -->
+    <section class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPrivacy" aria-labelledby="offcanvasPrivacyLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasPrivacyLabel">StashIT Terms of Privacy</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body small">
+            <div class="col-9">
+                <h1 class="mt-5">Privacy Policy</h1>
+
+                <p class="mt-4">StashIT ("we," "our," or "us") is committed to safeguarding the privacy and security of your personal information. This Privacy Policy outlines how we collect, use, and protect your data when you access our website or use our services.</p>
+
+                <h2 class="mt-4">1. Information We Collect:</h2>
+
+                <p>We may collect and store the following information for the sole purpose of providing our services and ensuring a secure user experience:</p>
+                <ul>
+                    <li><strong>Identity Information:</strong> To create and manage your account, we collect your email address and password. Your email address is used for account-related communications, such as password resets and account confirmation.</li>
+                    <li><strong>User-Generated Content:</strong> Any content you generate on our platform, such as text and files, is stored for your use only. We do not access or use this content for any purposes.</li>
+                </ul>
+
+                <h2 class="mt-4">2. Data Usage and Retention:</h2>
+                <p>We do not collect usage data, deploy tracking mechanisms, or save cookies. Your privacy is of utmost importance to us, and we respect your anonymity when you use our services.</p>
+
+                <h2 class="mt-4">3. Data Security:</h2>
+                <p>The security of your personal information is our priority. We employ industry-standard practices to ensure the protection of your email address and password. Please note that the security of your data is closely linked to the security
+                    of our database. We take all necessary steps to secure our systems.</p>
+
+                <h2 class="mt-4">4. Third-Party Disclosure:</h2>
+                <p>We do not share your personal information with third parties. Your data is solely used for your interaction with our services.</p>
+
+                <h2 class="mt-4">5. Changes to the Privacy Policy:</h2>
+                <p>We may update this Privacy Policy to reflect changes in our practices or for legal compliance. We will inform you of any significant changes through email or by prominently posting a notice on our website.</p>
+
+                <h2 class="mt-4">6. Contact Us:</h2>
+                <p>If you have any questions or concerns about this Privacy Policy or your data, please contact us at
+                    <a href="mailto:pelumioyeboade7@gmail.com"><i class="fa-solid fa-envelope"></i> @pelumioyeboade7</a></p>
+
+                <p>By using our services, you agree to the terms outlined in this Privacy Policy. Your continued use of our services constitutes your acceptance of this policy.</p>
+            </div>
+        </div>
+    </section>
 </main>
 <script src="{{url_for('static', filename='assets/auth-handler.js')}}"></script>
 <script type="text/javascript">
@@ -76,11 +126,13 @@
     var inputs = document.querySelectorAll('input')
     var required_inputs = document.querySelectorAll('input[required]');
     var submitButton = document.querySelector('button.signup-btn')
+    var checkBox = document.querySelector('input[type="checkbox"]');
 
-    form.addEventListener('keyup', function(e) {
+
+    function validateForm() {
         var disabled = false
         required_inputs.forEach(function(input, index) {
-            if (input.value === '' || !input.value.replace(/\s/g, '').length) {
+            if (input.value === '' || !input.value.replace(/\s/g, '').length || !checkBox.checked) {
                 disabled = true
             }
         })
@@ -89,7 +141,10 @@
         } else {
             submitButton.removeAttribute('disabled')
         }
-    })
+    }
+
+    checkBox.addEventListener("change", validateForm);
+    form.addEventListener("keyup", validateForm);
 </script>
 
 {% endblock %}
