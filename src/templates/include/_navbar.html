@@ -18,7 +18,7 @@
                     </ul>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" id="upload-nav" href="{{url_for('resource_bp.upload')}}">Upload</a>
+                    <a class="nav-link nav-text" id="upload-nav" href="{{url_for('resource_bp.get_upload_page')}}">Upload</a>
                 </li>
                 <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
@@ -30,13 +30,21 @@
                     <hr class="d-lg-none my-2 text-white-50">
                 </li>
                 <li class="nav-item px-3">
+                    {% if current_user.is_authenticated %}
+                    <a class="nav-link nav-text" title="Help" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-question"></i></a>
+                    <!--  -->
+                    {% else %}
                     <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-info"></i></a>
+                    <!--  -->
+                    {% endif %}
                 </li>
                 {% if current_user.is_admin %}
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text" href="/auth/admin" target="_blank" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i></a>
                 </li>
-                {% endif %} {% if current_user.is_authenticated %}
+                {% endif %}
+                <!-- -->
+                {% if current_user.is_authenticated %}
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text brand-text" href="#" data-bs-toggle="modal" data-bs-target="#logout-modal"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade" style="--fa-animation-duration: 5s;"></i></a>
                 </li>
@@ -55,24 +63,37 @@
 <div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            {% if current_user.is_authenticated %}
             <div class="modal-header">
                 <h5 class="modal-title" id="infoModalLabel">
-                    <i class="brand-text fa-solid fa-folder-tree fa-flip fa-xs" style="--fa-animation-duration: 4s;"></i> About Uploading</h5>
+                    <i class="brand-text fa-solid fa-folder-tree fa-flip fa-xs" style="--fa-animation-duration: 4s;"></i> How to contribute</h5>
                 </h5>
-
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            {% if current_user.is_authenticated %}
-            <!--  -->
             <div class="modal-body">
-                <p class="text-wrap">Only Upload course details that are verified and relevant course materials. Non compliant uploads will be deleted by the admin.
+                <p class="text-wrap">So you have joined the elite community of contributors. <i class="fa-solid fa-people-line fa-lg"></i>
+                    <br><br> You can <a href="{{url_for('resource_bp.get_upload_page')}}">contribute</a> by
+                    <ul>
+                        <li>Adding a course - <i>This creates an empty folder for a course</i>,</li>
+                        <li>And uploading a document for an existing course.</li>
+                    </ul>
+                    <br>Usually the exisiting flow is to add a course, and then open the "Upload document" tab to add a relevant file for the course. But you can do anything you think is necessary.
+                    <br> <br><i class="fa-solid fa-triangle-exclamation"></i> Be careful to add the correct course details and ensure the files are related to the course. Non compliant uploads will be cleaned up by the admin. Don't make the work hard
+                    for the poor admin.
                 </p>
             </div>
             {% else %}
-            <!--  -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">
+                    <i class="brand-text fa-solid fa-folder-tree fa-flip fa-xs" style="--fa-animation-duration: 4s;"></i> So, what is all this?</h5>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <div class="modal-body">
-                <p class="">To maintain a high-quality repository, please ensure you upload only verified and relevant course materials. Our administrators will promptly remove any non-compliant uploads. To get started, kindly log in or sign up to continue with your
-                    uploads. Thank you for contributing to this platform!
+                <p> A-hem! So this is a platform where anyone can download course materials and upload as well. If you notice that a course is not available for a particular level, or a course does not have any documents, you can upload what you have.
+                    <br><br> Everything (content) on <span class="brand-text">StashIT</span> is user-generated and (sadly,) this means that someone has to have uploaded stuff before OR have added a course before you can get resources.
+                    <br> On the bright side, you can be a contributor and save a whole lot of people this headik. To contribute, please sign up or login to continue.
+                    <br><br> Also, if you want to get rid of your course materials, feel free to dump them here and delete them from your device with peace. Have fun!🤸
                 </p>
                 <div class="container">
                     <div class="row">
