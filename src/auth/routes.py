@@ -205,6 +205,6 @@ def oauth_login_callback():
 @login_required
 def logout():
     logout_user()
-    flash("Successfully logged out", 'success')
+    flash("Successfully logged out", 'warning')
     return redirect(url_for("auth_bp.login"))
 

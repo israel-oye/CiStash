@@ -34,7 +34,7 @@
                                     <br> 2. Enter some course details in the search bar.
                                 </p><br>
                                 <p class="fs-6">
-                                    To contribute, <a href="" href="{{url_for('auth_bp.register')}}" data-bs-toggle="modal" data-bs-target="#auth-modal">click here.</a>
+                                    For more info, <a href="" data-bs-toggle="modal" data-bs-target="#info-modal">click here.</a>
                                 </p>
                             </div>
                             <div class="modal-footer">
@@ -88,7 +88,7 @@
         }
     }
 
-    const mq = window.matchMedia("(max-width: 575px)");
+    var mq = window.matchMedia("(max-width: 575px)");
     mq.addListener(image_changer);
     image_changer(mq);
 </script>

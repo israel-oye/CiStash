@@ -1,10 +1,10 @@
 <nav class="navbar navbar-dark navbar-expand-lg bg-primary sticky-top" data-bs-theme="light">
     <div class="container-fluid mx-4 my-2">
         <a class="navbar-brand brand-text" href="{{url_for('home_bp.index')}}">StashIT <i class="fa-solid fa-folder-tree"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa-solid fa-ellipsis fa-xl"></i>
       </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 px-4">
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text active" href="{{url_for('home_bp.index')}}">Home</a>
@@ -31,7 +31,7 @@
                 </li>
                 <li class="nav-item px-3">
                     {% if current_user.is_authenticated %}
-                    <a class="nav-link nav-text" title="Help" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-question"></i></a>
+                    <a class="nav-link nav-text" title="Help" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-2xl fa-circle-question"></i></a>
                     <!--  -->
                     {% else %}
                     <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-info"></i></a>
@@ -59,6 +59,72 @@
     </div>
 </nav>
 
+<!-- NAV OFF CANVAS -->
+<div class="offcanvas offcanvas-start bg-primary w-50" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="true">
+    <div class="navbar-dark bg-primary" data-bs-theme="light">
+        <div class="offcanvas-header">
+            <h6 class="offcanvas-title d-sm-block brand-text" id="offcanvasLabel">
+                <i class="fa-solid fa-compass fa-spin" style="--fa-animation-duration: 3s;"></i> Menu
+            </h6>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body px-0">
+            <ul class="navbar-nav ms-auto mb-5 mb-lg-0 px-4">
+                <li class="nav-item px-2">
+                    <a class="nav-link nav-text active" href="{{url_for('home_bp.index')}}"><i class="fa-solid fa-house"></i> Home</a>
+                </li>
+                <li class="nav-item dropdown px-2">
+                    <a class="nav-link dropdown-toggle nav-text" href="#levels" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-layer-group"></i> Levels</a>
+                    <ul class="dropdown-menu">
+                        {% for level in lvl_mapping.items() %}
+                        <li><a class="dropdown-item" href="{{url_for('home_bp.level_page', level_id=level[1][0])}}">{{level[1]}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="nav-item px-2">
+                    <a class="nav-link nav-text" id="upload-nav" href="{{url_for('resource_bp.get_upload_page')}}">
+                        <i class="fa-solid fa-folder-plus"></i> Contribute
+                    </a>
+                </li>
+                <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <input id="search-box" class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Looking for something?" aria-label="Search">
+                    <button class="btn rounded-circle btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+                <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                    <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+                    <hr class="d-lg-none my-2 text-white-50">
+                </li>
+                <li class="nav-item px-2">
+                    {% if current_user.is_authenticated %}
+                    <a class="nav-link nav-text" title="Help" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-2xl fa-circle-question"></i> Help</a>
+                    <!--  -->
+                    {% else %}
+                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-2xl fa-circle-info"></i> Info</a>
+                    <!--  -->
+                    {% endif %}
+                </li>
+                {% if current_user.is_admin %}
+                <li class="nav-item px-2">
+                    <a class="nav-link nav-text" href="/auth/admin" target="_blank" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i> Admin</a>
+                </li>
+                {% endif %}
+                <!-- -->
+                {% if current_user.is_authenticated %}
+                <li class="nav-item px-2">
+                    <a class="nav-link nav-text brand-text" href="#" data-bs-toggle="modal" data-bs-target="#logout-modal"><i class="fa-solid fa-right-from-bracket fa-xl fa-fade" style="--fa-animation-duration: 5s;"></i> Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item px-2">
+                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user fa-2xl"></i> Login / Signup</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+
 <!-- INFO MODAL -->
 <div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -71,15 +137,15 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="text-wrap">So you have joined the elite community of contributors. <i class="fa-solid fa-people-line fa-lg"></i>
+                <p class="text-wrap">So you have joined the elite community of contributors. <i class="fa-solid fa-people-line fa-lg brand-text"></i>
                     <br><br> You can <a href="{{url_for('resource_bp.get_upload_page')}}">contribute</a> by
                     <ul>
                         <li>Adding a course - <i>This creates an empty folder for a course</i>,</li>
                         <li>And uploading a document for an existing course.</li>
                     </ul>
                     <br>Usually the exisiting flow is to add a course, and then open the "Upload document" tab to add a relevant file for the course. But you can do anything you think is necessary.
-                    <br> <br><i class="fa-solid fa-triangle-exclamation"></i> Be careful to add the correct course details and ensure the files are related to the course. Non compliant uploads will be cleaned up by the admin. Don't make the work hard
-                    for the poor admin.
+                    <br> <br><i class="fa-solid fa-triangle-exclamation text-warning"></i> Be careful to add the correct course details and ensure the files are related to the course. Non compliant uploads will be cleaned up by the admin. Don't make the
+                    work hard for the poor admin.
                 </p>
             </div>
             {% else %}
