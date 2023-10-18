@@ -205,6 +205,7 @@ async function submitForm(formData) {
 
     } catch (error) {
         console.log(error);
+        show_error_modal(`An error occured while sending. Please try again.`);
     }
 }
 
