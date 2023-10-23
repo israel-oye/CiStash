@@ -238,6 +238,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const form_1 = document.getElementById("form1");
     if (form_1) {
         var courseButton = document.getElementById("add-course-btn");
+        var courseCodeErrorElem = document.getElementById("course-code-error");
+        var courseTitleErrorElem = document.getElementById("course-title-error");
+
+        courseButton.addEventListener('click', function(e) {
+            courseCodeErrorElem.style.display = "none";
+            courseTitleErrorElem.style.display = "none";
+        })
+
         form_1.addEventListener('submit', (event) => {
             courseButton.disabled = true;
             event.preventDefault();
