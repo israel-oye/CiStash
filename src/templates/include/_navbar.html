@@ -7,10 +7,10 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 px-4">
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text active" href="{{url_for('home_bp.index')}}">Home</a>
+                    <a class="nav-link nav-text home-nav" href="{{url_for('home_bp.index')}}">Home</a>
                 </li>
                 <li class="nav-item dropdown px-3">
-                    <a class="nav-link dropdown-toggle nav-text" href="#levels" role="button" data-bs-toggle="dropdown" aria-expanded="false">Levels</a>
+                    <a class="nav-link dropdown-toggle nav-text level-nav" href="#levels" role="button" data-bs-toggle="dropdown" aria-expanded="false">Levels</a>
                     <ul class="dropdown-menu">
                         {% for level in lvl_mapping.items() %}
                         <li><a class="dropdown-item" href="{{url_for('home_bp.level_page', level_id=level[1][0])}}">{{level[1]}}</a></li>
@@ -50,11 +50,10 @@
                 </li>
                 {% else %}
                 <li class="nav-item px-3">
-                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user fa-2xl"></i></a>
+                    <a class="nav-link nav-text auth-nav" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user fa-2xl"></i></a>
                 </li>
                 {% endif %}
             </ul>
-
         </div>
     </div>
 </nav>
@@ -71,10 +70,10 @@
         <div class="offcanvas-body px-0">
             <ul class="navbar-nav ms-auto mb-5 mb-lg-0 px-4">
                 <li class="nav-item px-2">
-                    <a class="nav-link nav-text active" href="{{url_for('home_bp.index')}}"><i class="fa-solid fa-house"></i> Home</a>
+                    <a class="nav-link nav-text home-nav" href="{{url_for('home_bp.index')}}"><i class="fa-solid fa-house"></i> Home</a>
                 </li>
                 <li class="nav-item dropdown px-2">
-                    <a class="nav-link dropdown-toggle nav-text" href="#levels" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-layer-group"></i> Levels</a>
+                    <a class="nav-link dropdown-toggle nav-text level-nav" href="#levels" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-layer-group"></i> Levels</a>
                     <ul class="dropdown-menu">
                         {% for level in lvl_mapping.items() %}
                         <li><a class="dropdown-item" href="{{url_for('home_bp.level_page', level_id=level[1][0])}}">{{level[1]}}</a></li>
@@ -116,7 +115,7 @@
                 </li>
                 {% else %}
                 <li class="nav-item px-2">
-                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user fa-2xl"></i> Login / Signup</a>
+                    <a class="nav-link nav-text auth-nav" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user fa-2xl"></i> Login / Signup</a>
                 </li>
                 {% endif %}
             </ul>

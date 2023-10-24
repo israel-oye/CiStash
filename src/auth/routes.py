@@ -29,7 +29,6 @@ def get_google_provider():
     try:
         r = requests.get(GOOGLE_DISCOVERY_URL)
     except requests.exceptions.RequestException as e:
-        print(e)
         abort(500)
     else:
         return r.json()
@@ -47,7 +46,7 @@ google_provider_cfg = get_google_provider()
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("resource_bp.upload"))
+        return redirect(url_for("resource_bp.get_upload_page"))
 
     register_form = RegisterForm(request.form)
 
@@ -75,7 +74,7 @@ def register():
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("resource_bp.upload"))
+        return redirect(url_for("resource_bp.get_upload_page"))
 
     if request.method == "POST":
         input_email = request.form.get("email")
@@ -90,7 +89,7 @@ def login():
             if user.password_is_correct(password_candidate=input_pwd):
                 login_user(user=user)
                 flash(f"Login success. Welcome {current_user.username}!", "success")
-                return redirect(url_for("resource_bp.upload"))
+                return redirect(url_for("resource_bp.get_upload_page"))
             else:
                 error = "Incorrect password/email combination"
                 return render_template("auth/login.html", error=error)
@@ -102,7 +101,7 @@ def login():
 def confirm_email(token):
     if current_user.is_verified:
         flash("Account already confirmed.", "info")
-        return redirect(url_for('resource_bp.upload'))
+        return redirect(url_for('resource_bp.get_upload_page'))
     to_be_verified_email = confirm_token(token)
     moderator = Moderator.query.filter_by(email=current_user.email).first()
     if moderator is not None and moderator.email == to_be_verified_email:
@@ -112,7 +111,7 @@ def confirm_email(token):
         db.session.add(moderator)
         db.session.commit()
         flash("Your email has been confirmed. Thanks!", "success")
-        return redirect(url_for('resource_bp.upload'))
+        return redirect(url_for('resource_bp.get_upload_page'))
     else:
         flash("The confirmation link is invalid or has expired.", "danger")
         return redirect(url_for("auth_bp.resend_confirmation"))
@@ -122,7 +121,7 @@ def confirm_email(token):
 @login_required
 def inactive():
     if current_user.is_verified:
-        return redirect(url_for('resource_bp.upload'))
+        return redirect(url_for('resource_bp.get_upload_page'))
     send_verification_link(user=current_user)
     return render_template("auth/inactive.html")
 
@@ -132,7 +131,7 @@ def inactive():
 def resend_confirmation():
     if current_user.is_verified:
         flash("Your account has already been verified.", "info")
-        return redirect(url_for('resource_bp.upload'))
+        return redirect(url_for('resource_bp.get_upload_page'))
     send_verification_link(user=current_user)
     flash("A new confirmation link has been sent to your email.", "success")
     return redirect(url_for('auth_bp.inactive'))
@@ -198,7 +197,7 @@ def oauth_login_callback():
     else:
         login_user(user=user)
         flash(f"Login success. Welcome, {current_user.username}!", "success")
-    return redirect(url_for("resource_bp.upload"))
+    return redirect(url_for("resource_bp.get_upload_page"))
 
 
 @auth_bp.post("/logout")

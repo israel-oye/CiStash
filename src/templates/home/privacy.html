@@ -38,4 +38,12 @@
     </div>
 
 </main>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentNavLinks = document.querySelectorAll('a.home-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
+    })
+</script>
 {% endblock %}
