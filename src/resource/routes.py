@@ -127,8 +127,8 @@ def get_upload_page():
     return render_template("resource/upload.html", form=form)
 
 
-@resource_bp.post("/upload")
-def upload():
+@resource_bp.post("/add-course")
+def upload_course():
     if not current_user.is_authenticated:
         return jsonify({'message': 'An error occured, please re-login to complete action'}), 401
 
@@ -148,6 +148,7 @@ def upload():
             return jsonify({"message": "An error occurred while saving, please try again."}), 500
         except Exception as e:
             current_app.log_exception(e)
+            return jsonify({"message": "An error occurred while saving, please try again."}), 500
         else:
             return jsonify({"message": "Course added successfully", "redirect_url": "/pass"}), 200 #TODO probably add redirect link.
                                                                                                #"redirect_url": url_for(home.index)
@@ -156,7 +157,7 @@ def upload():
         return jsonify({"errors": errors}), 400
 
 
-@resource_bp.post("/file_upload")
+@resource_bp.post("/file-upload")
 @login_required
 @verification_required
 def file_upload():
