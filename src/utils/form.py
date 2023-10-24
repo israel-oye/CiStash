@@ -84,4 +84,4 @@ class CourseForm(FlaskForm):
         field_data = str(course_title_field.data).title()
 
         if Course.query.filter_by(course_title=field_data).first():
-            raise ValidationError(f"It seems like this course has been registered, please check carefully and try again.")
+            raise ValidationError(f"It seems like an existing course has a similar title, please check carefully and try again.")
