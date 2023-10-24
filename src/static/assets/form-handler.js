@@ -138,9 +138,13 @@ function show_error_modal(modal_text) {
 }
 
 
+/**
+ *
+ * @param {FormData} formData
+ */
 async function submitForm(formData) {
     try {
-        const response = await fetch('/resource/upload', {
+        const response = await fetch('/resource/add-course', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
