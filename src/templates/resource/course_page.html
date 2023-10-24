@@ -147,6 +147,12 @@
         if (cloudIconElement) {
             cloudIconElement.classList.add("text-primary");
         }
+
+        var currentNavLinks = document.querySelectorAll('a.level-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
+
     })
 </script>
 <!-- 'form-handler' script is placed before 'download-handler' -->

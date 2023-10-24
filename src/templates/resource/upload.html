@@ -150,6 +150,13 @@
             })
         })
     })
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentNavLinks = document.querySelectorAll('a#upload-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
+    })
 </script>
 <!--  -->
 {% endblock %}

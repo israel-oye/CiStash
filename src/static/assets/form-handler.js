@@ -275,7 +275,7 @@ if (form_2_level_select) {
         then((optionArray) => {
             var updated_options = optionArray;
 
-            for (option of updated_options) {
+            for (let option of updated_options) {
                 course_code_select.appendChild(option);
             }
         })
