@@ -123,7 +123,7 @@ def get_level_courses(level_name):
 @verification_required
 def get_upload_page():
     form = CourseForm()
-    form.dyna_course_code.choices = []
+    form.course_code_dropdown.choices = []
     return render_template("resource/upload.html", form=form)
 
 

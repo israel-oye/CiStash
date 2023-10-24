@@ -24,8 +24,8 @@
                         <input type="hidden" name="csrf-token" id="upload-token" value="{{csrf_token()}}">
                         <div class="p-auto">
                             <div class="mb-4 align-content-center">
-                                <label for="dyna_course_code" class="form-label">Course Code <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="right" title="If the course code is not in the list of options, add the course on other form"></i></label>
-                                <select aria-label="Select course code" class="form-select" id="dyna_course_code" disabled="disabled" name="dyna_course_code">
+                                <label for="course_code_dropdown" class="form-label">Course Code <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="right" title="If the course code is not in the list of options, add the course on other form"></i></label>
+                                <select aria-label="Select course code" class="form-select" id="course_code_dropdown" disabled="disabled" name="course_code_dropdown">
                                         <option value="{{course.id_}}">{{course.course_code}}</option>
                                     </select>
                             </div>

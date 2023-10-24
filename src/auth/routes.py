@@ -29,7 +29,6 @@ def get_google_provider():
     try:
         r = requests.get(GOOGLE_DISCOVERY_URL)
     except requests.exceptions.RequestException as e:
-        current_app.logger.info(e)
         abort(500)
     else:
         return r.json()

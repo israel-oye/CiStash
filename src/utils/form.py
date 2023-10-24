@@ -57,7 +57,7 @@ class CourseForm(FlaskForm):
                         [InputRequired()],
                         render_kw={"class": "form-control", "placeholder": "e.g Introduction to Web Development", "aria-placeholder": "e.g Introduction to Web Development"}
                         )
-    dyna_course_code = SelectField(
+    course_code_dropdown = SelectField(
                         'Course Code',
                         validate_choice=False,
                         choices=[],

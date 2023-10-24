@@ -48,7 +48,7 @@ Dropzone.options.upload = {
         });
 
         this.on('sending', function(data, xhr, formData) {
-            var selectedCourseId = document.querySelector('#dyna_course_code');
+            var selectedCourseId = document.querySelector('#course_code_dropdown');
             var tokenElem = document.querySelector("#upload-token");
 
             formData.append("course_id", selectedCourseId.value);
@@ -236,7 +236,7 @@ async function get_level_courses(level_name) {
 
 
 let form_2_level_select = document.querySelector("#form2-level");
-let course_code_select = document.querySelector("#dyna_course_code");
+let course_code_select = document.querySelector("#course_code_dropdown");
 
 document.addEventListener("DOMContentLoaded", function() {
     const form_1 = document.getElementById("form1");
