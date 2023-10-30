@@ -8,7 +8,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from sqlalchemy import MetaData
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from werkzeug.exceptions import InternalServerError, NotFound

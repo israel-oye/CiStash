@@ -1,0 +1,21 @@
+{% extends '_layout.html' %}
+<!--  -->
+{% block title %}Authentication Error{% endblock %}
+<!--  -->
+{% block body %}
+
+<div class="container p-5">
+    <div class="row pt-3 mt-5">
+        <div class="col-12 col-lg-4 col-md-4 left-pane">
+            <img class="img-fluid mx-auto pb-5 err-img" src="{{url_for('static', filename='/images/token-expired.webp')}}" alt="CSRF Error image">
+        </div>
+        <div class="col-12 col-lg-8 col-md-8 right-pane">
+            <h2 class="mb-3">CSRF token expired</h2>
+            <p>
+                Hello user, it is not very common to experience this error but if you are seeing this page, it means you have to refresh the login/signup page before entering your details. Thank you.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
