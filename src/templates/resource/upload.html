@@ -56,7 +56,7 @@
             </ul>
             <div class="tab-content" id="tabsContent">
                 <section class="tab-pane fade show active" id="add-course" role="tabpanel" aria-labelledby="add-course-tab">
-                    <form action="{{url_for('resource_bp.upload')}}" id="form1" method="post" class="form m-4 w-85">
+                    <form action="{{url_for('resource_bp.upload_course')}}" id="form1" method="post" class="form m-4 w-85">
                         <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                         <div class="p-auto">
                             <div class="mb-4 align-content-center">
@@ -84,7 +84,7 @@
                                 <small class="form-text" id="course-title-error" style="display: none;"><i class="fa-solid fa-circle-exclamation text-danger"></i> <span></span></small>
                             </div>
                             <div class="mb-3 text-center">
-                                <button id="add-course-btn" class="btn btn-lg btn-success mt-2" type="submit" formaction="{{url_for('resource_bp.upload')}}"><i class="fa-regular fa-square-plus"></i> Add Course</button>
+                                <button id="add-course-btn" class="btn btn-lg btn-success mt-2" type="submit" formaction="{{url_for('resource_bp.upload_course')}}"><i class="fa-regular fa-square-plus"></i> Add Course</button>
                             </div>
                         </div>
                     </form>
@@ -105,9 +105,9 @@
                             </div>
 
                             <div class="mb-4 align-content-center">
-                                <label for="dyna_course_code" class="form-label text-light">Course Code <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="right" title="If the course code is not in the list of options, add the course on other form"></i></label>
+                                <label for="course_code_dropdown" class="form-label text-light">Course Code <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="right" title="If the course code is not in the list of options, add the course on other form"></i></label>
                                 <!--  -->
-                                {{ form.dyna_course_code }}
+                                {{ form.course_code_dropdown }}
                             </div>
 
                             <div class="mb-3 align-content-center bg-light dropzone" id="upload">
@@ -149,6 +149,13 @@
                 }
             })
         })
+    })
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentNavLinks = document.querySelectorAll('a#upload-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
     })
 </script>
 <!--  -->

@@ -37,6 +37,11 @@
     document.addEventListener("DOMContentLoaded", function() {
         let body = document.body
         body.classList.remove("bg-secondary");
+
+        var currentNavLinks = document.querySelectorAll('a.level-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
     })
 </script>
 {% endblock %}

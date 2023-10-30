@@ -48,7 +48,7 @@ Dropzone.options.upload = {
         });
 
         this.on('sending', function(data, xhr, formData) {
-            var selectedCourseId = document.querySelector('#dyna_course_code');
+            var selectedCourseId = document.querySelector('#course_code_dropdown');
             var tokenElem = document.querySelector("#upload-token");
 
             formData.append("course_id", selectedCourseId.value);
@@ -138,9 +138,13 @@ function show_error_modal(modal_text) {
 }
 
 
+/**
+ *
+ * @param {FormData} formData
+ */
 async function submitForm(formData) {
     try {
-        const response = await fetch('/resource/upload', {
+        const response = await fetch('/resource/add-course', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -232,12 +236,20 @@ async function get_level_courses(level_name) {
 
 
 let form_2_level_select = document.querySelector("#form2-level");
-let course_code_select = document.querySelector("#dyna_course_code");
+let course_code_select = document.querySelector("#course_code_dropdown");
 
 document.addEventListener("DOMContentLoaded", function() {
     const form_1 = document.getElementById("form1");
     if (form_1) {
         var courseButton = document.getElementById("add-course-btn");
+        var courseCodeErrorElem = document.getElementById("course-code-error");
+        var courseTitleErrorElem = document.getElementById("course-title-error");
+
+        courseButton.addEventListener('click', function(e) {
+            courseCodeErrorElem.style.display = "none";
+            courseTitleErrorElem.style.display = "none";
+        })
+
         form_1.addEventListener('submit', (event) => {
             courseButton.disabled = true;
             event.preventDefault();
@@ -263,7 +275,7 @@ if (form_2_level_select) {
         then((optionArray) => {
             var updated_options = optionArray;
 
-            for (option of updated_options) {
+            for (let option of updated_options) {
                 course_code_select.appendChild(option);
             }
         })

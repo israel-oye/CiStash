@@ -91,5 +91,12 @@
     var mq = window.matchMedia("(max-width: 575px)");
     mq.addListener(image_changer);
     image_changer(mq);
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentNavLinks = document.querySelectorAll('a.home-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
+    })
 </script>
 {% endblock %}

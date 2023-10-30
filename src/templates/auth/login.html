@@ -60,5 +60,12 @@
             loginButton.removeAttribute('disabled')
         }
     })
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentNavLinks = document.querySelectorAll('a.auth-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
+    })
 </script>
 {% endblock %}

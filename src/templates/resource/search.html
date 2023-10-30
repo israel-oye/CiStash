@@ -117,6 +117,13 @@
 
     let search_box = document.getElementById("search-box");
     search_box.value = rawString;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentNavLinks = document.querySelectorAll('a.home-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
+    })
 </script>
 <script src="{{url_for('static', filename='assets/download-handler.js')}}"></script>
 <!--  -->
