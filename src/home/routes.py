@@ -24,7 +24,7 @@ def internal_server_error(error):
 
 @home_bp.app_errorhandler(CSRFError)
 def csrf_error(error):
-    return render_template("csrf-error.html"), 400
+    return render_template("errors/csrf-error.html"), 400
 
 
 @home_bp.get("/")
