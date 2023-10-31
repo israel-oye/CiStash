@@ -3,6 +3,7 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 import b2sdk.v2 as b2
+from b2sdk.v2.exception import B2Error
 from dotenv import load_dotenv
 from flask import (Blueprint, current_app, jsonify, render_template, request,
                    send_file)
@@ -61,6 +62,9 @@ def download_document(file_uuid):
     try:
         downloaded_file = bucket.download_file_by_id(file_id=doc.uuid)
     except ReadTimeoutError as e:
+        current_app.logger.exception(e)
+        return jsonify({"message": "An error occured while downloading...Please, try again."}), 500
+    except B2Error as e:
         current_app.logger.exception(e)
         return jsonify({"message": "An error occured while downloading...Please, try again."}), 500
 
@@ -161,7 +165,20 @@ def upload_course():
 @login_required
 @verification_required
 def file_upload():
+    upload_status = request.headers.get('X-File-Status')
     file = request.files.get("file", None)
+
+    if upload_status == 'canceled':
+        for filename in os.listdir(temp_dir):
+            file_path = os.path.join(temp_dir, filename)
+
+            try:
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            except Exception as e:
+                print(f"Error deleting {file_path}: {e}")
+        return jsonify({"message": "Upload canceled!", "code": 200}), 200
+
     if file:
         uploaded_file = file
         uploaded_file_uid = request.form['dzuuid']  #TODO Handle no JS fallback upload on Server-Side
@@ -173,54 +190,57 @@ def file_upload():
         if current_chunk == 0:
             temp_file.touch()
 
-        with open(temp_file, "ab") as f:
-            f.seek(int(request.form["dzchunkbyteoffset"]))
-            f.write(uploaded_file.stream.read())
+        if upload_status == 'uploading':
+            with open(temp_file, "ab") as f:
+                f.seek(int(request.form["dzchunkbyteoffset"]))
+                f.write(uploaded_file.stream.read())
 
-        total_file_size = int(request.form.get("dztotalfilesize", "N/A"))
-        total_chunks = int(request.form.get("dztotalchunkcount"))
-        if current_chunk + 1 == total_chunks:
-            if os.path.getsize(temp_file) != int(request.form["dztotalfilesize"]):
-                return jsonify({"message": "Size mismatch", "status": 400}), 400
+            total_file_size = int(request.form.get("dztotalfilesize", "N/A"))
+            total_chunks = int(request.form.get("dztotalchunkcount"))
+            if current_chunk + 1 == total_chunks:
+                if os.path.getsize(temp_file) != int(request.form["dztotalfilesize"]):
+                    return jsonify({"message": "Size mismatch", "status": 400}), 400
 
-            course_id = int(request.form["course_id"])
-            document_course = Course.query.get(course_id)
-            if not document_course:
-                return jsonify({"message": "Related course not found, please select a valid course from option above", "code": 400}), 400
-            metadata = {
-                "filename": unique_filename[9:],
-                "unique_filename": unique_filename,
-                "document_course": document_course.course_code,
-                "document_size": format(total_file_size * (10**-6), ".2f")
-            }
-            global bucket
-            try:
-                uploaded_bucket_file = bucket.upload_local_file(
-                    local_file=temp_file,
-                    file_name=metadata["unique_filename"],
-                    file_infos=metadata,
-                    encryption=b2_encryption_setting
-                )
-                download_url = b2_api.get_download_url_for_fileid(uploaded_bucket_file.id_)
-            except Exception as e:
-                current_app.logger.error(e)
-                return jsonify({"message": "An error occured while uploading, please try again...", "code": 500}), 500
+                course_id = int(request.form["course_id"])
+                document_course = Course.query.get(course_id)
+                if not document_course:
+                    return jsonify({"message": "Related course not found, please select a valid course from option above", "code": 400}), 400
+                metadata = {
+                    "filename": unique_filename[9:],
+                    "unique_filename": unique_filename,
+                    "document_course": document_course.course_code,
+                    "document_size": format(total_file_size * (10**-6), ".2f")
+                }
+                global bucket
+                try:
+                    uploaded_bucket_file = bucket.upload_local_file(
+                        local_file=temp_file,
+                        file_name=metadata["unique_filename"],
+                        file_infos=metadata,
+                        encryption=b2_encryption_setting
+                    )
+                    download_url = b2_api.get_download_url_for_fileid(uploaded_bucket_file.id_)
+                except Exception as e:
+                    current_app.logger.error(e)
+                    return jsonify({"message": "An error occured while uploading, please try again...", "code": 500}), 500
+                else:
+                    new_document = Document(
+                        uuid=uploaded_bucket_file.id_,
+                        filename=metadata["filename"],
+                        file_size=metadata["document_size"],
+                        download_link=download_url,
+                        course_id=document_course.id_,
+                        uploader_id=current_user.id_
+                    )
+                    db.session.add(new_document)
+                    db.session.commit()
+                finally:
+                    os.remove(temp_file)
             else:
-                new_document = Document(
-                    uuid=uploaded_bucket_file.id_,
-                    filename=metadata["filename"],
-                    file_size=metadata["document_size"],
-                    download_link=download_url,
-                    course_id=document_course.id_,
-                    uploader_id=current_user.id_
-                )
-                db.session.add(new_document)
-                db.session.commit()
-            finally:
-                os.remove(temp_file)
-        else:
-            current_app.logger.debug(f"Chunk {current_chunk + 1} of {total_chunks} for file {secure_filename(uploaded_file.filename)} complete")
+                current_app.logger.debug(f"Chunk {current_chunk + 1} of {total_chunks} for file {secure_filename(uploaded_file.filename)} complete")
 
-        return jsonify({"message": "Upload success!", "code": 200}), 200
+            return jsonify({"message": "Upload success!", "code": 200}), 200
+        else:
+            return jsonify({"message": "Upload canceled!", "code": 204}), 204
     else:
         return jsonify({"message": "Invalid/No file part in request body", "code": 400}), 400

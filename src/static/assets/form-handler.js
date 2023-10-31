@@ -24,6 +24,8 @@ Dropzone.options.upload = {
     dictRemoveFile: "Remove",
     init: function() {
         var myDropzone = this;
+        var upload_btn = document.querySelector("#upload-btn");
+        var csrfToken = document.querySelector("#upload-token").value;
 
         this.on('error', function(file, response) {
             if (typeof response === "string") {
@@ -47,15 +49,28 @@ Dropzone.options.upload = {
             return _results;
         });
 
-        this.on('sending', function(data, xhr, formData) {
-            var selectedCourseId = document.querySelector('#course_code_dropdown');
-            var tokenElem = document.querySelector("#upload-token");
+        this.on('canceled', function(file) {
+            upload_btn.disabled = false;
 
-            formData.append("course_id", selectedCourseId.value);
-            formData.append("csrf_token", tokenElem.value);
+            var xhr = file.xhr;
+            xhr.open('POST', myDropzone.options.url, true);
+            xhr.setRequestHeader('X-File-Status', file.status);
+            xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            xhr.send();
+
+            return myDropzone.emit("error", file, this.options.dictUploadCanceled);
         })
 
-        upload_btn = document.querySelector("#upload-btn");
+        this.on('sending', function(data, xhr, formData) {
+            upload_btn.disabled = true;
+
+            var selectedCourseId = document.querySelector('#course_code_dropdown');
+
+            xhr.setRequestHeader('X-File-Status', 'uploading');
+            formData.append("course_id", selectedCourseId.value);
+            formData.append("csrf_token", csrfToken);
+        })
+
         upload_btn.addEventListener("click", function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -67,12 +82,14 @@ Dropzone.options.upload = {
 
         })
     },
+
     success: function(file, response) {
+        document.querySelector("#upload-btn").disabled = false;
         show_success_modal("Document uploaded successfully!");
         return file.previewElement.classList.add("dz-success");
     },
+
     chunksUploaded: function(file, done) {
-        console.log("The chunks are done!");
         done();
     }
 }
