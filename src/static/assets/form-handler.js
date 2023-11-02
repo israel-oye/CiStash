@@ -319,6 +319,6 @@ let add_file_dialog = document.getElementById("add-file-modal")
 
 if (add_file_dialog) {
     add_file_dialog.addEventListener('hidden.bs.modal', function(e) {
-        window.location.reload()
+        window.location = window.location;
     })
 }

@@ -33,6 +33,7 @@ mark {
     font-family: 'Nunito', sans-serif;
 }
 
+.downloader,
 .google-btn {
     text-transform: none !important;
 }
