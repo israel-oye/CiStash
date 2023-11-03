@@ -73,6 +73,7 @@ async function downloadFile(file_uuid) {
             add_alert(alertElem);
 
             window.URL.revokeObjectURL(url);
+            return true;
 
         } else if (response.status == 400) {
 
@@ -81,16 +82,20 @@ async function downloadFile(file_uuid) {
             const alertElem = construct_alert_element("warning", "dark", alert_header_content, alert_body_text);
 
             add_alert(alertElem)
+            return false;
         } else {
+            console.log(response);
             let alert_header_content = `<i class="fa-solid fa-circle-exclamation fa-beat" style="--fa-animation-duration: 3s;"></i> Error`
             let alert_body_text = `An error occured while downloading...Please try again`
             const alertElem = construct_alert_element("warning", "dark", alert_header_content, alert_body_text);
 
             add_alert(alertElem)
+            return false;
         }
 
     } catch (error) {
         console.error(error);
+        return false;
     }
 }
 
@@ -103,9 +108,24 @@ if (downloaders.length > 0) {
 
     downloaders.forEach(button => {
         button.addEventListener("click", function() {
+            this.innerHTML = '<i class="fa-solid fa-download fa-bounce"></i> Downloading...'
+            this.disabled = true;
+
             add_alert(alertElem);
             const file_uuid = button.value;
-            downloadFile(file_uuid);
+
+            downloadFile(file_uuid)
+                .then(success => {
+                    if (success) {
+                        this.innerText = 'Download'
+                        this.disabled = false;
+                    } else {
+                        console.error('Download failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('An error occurred:', error);
+                });
         })
     })
 }
