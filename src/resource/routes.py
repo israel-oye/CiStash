@@ -82,25 +82,37 @@ def download_document(file_uuid):
 
 @resource_bp.post("/search")
 def search():
-    user_query = request.form.get("searched")
-    search_hits = []
+    user_query = request.form.get("searched").strip()
 
-    courses_from_code = Course.query.filter(Course.course_code.like('%'+user_query+'%'))
-    search_hits += [course for course in courses_from_code.order_by(Course.course_code).all()]
+    course_query = Course.query \
+    .filter(
+        Course.course_code.ilike(f"%{user_query}%")
+        | Course.course_title.ilike(f"%{user_query}%")
+          ) \
+    .order_by(Course.course_code) \
+    .distinct()
 
-    courses_from_title = Course.query.filter(Course.course_title.like('%'+user_query+'%'))
-    search_hits += [course for course in courses_from_title.order_by(Course.course_code).all()]
+    document_query = Document.query \
+                    .filter(Document.filename.ilike('%'+user_query+'%')) \
+                    .order_by(Document.filename) \
+                    .distinct()
 
-    docs_from_filename = Document.query.filter(Document.filename.like('%'+user_query+'%'))
-    doc_hits = [document for document in docs_from_filename.order_by(Document.filename).distinct().all()]
+    is_empty = None
+    if (course_query.count() or document_query.count()) and user_query != '':
+        is_empty = False
+    else:
+        is_empty = True
 
     context = {
         "search_query": user_query,
-        "is_empty": False if len(search_hits) else True,
-        "no_docs_match": False if len(doc_hits) else True,
-        "hits": search_hits,
-        "doc_hits": doc_hits,
-        "result_count": len(search_hits) + len(doc_hits)
+        "is_empty": is_empty,
+        "no_courses_match": False if course_query.count() else True,
+        "no_docs_match": False if document_query.count() else True,
+        "course_hits": course_query.count(),
+        "document_hits": document_query.count(),
+        "hits": course_query.count() + document_query.count(),
+        "courses": course_query.all(),
+        "documents": document_query.all()
     }
 
     return render_template("resource/search.html", **context)
