@@ -63,7 +63,7 @@ Dropzone.options.upload = {
 
         this.on('sending', function(data, xhr, formData) {
             upload_btn.disabled = true;
-
+            upload_btn.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket fa-beat-fade"></i> Uploading'
             var selectedCourseId = document.querySelector('#course_code_dropdown');
 
             xhr.setRequestHeader('X-File-Status', 'uploading');
@@ -85,6 +85,7 @@ Dropzone.options.upload = {
 
     success: function(file, response) {
         document.querySelector("#upload-btn").disabled = false;
+        document.querySelector("#upload-btn").innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Upload';
         show_success_modal("Document uploaded successfully!");
         return file.previewElement.classList.add("dz-success");
     },
@@ -158,10 +159,11 @@ function show_error_modal(modal_text) {
 /**
  *
  * @param {FormData} formData
+ * @param {string} route
  */
-async function submitForm(formData) {
+async function submitForm(formData, route) {
     try {
-        const response = await fetch('/resource/add-course', {
+        const response = await fetch(route, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -204,6 +206,9 @@ async function submitForm(formData) {
             }
         } else if (response.status === 401) {
             // Re-Authentication required
+            show_error_modal(`${data.message}!`);
+        } else if (response.status === 404) {
+            //For edit route: Course is not found.
             show_error_modal(`${data.message}!`);
         } else {
             // status = 500
@@ -256,8 +261,9 @@ let form_2_level_select = document.querySelector("#form2-level");
 let course_code_select = document.querySelector("#course_code_dropdown");
 
 document.addEventListener("DOMContentLoaded", function() {
-    const form_1 = document.getElementById("form1");
-    if (form_1) {
+    const addCourseForm = document.getElementById("add-course-form");
+
+    if (addCourseForm) {
         var courseButton = document.getElementById("add-course-btn");
         var courseCodeErrorElem = document.getElementById("course-code-error");
         var courseTitleErrorElem = document.getElementById("course-title-error");
@@ -267,17 +273,57 @@ document.addEventListener("DOMContentLoaded", function() {
             courseTitleErrorElem.style.display = "none";
         })
 
-        form_1.addEventListener('submit', (event) => {
+        addCourseForm.addEventListener('submit', (event) => {
             courseButton.disabled = true;
+            courseButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Adding Course'
             event.preventDefault();
-            const formData = new FormData(form_1);
-            submitForm(formData);
-
-            setTimeout(function() {
-                courseButton.disabled = false;
-            }, 1500)
-
+            const formData = new FormData(addCourseForm);
+            submitForm(formData, `/resource/add-course`)
+                .then(() => {
+                    setTimeout(function() {
+                        courseButton.disabled = false;
+                        courseButton.innerHTML = '<i class="fa-regular fa-square-plus"></i> Add Course'
+                    }, 500)
+                })
+                .catch(error => {
+                    console.error('An error occurred:', error);
+                });
         });
+    }
+
+
+    const editCourseForm = document.getElementById("edit-course-form");
+
+    if (editCourseForm) {
+        var courseButton = document.getElementById("edit-course-btn");
+        var courseCodeErrorElem = document.getElementById("course-code-error");
+        var courseTitleErrorElem = document.getElementById("course-title-error");
+        var courseId = '';
+
+        courseButton.addEventListener('click', function(e) {
+
+            courseCodeErrorElem.style.display = "none";
+            courseTitleErrorElem.style.display = "none";
+            courseId = this.value;
+        })
+
+        editCourseForm.addEventListener('submit', (event) => {
+            courseButton.disabled = true;
+            courseButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating'
+            event.preventDefault();
+            const formData = new FormData(editCourseForm);
+            submitForm(formData, `/resource/edit-course/${courseId}`)
+                .then(() => {
+                    setTimeout(function() {
+                        courseButton.disabled = false;
+                        courseButton.innerHTML = '<i class="fa-solid fa-pen-to-square"></i></i> Update Course'
+                    }, 1500)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
     }
 })
 
@@ -319,6 +365,14 @@ let add_file_dialog = document.getElementById("add-file-modal")
 
 if (add_file_dialog) {
     add_file_dialog.addEventListener('hidden.bs.modal', function(e) {
+        window.location = window.location;
+    })
+}
+
+let edit_file_dialog = document.getElementById("edit-course-modal");
+
+if (edit_file_dialog) {
+    edit_file_dialog.addEventListener('hidden.bs.modal', function(e) {
         window.location = window.location;
     })
 }

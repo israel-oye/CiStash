@@ -70,14 +70,21 @@ class CourseForm(FlaskForm):
 
     def validate_course_code(self, course_code_field):
         pattern = r"\b[A-Z]{3} \b(1[0-9]{2}|[2-5][0-9]{2}|599)\b"
-        selected_level = LevelEnum[self.levels.data].value
+        selected_level = ''
+
+        if self.levels.data != 'None':
+            try:
+                selected_level = LevelEnum[self.levels.data].value
+            except KeyError:
+                raise ValidationError("Invalid course level.")
+
         course_code_num = course_code_field.data.split()[-1] if course_code_field.data else [""]
 
         if Course.query.filter_by(course_code=course_code_field.data).first():
             raise ValidationError(f"Oops, {course_code_field.data} has been registered.")
         elif re.match(pattern, str(course_code_field.data)) is None:
             raise ValidationError("Please enter the course code correctly. e.g ABC 415 (All caps with a space in-between.)")
-        elif selected_level[0] != course_code_num[0]:
+        elif selected_level and selected_level[0] != course_code_num[0]:
             raise ValidationError("Please enter a valid course code for the selected level.")
 
     def validate_course_title(self, course_title_field):
@@ -85,3 +92,57 @@ class CourseForm(FlaskForm):
 
         if Course.query.filter_by(course_title=field_data).first():
             raise ValidationError(f"It seems like an existing course has a similar title, please check carefully and try again.")
+
+
+class UpdateCourseForm(CourseForm):
+    levels = SelectField(
+                        "Course Level",
+                        validate_choice=True,
+                        default="Course Level",
+                        choices=[(level.name, level.value) for level in LevelEnum],
+                        render_kw={"class": "form-select", "aria-label": "Select level"}
+                        )
+    course_code = StringField(
+                        "Course Code",
+                        [InputRequired(), validators.Length(7, 7, "Please enter a valid course code."),  ],
+                        render_kw={"class": "form-control", "placeholder": "e.g ABC 199"}
+                        )
+    course_title = StringField(
+                        "Course Title",
+                        [InputRequired()],
+                        render_kw={"class": "form-control", "placeholder": "e.g Introduction to Web Development", "aria-placeholder": "e.g Introduction to Web Development"}
+                        )
+
+    def set_model_instance(self, instance: Course):
+        self.instance = instance
+
+    def validate_levels(self, selected_level):
+        if selected_level.data not in [l.name for l in LevelEnum]:
+            raise ValidationError("Please select a valid level.")
+
+    def validate_course_code(self, course_code_field):
+        pattern = r"\b[A-Z]{3} \b(1[0-9]{2}|[2-5][0-9]{2}|599)\b"
+        selected_level = ''
+
+        if self.levels.data != 'None':
+            try:
+                selected_level = LevelEnum[self.levels.data].value
+            except KeyError:
+                raise ValidationError("Invalid course level.")
+
+        course_code_num = course_code_field.data.split()[-1] if course_code_field.data else [""]
+        course_record = Course.query.filter(Course.course_code == course_code_field.data).first()
+
+        if course_record and course_record.id_ != self.instance.id_:
+            raise ValidationError(f"'{course_code_field.data}' has been registered for an existing course.")
+        if re.match(pattern, str(course_code_field.data)) is None:
+            raise ValidationError("Please enter the course code correctly. e.g ABC 415 (All caps with a space in-between.)")
+        elif selected_level and selected_level[0] != course_code_num[0]:
+            raise ValidationError("Please enter a valid course code for the selected level.")
+
+    def validate_course_title(self, course_title_field):
+        field_data = str(course_title_field.data).title()
+        course_record = Course.query.filter(Course.course_title == field_data).first()
+
+        if course_record and course_record.id_ != self.instance.id_:
+            raise ValidationError(f"'{course_title_field.data}' has been registered for an existing course.")

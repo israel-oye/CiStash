@@ -5,12 +5,27 @@
 {% block body %}
 <main class="container pt-lg-4 pt-md-3 pt-sm-4 mt-4">
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-5">
+        <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item"><a class="" href="{{url_for('home_bp.index')}}#levels">Levels</a></li>
             <li class="breadcrumb-item"><a class="" href="{{url_for('home_bp.level_page', level_id=course.level_id)}}">{{course.course_level.name.value}}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{course.course_code}}</li>
         </ol>
+        <p class="">Course title: <strong>{{course.course_title |upper}}</strong></p>
     </nav>
+    {% if current_user.is_authenticated %}
+    <div class="text-center mb-2">
+        <a title="Edit course details" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#edit-course-modal">
+            <i class="fa-solid fa-pen"></i>
+        </a>
+        {% if not is_empty %}
+        <a title="Add new document" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#add-file-modal">
+            <i class="fa-solid fa-file-circle-plus fa-lg"></i>
+        </a>
+        {% endif %}
+    </div>
+    <!--  -->
+    {% endif %}
+
     <!-- ADD FILE MODAL -->
     <div class="modal fade" id="add-file-modal" role="dialog">
         <div class="modal-dialog modal-sm modal-dialog-centered" data-bs-config={backdrop:true}>
@@ -49,6 +64,54 @@
             </div>
         </div>
     </div>
+    <!-- EDIT COURSE MODAL -->
+    <div class="modal fade" id="edit-course-modal" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered" data-bs-config={backdrop:true}>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title"><i class="fa-solid fa-pen"></i> Update {{course.course_code}} details</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-secondary">
+                    <form id="edit-course-form" action="" method="post" class="form m-4 w-85">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                        <div class="p-auto">
+                            <div class="mb-4 align-content-center">
+                                {{form.levels.label(class_="form-label text-dark")}}
+                                <!--  -->
+                                {{form.levels}}
+                                <!--  -->
+                                {% for error in form.levels.errors %}
+                                <small class="form-text" id="level-error"><i class="fa-solid fa-circle-exclamation text-danger"></i> {{ error }}</small>
+                                <!--  -->
+                                {% endfor %}
+                            </div>
+                            <div class="mb-4 align-content-center">
+                                {{ form.course_code.label(class_="form-label text-dark") }}
+                                <!--  -->
+                                {{ form.course_code }}
+                                <!--  -->
+                                <small class="form-text" id="course-code-error" style="display: none;"><i class="fa-solid fa-circle-exclamation text-danger"></i> <span></span></small>
+                            </div>
+                            <div class="mb-3 align-content-center">
+                                {{ form.course_title.label(class_="form-label text-dark") }}
+                                <!--  -->
+                                {{ form.course_title }}
+                                <!--  -->
+                                <small class="form-text" id="course-title-error" style="display: none;"><i class="fa-solid fa-circle-exclamation text-danger"></i> <span></span></small>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button id="edit-course-btn" class="btn btn-primary mt-2" type="submit" value="{{course.id_}}"><i class="fa-solid fa-pen-to-square"></i></i> Update Course</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- SUCCESS MESSAGE MODAL -->
     <div class="modal fade" id="success-modal" role="dialog">
         <div class="modal-dialog modal-sm modal-dialog-centered">
@@ -66,9 +129,28 @@
             </div>
         </div>
     </div>
-    <!-- #TODO: LOGIN MODAL Restructure Login view to JSON only resp -->
+    <!-- ERROR MODAL -->
+    <div class="modal fade" id="error-modal" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content bg-gradient bg-danger text-light">
+                <div class="modal-header">
+                    <h6 class="modal-title"><i class="fa-solid fa-circle-exclamation"></i> Error</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="error-modal-text" class="fs-6"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
     {% if is_empty %}
-    <div class="mx-5">
+    <div class="mx-5 mt-3">
         <img class="empty-folder-img img-fluid d-block mx-auto pb-5" src="{{url_for('static', filename='/images/empty-folder.webp')}}" alt="Empty folder image">
         <h4>{{course.course_code}} does not have any document uploaded, do you want to upload some?</h4>
         {% if current_user.is_authenticated %}
@@ -84,14 +166,6 @@
     <!--  -->
     {% else %}
     <!--  -->
-    {% if current_user.is_authenticated %}
-    <div class="text-center mb-2">
-        <a title="Add new document" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#add-file-modal">
-            <i class="fa-solid fa-file-circle-plus fa-lg"></i>
-        </a>
-    </div>
-    <!--  -->
-    {% endif %}
     <div class="table-responsive">
         <table class="table table-sm table-striped table-hover bg-dark caption-top">
             <caption>List of resources</caption>
