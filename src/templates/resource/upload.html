@@ -56,7 +56,7 @@
             </ul>
             <div class="tab-content" id="tabsContent">
                 <section class="tab-pane fade show active" id="add-course" role="tabpanel" aria-labelledby="add-course-tab">
-                    <form action="{{url_for('resource_bp.upload_course')}}" id="form1" method="post" class="form m-4 w-85">
+                    <form action="{{url_for('resource_bp.upload_course')}}" id="add-course-form" method="post" class="form m-4 w-85">
                         <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                         <div class="p-auto">
                             <div class="mb-4 align-content-center">

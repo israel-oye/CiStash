@@ -1,0 +1,79 @@
+{% extends '_layout.html' %}
+<!--  -->
+{% block title %}Acknowledgment{% endblock %}
+<!--  -->
+{% block body %}
+<main class="container mx-3 pt-lg-4 pt-md-3 pt-sm-4 mt-4">
+    <div class="col-9">
+        <h1>Acknowledgment <i class="fa-solid fa-heart" style="color: #f41f1f;"></i></h1>
+        <p class="lead">I want to extend my heartfelt gratitude to the following organizations, open-source projects, and cloud services, that have been invaluable in building this web app:</p>
+
+        <ul class="">
+            <li class="">
+                <a href="https://flask.palletsprojects.com/" target="_blank" rel="noopener noreferrer">Flask</a>
+            </li>
+            <li>
+                <a href="https://www.backblaze.com/" target="_blank" rel="noopener noreferrer">Backblaze</a>
+            </li>
+            <li>
+                <a href="https://www.dropzone.dev/" target="_blank" rel="noopener noreferrer">Dropzone Js</a>
+            </li>
+            <li>
+                <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">Bootstrap</a>
+            </li>
+            <li>
+                <a href="https://bootswatch.com/" target="_blank" rel="noopener noreferrer">Bootswatch</a>
+            </li>
+            <li>
+                <a href="https://fontawesome.com/" target="_blank" rel="noopener noreferrer">Font Awesome</a>
+            </li>
+            <li>
+                <a href="https://www.flaticon.com/" target="_blank" rel="noopener noreferrer">Flat Icons</a>
+            </li>
+            <li>
+                <a href="https://icons8.com/" target="_blank" rel="noopener noreferrer">Icons8</a>
+            </li>
+            <li>
+                <a href="https://www.openai.com/" target="_blank" rel="noopener noreferrer">OpenAI</a>
+            </li>
+
+        </ul>
+        <br>
+        <p>And to the countless other Open source projects that I didn't list. Especially the Flask extension ecosystem, thank you.
+            <br> To the biggest bro that has made development easier. Cheers! <a href="https://stackoverflow.com" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-stack-overflow"></i></a>
+        </p>
+        <p class="mt-3">
+            Building this was not easy. It took me months (school factor), 200+ commits, and hours of learning to keep fixing and improving. It was definitely worth it because I learnt so much. I had never written Javascript before staring this project and it is
+            literally the life of it. The repo is about <a href="https://github.com/search?q=repo%3Aisrael-oye%2FCiStash++language%3AJavaScript&type=code" target="_blank" rel="noopener noreferrer">13% Javascript</a>.
+        </p>
+
+        <p>
+            The entire source code for this app is available on <a href="https://github.com/israel-oye/CiStash" target="_blank" rel="noopener noreferrer">GitHub</a>. Feel free to fork, make your copies and suggest improvements.
+            <br>
+            <br> After now, I may/may not not be too involved in maintaining the app as I'll be moving on to other things.
+            <br> In the meantime, you can reach me on LinkedIn <a href="https://www.linkedin.com/in/israel-oyeboade-b4385723a/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a> or Twitter <a href="https://twitter.com/israeL__xy"
+                target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter"></i></a> You can follow me on <a href="https://github.com/israel-oye" target="_blank" rel="noopener noreferrer">GitHub</a>, I follow back. And I'm really enthused
+            with OSS. I want to get into it...
+        </p>
+        <br>
+        <p>
+            Finally, to <strong>YHWH</strong> who has and still gives me grace and wisdom. May His name be <a data-gb-link="PSA.103.1">praised</a> forever!
+        </p>
+    </div>
+</main>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentNavLinks = document.querySelectorAll('a.home-nav');
+        for (let navLink of currentNavLinks) {
+            navLink.classList.add('active');
+        }
+    })
+</script>
+<script src="https://bibles.org/static/widget/v2/widget.js"></script>
+<script>
+    GLOBALBIBLE.init({
+        url: "https://bibles.org",
+        bible: "a6aee10bb058511c-02",
+    });
+</script>
+{% endblock %}

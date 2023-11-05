@@ -16,7 +16,7 @@ from models.course import Course
 from models.doc import Document
 from models.level import Level, LevelEnum
 
-from ..utils.form import CourseForm
+from ..utils.form import CourseForm, UpdateCourseForm
 from ..utils.decorators import verification_required
 
 load_dotenv()
@@ -44,10 +44,14 @@ def get_course(course_id):
     course_docs = course.course_docs.all()
     is_empty = False if bool(len(course_docs)) else True
 
+    form = UpdateCourseForm(obj=course)
+    form.set_model_instance(course)
+
     context = {
         "course": course,
         "course_docs": course_docs,
-        "is_empty": is_empty
+        "is_empty": is_empty,
+        "form": form
     }
 
     return render_template("resource/course_page.html", **context)
@@ -168,6 +172,30 @@ def upload_course():
         else:
             return jsonify({"message": "Course added successfully", "redirect_url": "/pass"}), 200 #TODO probably add redirect link.
                                                                                                #"redirect_url": url_for(home.index)
+    else:
+        errors = form.errors
+        return jsonify({"errors": errors}), 400
+
+
+@resource_bp.post("/edit-course/<course_id>")
+def edit_course(course_id):
+    if not current_user.is_authenticated:
+        return jsonify({'message': 'An error occured, please re-login to complete action'}), 401
+    try:
+        course = Course.query.get_or_404(course_id)
+    except NotFound:
+        return jsonify({"message": "The course you are trying to edit does not exist"}), 404
+
+    form = UpdateCourseForm(data=request.get_json())
+    form.set_model_instance(course)
+    if form.validate_on_submit():
+        course_level = Level.query.filter_by(name=LevelEnum[str(form.levels.data)].name).first()
+        course.level_id = course_level.id_
+        course.course_code = form.course_code.data
+        course.course_title = form.course_title.data
+
+        db.session.commit()
+        return jsonify({"message": "Course updated successfully", "redirect_url": "/pass"}), 200
     else:
         errors = form.errors
         return jsonify({"errors": errors}), 400
