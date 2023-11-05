@@ -59,7 +59,7 @@
 </nav>
 
 <!-- NAV OFF CANVAS -->
-<div class="offcanvas offcanvas-start bg-primary w-50" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="true">
+<div class="offcanvas offcanvas-start bg-primary w-75" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="true">
     <div class="navbar-dark bg-primary" data-bs-theme="light">
         <div class="offcanvas-header">
             <h6 class="offcanvas-title d-sm-block brand-text" id="offcanvasLabel">
@@ -87,7 +87,7 @@
                 </li>
                 <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                    <input id="search-box" class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Looking for something?" aria-label="Search">
+                    <input id="search-box" class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Enter course code or course title" aria-label="Search">
                     <button class="btn rounded-circle btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
                 <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
