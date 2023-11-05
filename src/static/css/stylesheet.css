@@ -63,6 +63,12 @@ mark {
     width: 20%;
 }
 
+.courses-box {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 450px;
+}
+
 .dropzone .dz-preview .dz-error-message {
     top: 35% !important;
 }
@@ -77,8 +83,7 @@ mark {
 }
 
 ::-webkit-scrollbar {
-    height: 4px;
-    width: 10px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {

@@ -23,15 +23,18 @@
             </tr>
         </thead>
     </table>
-    {% for course in level_courses %}
-    <div class="coursebox container bg-secondary my-2 border-bottom">
-        <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
-            <h4>
-                <i class="fa-solid fa-folder text-dark"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
-            </h4>
-        </a>
+    <div class="courses-box my-2">
+        {% for course in level_courses %}
+
+        <div class="coursebox container bg-secondary my-2 border-bottom">
+            <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
+                <h4>
+                    <i class="fa-solid fa-folder text-dark"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
+                </h4>
+            </a>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </main>
 <script text="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
