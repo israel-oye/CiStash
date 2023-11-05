@@ -12,7 +12,6 @@ home_bp = Blueprint('home_bp', __name__, template_folder="templates/home", stati
 def page_not_found(error):
     return render_template("errors/403.html"), 403
 
-
 @home_bp.app_errorhandler(404)
 def page_not_found(error):
     return render_template("errors/404.html"), 404
@@ -35,6 +34,11 @@ def index():
 @home_bp.get("/terms-of-privacy")
 def privacy_page():
     return render_template("home/privacy.html")
+
+
+@home_bp.get("/thanks")
+def thanks():
+    return render_template("home/acknowledgements.html")
 
 
 @home_bp.get("/level/<int:level_id>")
