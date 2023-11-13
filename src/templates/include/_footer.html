@@ -1,26 +1,15 @@
 <footer class="footer mt-auto">
     <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-            <div class="col-md-4 d-flex align-items-center">
-                <a href="{{url_for('home_bp.index')}}" class="fw-bolder brand-text me-2 text-decoration-none lh-1">
-                    StashIT <i class="fa-solid fa-folder-tree"></i>
-                </a>
-                <a class="mx-3" href="{{url_for('home_bp.thanks')}}" title="Acknowledgements">
-                    <i class="fa-solid fa-heart" style="color: #f41f1f;"></i>
-                </a>
-                <span class="text-muted">&copy; 2023</span>
-            </div>
-
-            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                <li class="ms-3">
-                    <a class="btn btn-small btn-outline-info" href="https://twitter.com/israeL__xy" target="_blank"><i class="fa-brands fa-x-twitter fa-sm"></i></a>
-                </li>
-                <li class="ms-3">
-                    <a class="btn btn-small btn-outline-secondary" href="https://dev.to/israel__xy" target="_blank"><i class="fa-brands fa-dev fa-sm"></i></a>
-                </li>
-                <li class="ms-3">
-                    <a class="btn btn-small btn-outline-dark" href="https://github.com/israel-oye" title="GitHub" target="_blank"><i class="fa-brands fa-github fa-sm"></i></a>
-                </li>
+            <p class="col-md-4 mb-0 text-muted">&copy; 2023</p>
+            <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto text-decoration-none fw-bolder brand-text">
+                <i class="me-2 mt-2 fa-solid fa-folder-tree fa-lg"></i>
+            </a>
+            <ul class="nav col-md-4 justify-content-end">
+                <li class="nav-item"><a href="{{url_for('home_bp.index')}}" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="" class="nav-link px-2 text-muted" data-bs-toggle="modal" data-bs-target="#info-modal">Info</a></li>
+                <li class="nav-item"><a href="{{url_for('home_bp.privacy_page')}}" class="nav-link px-2 text-muted">Privacy Policy</a></li>
+                <li class="nav-item"><a href="{{url_for('home_bp.credits_page')}}" class="nav-link px-2 text-muted">Credits</a></li>
             </ul>
         </footer>
     </div>
