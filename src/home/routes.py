@@ -36,8 +36,8 @@ def privacy_page():
     return render_template("home/privacy.html")
 
 
-@home_bp.get("/thanks")
-def thanks():
+@home_bp.get("/credits")
+def credits_page():
     return render_template("home/acknowledgements.html")
 
 
