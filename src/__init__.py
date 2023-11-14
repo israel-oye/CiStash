@@ -1,4 +1,4 @@
-from flask import g, Flask, session
+from flask import Flask, session
 
 from config import LiveWireConfig, ProductionConfig
 from extensions import admin, crsf, db, login_manager, mail, migrate, IntegrityError
