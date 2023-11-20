@@ -213,6 +213,7 @@ mark {
     img.folder-img {
         max-width: 35%;
         margin-left: 30%;
+        filter: drop-shadow(-5px 10px 20px rgb(255 193 0));
     }
     img.table-img {
         width: 30%;
