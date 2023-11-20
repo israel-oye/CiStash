@@ -56,7 +56,7 @@ If you encounter any issues or have questions, don't hesitate to reach out to me
 
 ## License
 
-CiStash is released under the [MIT License*]().
+CiStash is released under the [MIT License](LICENSE.md).
 
 ## Acknowledgments
 
