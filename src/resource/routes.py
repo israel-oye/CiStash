@@ -5,7 +5,7 @@ from tempfile import NamedTemporaryFile
 import b2sdk.v2 as b2
 from b2sdk.v2.exception import B2Error
 from dotenv import load_dotenv
-from flask import (Blueprint, current_app, jsonify, render_template, request,
+from flask import (Blueprint, abort, current_app, jsonify, render_template, request,
                    send_file)
 from urllib3.exceptions import ReadTimeoutError
 from werkzeug.utils import secure_filename
@@ -23,20 +23,31 @@ load_dotenv()
 
 resource_bp = Blueprint("resource_bp", __name__, template_folder="templates/resource", static_folder="src/static")
 
-
-b2_info = b2.InMemoryAccountInfo()
-b2_encryption_setting = b2.EncryptionSetting(mode=b2.EncryptionMode.SSE_B2, algorithm=b2.EncryptionAlgorithm.AES256)
-b2_api = b2.B2Api(b2_info)
-b2_api.authorize_account(
-    "production",
-    application_key_id=os.getenv("B2_KEY_ID"),
-    application_key=os.getenv("B2_APPLICATION_KEY")
-)
-bucket = b2_api.get_bucket_by_name(os.getenv("B2_UPLOAD_BUCKET_NAME"))
-
 temp_dir = Path(__file__).resolve().parent.parent / "static" / "temp"
 if not temp_dir.exists():
     temp_dir.mkdir()
+
+
+def init_backblaze():
+    try:
+        b2_info = b2.InMemoryAccountInfo()
+        b2_encryption_setting = b2.EncryptionSetting(mode=b2.EncryptionMode.SSE_B2, algorithm=b2.EncryptionAlgorithm.AES256)
+        b2_api = b2.B2Api(b2_info)
+        b2_api.authorize_account(
+            "production",
+            application_key_id=os.getenv("B2_KEY_ID"),
+            application_key=os.getenv("B2_APPLICATION_KEY")
+        )
+        bucket: b2.bucket.Bucket = b2_api.get_bucket_by_name(os.getenv("B2_UPLOAD_BUCKET_NAME"))
+    except B2Error as e:
+        current_app.logger.error(e, exc_info=True)
+        abort(500)
+    except Exception as e:
+        current_app.logger.error(e, exc_info=True)
+        abort(500)
+    else:
+        return bucket, b2_api, b2_encryption_setting
+
 
 @resource_bp.get("/course/<int:course_id>")
 def get_course(course_id):
@@ -59,6 +70,9 @@ def get_course(course_id):
 
 @resource_bp.get("/document/<file_uuid>/download")
 def download_document(file_uuid):
+    b2_objects = init_backblaze()
+    bucket = b2_objects[0]
+
     doc = Document.query.filter_by(uuid=file_uuid).first()
     if not doc:
         return jsonify({"message": "The requested resource does not exist!"}), 400
@@ -167,7 +181,7 @@ def upload_course():
         except SQLAlchemyError as e:
             return jsonify({"message": "An error occurred while saving, please try again."}), 500
         except Exception as e:
-            current_app.log_exception(e)
+            current_app.logger.exception(e)
             return jsonify({"message": "An error occurred while saving, please try again."}), 500
         else:
             return jsonify({"message": "Course added successfully", "redirect_url": "/pass"}), 200 #TODO probably add redirect link.
@@ -205,6 +219,11 @@ def edit_course(course_id):
 @login_required
 @verification_required
 def file_upload():
+    b2_objects = init_backblaze()
+    bucket = b2_objects[0]
+    b2_api = b2_objects[1]
+    b2_encryption_setting = b2_objects[2]
+
     upload_status = request.headers.get('X-File-Status')
     file = request.files.get("file", None)
 
@@ -251,7 +270,7 @@ def file_upload():
                     "document_course": document_course.course_code,
                     "document_size": format(total_file_size * (10**-6), ".2f")
                 }
-                global bucket
+
                 try:
                     uploaded_bucket_file = bucket.upload_local_file(
                         local_file=temp_file,
@@ -261,7 +280,7 @@ def file_upload():
                     )
                     download_url = b2_api.get_download_url_for_fileid(uploaded_bucket_file.id_)
                 except Exception as e:
-                    current_app.logger.error(e)
+                    current_app.logger.error(e, exc_info=True)
                     return jsonify({"message": "An error occured while uploading, please try again...", "code": 500}), 500
                 else:
                     new_document = Document(
