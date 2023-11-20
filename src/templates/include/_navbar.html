@@ -30,14 +30,14 @@
                     <hr class="d-lg-none my-2 text-white-50">
                 </li>
                 <li class="nav-item px-3">
-                    {% if current_user.is_authenticated %}
-                    <a class="nav-link nav-text" title="Help" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-2xl fa-circle-question"></i></a>
-                    <!--  -->
-                    {% else %}
-                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-info"></i></a>
-                    <!--  -->
-                    {% endif %}
+                    <a class="nav-link nav-text" title="Info" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-xl fa-circle-info"></i></a>
                 </li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item px-3">
+                    <a class="nav-link nav-text" title="Help" id="how-to-link" data-bs-toggle="modal" data-bs-target="#how-to-modal"><i class="fa-solid fa-2xl fa-circle-question"></i></a>
+                </li>
+                {% endif %}
+                <!--  -->
                 {% if current_user.is_admin %}
                 <li class="nav-item px-3">
                     <a class="nav-link nav-text" href="/auth/admin" target="_blank" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i></a>
@@ -85,27 +85,29 @@
                         <i class="fa-solid fa-folder-plus"></i> Contribute
                     </a>
                 </li>
-                <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                    <input id="search-box" class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Enter course code or course title" aria-label="Search">
-                    <button class="btn rounded-circle btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </form>
+                <li class="pt-2">
+                    <form method="post" action="{{url_for('resource_bp.search')}}" class="d-flex" role="search">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <input id="search-box" class="form-control me-2" name="searched" autocomplete="off" type="search" placeholder="Search code/title" aria-label="Search">
+                        <button class="btn rounded-circle btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </li>
                 <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
                     <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
                     <hr class="d-lg-none my-2 text-white-50">
                 </li>
                 <li class="nav-item px-2">
-                    {% if current_user.is_authenticated %}
-                    <a class="nav-link nav-text" title="Help" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-2xl fa-circle-question"></i> Help</a>
-                    <!--  -->
-                    {% else %}
-                    <a class="nav-link nav-text" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-2xl fa-circle-info"></i> Info</a>
-                    <!--  -->
-                    {% endif %}
+                    <a class="nav-link nav-text" title="Info" id="info-link" data-bs-toggle="modal" data-bs-target="#info-modal"><i class="fa-solid fa-circle-info"></i> Info</a>
                 </li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item px-2">
+                    <a class="nav-link nav-text" title="Help" id="how-to-link" data-bs-toggle="modal" data-bs-target="#how-to-modal"><i class="fa-solid fa-circle-question"></i> How to?</a>
+                </li>
+                {% endif %}
+                <!--  -->
                 {% if current_user.is_admin %}
                 <li class="nav-item px-2">
-                    <a class="nav-link nav-text" href="/auth/admin" target="_blank" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench fa-xl"></i> Admin</a>
+                    <a class="nav-link nav-text" href="/auth/admin" target="_blank" title="Admin panel"><i class="fa-solid fa-screwdriver-wrench"></i> Admin</a>
                 </li>
                 {% endif %}
                 <!-- -->
@@ -115,7 +117,7 @@
                 </li>
                 {% else %}
                 <li class="nav-item px-2">
-                    <a class="nav-link nav-text auth-nav" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user fa-2xl"></i> Login / Signup</a>
+                    <a class="nav-link nav-text auth-nav" id="info-link" data-bs-toggle="modal" data-bs-target="#auth-modal"><i class="fa-solid fa-circle-user"></i> Login / Signup</a>
                 </li>
                 {% endif %}
             </ul>
