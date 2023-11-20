@@ -2,6 +2,22 @@ var parser = new DOMParser();
 var alertAnchor = document.querySelector('#alert-anchor');
 
 
+/**
+ *
+ * @param {boolean} state
+ */
+function disableUploadButton(state) {
+    let button = document.querySelector("#upload-btn");
+    if (button && state == true) {
+        button.disabled = true;
+        button.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket fa-beat-fade"></i> Uploading'
+    } else if (button && state == false) {
+        button.disabled = false;
+        button.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Upload';
+    }
+}
+
+
 Dropzone.options.upload = {
     paramName: "file",
     acceptedFiles: ".pdf, .doc, .docx, .odt, .rtf, .txt, .epub, .ppt, .pptx",
@@ -24,7 +40,6 @@ Dropzone.options.upload = {
     dictRemoveFile: "Remove",
     init: function() {
         var myDropzone = this;
-        var upload_btn = document.querySelector("#upload-btn");
         var csrfToken = document.querySelector("#upload-token").value;
 
         this.on('error', function(file, response) {
@@ -46,11 +61,12 @@ Dropzone.options.upload = {
                 node = _ref[_i];
                 _results.push(node.textContent = message);
             }
+            disableUploadButton(false);
             return _results;
         });
 
         this.on('canceled', function(file) {
-            upload_btn.disabled = false;
+            disableUploadButton(false);
 
             var xhr = file.xhr;
             xhr.open('POST', myDropzone.options.url, true);
@@ -62,8 +78,7 @@ Dropzone.options.upload = {
         })
 
         this.on('sending', function(data, xhr, formData) {
-            upload_btn.disabled = true;
-            upload_btn.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket fa-beat-fade"></i> Uploading'
+            disableUploadButton(true);
             var selectedCourseId = document.querySelector('#course_code_dropdown');
 
             xhr.setRequestHeader('X-File-Status', 'uploading');
@@ -71,6 +86,7 @@ Dropzone.options.upload = {
             formData.append("csrf_token", csrfToken);
         })
 
+        let upload_btn = document.querySelector("#upload-btn");
         upload_btn.addEventListener("click", function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -84,8 +100,7 @@ Dropzone.options.upload = {
     },
 
     success: function(file, response) {
-        document.querySelector("#upload-btn").disabled = false;
-        document.querySelector("#upload-btn").innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Upload';
+        disableUploadButton(false);
         show_success_modal("Document uploaded successfully!");
         return file.previewElement.classList.add("dz-success");
     },
