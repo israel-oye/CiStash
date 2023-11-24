@@ -6,7 +6,7 @@ class Course(db.Model):
 
     id_ = db.Column(db.Integer, primary_key=True)
     course_title = db.Column(db.String(60), unique=True)
-    course_code = db.Column(db.String(20), unique=True, nullable=False)
+    course_code = db.Column(db.String(20), unique=True, nullable=False, index=True)
 
     course_docs = db.relationship("Document", back_populates="course", lazy="dynamic")
 
@@ -15,6 +15,10 @@ class Course(db.Model):
 
     def __repr__(self) -> str:
         return f"<Course: {self.course_code}>"
+
+    @property
+    def has_documents(self):
+        return bool(self.course_docs.first())
 
 
 class CourseView(ModelView):

@@ -26,12 +26,25 @@
     <div class="courses-box my-2">
         {% for course in level_courses %}
 
-        <div class="coursebox container bg-secondary my-2 border-bottom">
-            <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
-                <h6>
-                    <i class="fa-solid fa-folder text-dark"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
-                </h6>
-            </a>
+        <div class="coursebox container bg-secondary my-2 pt-2 border-bottom">
+            <div class="row">
+                <div class="col-1">
+                    {% if course.has_documents %}
+                    <i class="fa-solid fa-folder-closed text-secondary"></i>
+                    <!--  -->
+                    {% else %}
+                    <i class="fa-regular fa-folder-open text-secondary"></i>
+                    <!--  -->
+                    {% endif %}
+                </div>
+                <div class="col-11">
+                    <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
+                        <h6>
+                            <span class="text-decoration-underline">{{course.course_code}}</span> - {{course.course_title}}
+                        </h6>
+                    </a>
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>
