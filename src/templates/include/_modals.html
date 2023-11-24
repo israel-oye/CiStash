@@ -12,9 +12,10 @@
                 <p> A-hem! This is a platform where anyone can download course materials and upload as well. If you notice that a course is not available for a particular level, or a course does not have any documents, you can add the course and/or upload
                     what you have.
                     <br><br> Everything (content) on <span class="brand-text">StashIT</span> is user-generated and (sadly,) this means that someone has to have uploaded stuff before OR have added a course before you can get resources.
-                    <br> On the bright side, you can be a contributor and save a whole lot of people this <i>headik</i>. To contribute, please <a href="" data-bs-toggle="modal" data-bs-target="#auth-modal">sign up or login</a> to continue.
+                    <br> On the bright side, you can be a contributor and save a whole lot of people this <i>headik</i>. {% if not current_user.is_authenticated %} To contribute, please <a href="" data-bs-toggle="modal" data-bs-target="#auth-modal">sign up or login</a>                    to continue. {% endif %}
                     <br><br> Also, if you want to get rid of your course materials, feel free to dump them here and delete them from your device with peace. Have fun!🤸
                 </p>
+                {% if not current_user.is_authenticated %}
                 <div class="container">
                     <div class="row">
                         <div class="col-6 text-center">
@@ -29,6 +30,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
