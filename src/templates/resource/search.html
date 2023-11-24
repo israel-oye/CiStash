@@ -40,11 +40,24 @@
                 <!--  -->
                 {% for course in courses %}
                 <div class="coursebox container bg-secondary my-2 border-bottom">
-                    <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
-                        <h3>
-                            <i class="fa-solid fa-folder"></i> <span class="text-decoration-underline ps-2">{{course.course_code}}</span> - {{course.course_title}}
-                        </h3>
-                    </a>
+                    <div class="row">
+                        <div class="col-1">
+                            {% if course.has_documents %}
+                            <i class="fa-solid fa-folder-closed"></i>
+                            <!--  -->
+                            {% else %}
+                            <i class="fa-regular fa-folder-open"></i>
+                            <!--  -->
+                            {% endif %}
+                        </div>
+                        <div class="col-11">
+                            <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
+                                <h6>
+                                    <span class="text-decoration-underline">{{course.course_code}}</span> - {{course.course_title}}
+                                </h6>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
                 <!--  -->
