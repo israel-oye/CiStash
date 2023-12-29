@@ -25,7 +25,7 @@ Dropzone.options.upload = {
     autoProcessQueue: false,
     chunking: true,
     forceChunking: true,
-    url: document.querySelector("#upload-url").value,
+    url: "/resource/file-upload",
     uploadMultiple: false,
     maxFiles: 1,
     maxFilesize: 512, // megabytes
