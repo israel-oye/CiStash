@@ -8,6 +8,7 @@ from models.moderator import IndexView, Moderator
 from .auth import auth_bp
 from .home import home_bp
 from .resource import resource_bp
+from .utils.url_converter import CourseCodeConverter
 
 
 def initialize_extensions(app: Flask):
@@ -43,6 +44,7 @@ def create_app(config_filename=None):
     app = Flask(__name__)
 
     app.config.from_object(ProductionConfig)
+    app.url_map.converters['courseID'] = CourseCodeConverter
     initialize_extensions(app)
     register_blueprints(app)
     set_logging(app)

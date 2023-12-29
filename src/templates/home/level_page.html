@@ -38,7 +38,7 @@
                     {% endif %}
                 </div>
                 <div class="col-11">
-                    <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
+                    <a href="{{url_for('resource_bp.get_course', identifier=course.course_code)}}" class="text-decoration-none">
                         <h6>
                             <span class="text-decoration-underline">{{course.course_code}}</span> - {{course.course_title}}
                         </h6>
