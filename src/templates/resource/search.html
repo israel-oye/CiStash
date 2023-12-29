@@ -51,7 +51,7 @@
                             {% endif %}
                         </div>
                         <div class="col-11">
-                            <a href="{{url_for('resource_bp.get_course', course_id=course.id_)}}" class="text-decoration-none">
+                            <a href="{{url_for('resource_bp.get_course', identifier=course.course_code)}}" class="text-decoration-none">
                                 <h6>
                                     <span class="text-decoration-underline">{{course.course_code}}</span> - {{course.course_title}}
                                 </h6>
@@ -111,7 +111,7 @@
                                 </a>
                             </td>
                             <td class="align-middle">
-                                <a class="text-info" href="{{url_for('resource_bp.get_course', course_id=doc.course_id)}}" title="Document Course">{{doc.course.course_code}}</a>
+                                <a class="text-info" href="{{url_for('resource_bp.get_course', identifier=doc.course.course_code)}}" title="Document Course">{{doc.course.course_code}}</a>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-success float-end downloader" value="{{doc.uuid}}">Download</button>

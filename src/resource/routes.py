@@ -49,9 +49,12 @@ def init_backblaze():
         return bucket, b2_api, b2_encryption_setting
 
 
-@resource_bp.get("/course/<int:course_id>")
-def get_course(course_id):
-    course = Course.query.get_or_404(course_id)
+@resource_bp.get("/course/<courseID:identifier>")
+def get_course(identifier):
+    if identifier.isdigit():
+        course = Course.query.get_or_404(int(identifier))
+    else:
+        course = Course.query.filter_by(course_code=identifier).first_or_404()
     course_docs = course.course_docs.all()
     is_empty = False if bool(len(course_docs)) else True
 
