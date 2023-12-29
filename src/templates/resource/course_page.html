@@ -54,7 +54,6 @@
                             <div class="mb-3 text-center">
                                 <button class="btn btn-danger mt-2" id="upload-btn" type="submit" formaction="{{url_for('resource_bp.file_upload')}}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
                             </div>
-                            <input type="hidden" id="upload-url" value="{{url_for('resource_bp.file_upload')}}">
                         </div>
                     </form>
                 </div>
@@ -112,41 +111,8 @@
             </div>
         </div>
     </div>
-    <!-- SUCCESS MESSAGE MODAL -->
-    <div class="modal fade" id="success-modal" role="dialog">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title"><i class="fa-solid fa-circle-check text-success"></i> Success</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="success-modal-text" class="fs-6"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ERROR MODAL -->
-    <div class="modal fade" id="error-modal" role="dialog">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content bg-gradient bg-danger text-light">
-                <div class="modal-header">
-                    <h6 class="modal-title"><i class="fa-solid fa-circle-exclamation"></i> Error</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="error-modal-text" class="fs-6"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
+    {% include 'include/_feedback-modals.html' %}
 
     <!-- MAIN CONTENT -->
     {% if is_empty %}

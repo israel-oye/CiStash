@@ -1,7 +1,7 @@
 var parser = new DOMParser();
 var alertAnchor = document.querySelector('#alert-anchor');
 
-
+//Utility function to disable button on File-Upload form
 /**
  *
  * @param {boolean} state
@@ -18,6 +18,8 @@ function disableUploadButton(state) {
 }
 
 
+//Dropzone Js config
+
 Dropzone.options.upload = {
     paramName: "file",
     acceptedFiles: ".pdf, .doc, .docx, .odt, .rtf, .txt, .epub, .ppt, .pptx",
@@ -25,7 +27,7 @@ Dropzone.options.upload = {
     autoProcessQueue: false,
     chunking: true,
     forceChunking: true,
-    url: document.querySelector("#upload-url").value,
+    url: "/resource/file-upload",
     uploadMultiple: false,
     maxFiles: 1,
     maxFilesize: 512, // megabytes
@@ -110,6 +112,8 @@ Dropzone.options.upload = {
     }
 }
 
+
+//Utility functions
 
 /**
  * @param {string} bg_color
@@ -342,6 +346,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 })
 
+
+//UPDATING Course-Code dropwdown (in File upload form) DYNAMICALLY AS Level dropdown changes
+
 if (form_2_level_select) {
     let form_2_tab_btn = document.getElementById("document-tab");
 
@@ -376,6 +383,9 @@ if (form_2_level_select) {
     });
 }
 
+
+//REFRESH WINDOW ON RESPECTIVE MODAL DISMISSAL
+
 let add_file_dialog = document.getElementById("add-file-modal")
 
 if (add_file_dialog) {
@@ -384,10 +394,20 @@ if (add_file_dialog) {
     })
 }
 
+
 let edit_file_dialog = document.getElementById("edit-course-modal");
 
 if (edit_file_dialog) {
     edit_file_dialog.addEventListener('hidden.bs.modal', function(e) {
+        window.location = window.location;
+    })
+}
+
+
+let add_course_dialog = document.getElementById("add-course-modal");
+
+if (add_course_dialog) {
+    add_course_dialog.addEventListener('hidden.bs.modal', function(e) {
         window.location = window.location;
     })
 }
