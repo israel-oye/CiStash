@@ -15,12 +15,13 @@ def initialize_extensions(app: Flask):
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     login_manager.init_app(app)
-    admin.init_app(app, index_view=IndexView(name='Admin', url="/auth/admin"))
+    admin.init_app(app, index_view=IndexView(name="Admin", url="/auth/admin"))
     mail.init_app(app)
 
     @login_manager.user_loader
     def load_user(user_id):
         return Moderator.query.get(int(user_id))
+
 
 def register_blueprints(app: Flask):
     app.register_blueprint(home_bp, url_prefix="/home")
@@ -29,12 +30,14 @@ def register_blueprints(app: Flask):
 
     app.add_url_rule("/", endpoint="home_bp.index")
 
+
 def set_logging(app: Flask):
     import logging
 
-    gunicorn_error_logger = logging.getLogger('gunicorn.error')
+    gunicorn_error_logger = logging.getLogger("gunicorn.error")
     app.logger.handlers.extend(gunicorn_error_logger.handlers)
     app.logger.setLevel(logging.DEBUG)
+
 
 def create_app(config_filename=None):
     app = Flask(__name__)
@@ -65,14 +68,17 @@ def create_app(config_filename=None):
     @app.context_processor
     def utility_processor():
         def get_file_format(file_name: str):
-            return file_name.split('.')[-1]
+            return file_name.split(".")[-1]
 
         def truncate_filename(filename: str):
-            truncated_text = filename[:30] + '...' if len(filename) > 33 else filename
+            truncated_text = filename[:30] + "..." if len(filename) > 33 else filename
             return truncated_text
 
         lvls = {level.name: level.value for level in LevelEnum}
-        return dict(get_file_format=get_file_format, lvl_mapping=lvls, truncate_filename=truncate_filename)
-
+        return dict(
+            get_file_format=get_file_format,
+            lvl_mapping=lvls,
+            truncate_filename=truncate_filename,
+        )
 
     return app
