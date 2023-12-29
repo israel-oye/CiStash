@@ -4,6 +4,9 @@ from extensions import CSRFError
 from models.course import Course
 from models.level import Level, LevelEnum
 
+from ..utils.form import CourseForm
+
+
 home_bp = Blueprint(
     "home_bp", __name__, template_folder="templates/home", static_folder="src/static"
 )
@@ -51,8 +54,8 @@ def level_page(level_id):
 
     if not level:
         abort(404)
-
+    form = CourseForm(levels=level.name.name)   #level.name is an Enum obj
     level_courses = level.courses.order_by(Course.course_code).all()
     return render_template(
-        "home/level_page.html", level=level, level_courses=level_courses
+        "home/level_page.html", form=form, level=level, level_courses=level_courses
     )

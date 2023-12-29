@@ -394,10 +394,20 @@ if (add_file_dialog) {
     })
 }
 
+
 let edit_file_dialog = document.getElementById("edit-course-modal");
 
 if (edit_file_dialog) {
     edit_file_dialog.addEventListener('hidden.bs.modal', function(e) {
+        window.location = window.location;
+    })
+}
+
+
+let add_course_dialog = document.getElementById("add-course-modal");
+
+if (add_course_dialog) {
+    add_course_dialog.addEventListener('hidden.bs.modal', function(e) {
         window.location = window.location;
     })
 }
