@@ -26,9 +26,9 @@
                 <th scope="col"></th>
                 <th scope="col">
                     {% if current_user.is_authenticated %}
-                    <button class="btn btn-secondary float-end" data-bs-toggle="modal" data-bs-target="#add-course-modal">
+                    <button class="btn btn-secondary float-end" title="Add new course" data-bs-toggle="modal" data-bs-target="#add-course-modal">
                     {% else %}
-                    <button class="btn btn-secondary float-end" data-bs-toggle="modal" data-bs-target="#cond-auth-modal">
+                    <button class="btn btn-secondary float-end" title="Add new course" data-bs-toggle="modal" data-bs-target="#cond-auth-modal">
                     {% endif %}
                         <i class="fa-solid fa-folder-plus"></i>
                     </button>

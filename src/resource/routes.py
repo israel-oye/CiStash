@@ -58,7 +58,7 @@ def get_course(identifier):
     course_docs = course.course_docs.all()
     is_empty = False if bool(len(course_docs)) else True
 
-    form = UpdateCourseForm(obj=course)
+    form = UpdateCourseForm(obj=course, data={'levels': course.course_level.name.name})
     form.set_model_instance(course)
 
     context = {
