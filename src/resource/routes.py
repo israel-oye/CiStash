@@ -176,7 +176,8 @@ def upload_course():
         new_course = Course(
             course_title=str(form.course_title.data).title(),
             course_code=form.course_code.data,
-            level_id = course_level.id_
+            level_id = course_level.id_,
+            added_by=current_user
             )
         try:
             db.session.add(new_course)
