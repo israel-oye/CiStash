@@ -45,6 +45,7 @@ class Moderator(db.Model, UserMixin):
 
     uploads = db.relationship("Document", back_populates="uploader", lazy="select")
     roles = db.relationship("Role", secondary="users_roles", back_populates="users")
+    courses_added = db.relationship("Course", back_populates="added_by")
 
     def __init__(self, username, email, password):
         self.username = username
